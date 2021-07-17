@@ -38,9 +38,9 @@ namespace MedicReach.Data.Models
 
         public bool IsWorkingWithChildren { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
+        //[Required]
+        //public string UserId { get; set; }
 
-        public IdentityUser User { get; set; }
+        //public IdentityUser User { get; set; }
     }
 }

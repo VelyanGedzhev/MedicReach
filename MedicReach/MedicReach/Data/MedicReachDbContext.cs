@@ -30,6 +30,13 @@ namespace MedicReach.Data
 
             builder
                 .Entity<Physician>()
+                .HasOne(a => a.Address)
+                .WithMany(a => a.Physicians)
+                .HasForeignKey(a => a.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Physician>()
                 .HasOne(p => p.Speciality)
                 .WithMany(p => p.Physicians)
                 .HasForeignKey(p => p.SpecialityId)

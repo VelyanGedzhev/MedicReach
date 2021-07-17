@@ -1,0 +1,21 @@
+﻿@model List<MedicalCenterListingViewModel>
+
+@{
+    ViewData["Title"] = "Medical Centers";
+}
+
+<div class="row">
+    @foreach (var mc in Model)
+    {
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@mc.ImageUrl" alt="Medical Center image">
+                <div class="card-body">
+                    <h5 class="card-title">@mc.Name</h5>
+                    <p class="card-text">@mc.Description.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

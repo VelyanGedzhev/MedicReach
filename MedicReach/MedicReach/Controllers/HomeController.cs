@@ -1,37 +1,40 @@
-﻿using MedicReach.Models;
+﻿using MedicReach.Data;
+using MedicReach.Models;
+using MedicReach.Models.MedicalCenters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MedicReach.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly MedicReachDbContext data;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(MedicReachDbContext data)
         {
-            _logger = logger;
+            this.data = data;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
+            var medicalCenters = this.data
+                .MedicalCenters
+                .Select(mc => new MedicalCenterListingViewModel
+                {
+                    Id = mc.Id,
+                    Name = mc.Name,
+                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City}",
+                    Description = mc.Description,
+                    ImageUrl = mc.ImageUrl
+                })
+                .Take(3)
+                .ToList();
 
-        public IActionResult Privacy()
-        {
-            return View();
+            return View(medicalCenters);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

@@ -19,5 +19,7 @@ namespace MedicReach.Data.Models
         public string City { get; set; }
 
         public IEnumerable<MedicalCenter> MedicalCenters { get; init; } = new List<MedicalCenter>();
+
+        public IEnumerable<Physician> Physicians { get; init; } = new List<Physician>();
     }
 }
