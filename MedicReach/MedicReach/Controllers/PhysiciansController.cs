@@ -173,7 +173,6 @@ namespace MedicReach.Controllers
             return View(physician);
         }
 
-
         private IEnumerable<PhysicianMedicalCentersViewModel> GetMedicalCenters()
             => this.data
                 .MedicalCenters

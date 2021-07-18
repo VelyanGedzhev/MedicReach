@@ -66,7 +66,8 @@ namespace MedicReach.Controllers
             this.data.MedicalCenters.Add(medicalCenterToAdd);
             this.data.SaveChanges();
 
-            return RedirectToAction(nameof(All));
+            //TODO: better way to create medical center while created physician
+            return Redirect("/Physicians/Add");
         }
 
         public IActionResult Details(int medicalCenterId)

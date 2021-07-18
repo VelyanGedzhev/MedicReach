@@ -21,6 +21,8 @@ namespace MedicReach.Data
 
         public DbSet<PhysicianSpeciality> PhysicianSpecialities { get; init; }
 
+        public DbSet<Appointment> Appointments { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -45,12 +47,18 @@ namespace MedicReach.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Entity<Physician>()
+                .HasMany(a => a.Appointments)
+                .WithOne(p => p.Physician)
+                .HasForeignKey(a => a.PhysicianId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .Entity<Address>()
                 .HasOne(a => a.Country)
                 .WithMany(c => c.Addresses)
                 .HasForeignKey(a => a.CountryId)
                 .OnDelete(DeleteBehavior.Restrict);
-               
 
             base.OnModelCreating(builder);
         }

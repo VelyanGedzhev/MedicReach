@@ -56,6 +56,10 @@
                             <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCoude</option>
                         }
                     </select>
+                    <div class="row">
+                        @*TODO: add medical center in case it doesnt exist*@
+                        <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Add">Add Medical Center</a>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label asp-for="SpecialityId"></label>

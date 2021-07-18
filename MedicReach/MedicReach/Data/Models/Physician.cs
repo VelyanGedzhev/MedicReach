@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Data.Models
@@ -36,6 +37,8 @@ namespace MedicReach.Data.Models
         public PhysicianSpeciality Speciality { get; set; }
 
         public bool IsWorkingWithChildren { get; set; }
+
+        public IEnumerable<Appointment> Appointments { get; init; } = new List<Appointment>();
 
         //[Required]
         //public string UserId { get; set; }
