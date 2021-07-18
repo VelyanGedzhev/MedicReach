@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MedicReach.Models.MedicalCenters;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
@@ -17,8 +18,8 @@ namespace MedicReach.Models.Physicians
         [Required]
         public string Gender { get; init; }
 
-        [Display(Name = "Address")]
-        public int AddressId { get; init; }
+        [Display(Name = "Medical Center")]
+        public int MedicalCenterId { get; init; }
 
         [Required]
         [EmailAddress]
@@ -33,7 +34,7 @@ namespace MedicReach.Models.Physicians
 
         public int SpecialityId { get; set; }
 
-        public IEnumerable<PhysicianAddressViewModel> Addresses { get; set; }
+        public IEnumerable<PhysicianMedicalCentersViewModel> MedicalCenters { get; set; }
 
         public IEnumerable<PhysicianSpecialityViewModel> Specialities { get; set; }
 

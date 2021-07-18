@@ -12,7 +12,7 @@ namespace MedicReach.Models.Physicians
 
         public string Gender { get; init; }
 
-        public Address Address { get; init; }
+        public MedicalCenter MedicalCenter { get; init; }
 
         public int ExaminationPrice { get; init; }
 

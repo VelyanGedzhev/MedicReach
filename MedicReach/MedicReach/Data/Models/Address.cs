@@ -18,8 +18,10 @@ namespace MedicReach.Data.Models
         [MaxLength(CityMaxLength)]
         public string City { get; set; }
 
-        public IEnumerable<MedicalCenter> MedicalCenters { get; init; } = new List<MedicalCenter>();
+        public int CountryId { get; set; }
 
-        public IEnumerable<Physician> Physicians { get; init; } = new List<Physician>();
+        public Country Country { get; set; }
+
+        public IEnumerable<MedicalCenter> MedicalCenters { get; init; } = new List<MedicalCenter>();
     }
 }

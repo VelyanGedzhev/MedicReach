@@ -29,7 +29,7 @@
                     <select asp-for="AddressId" class="form-control">
                         @foreach (var address in Model.Addresses)
                         {
-                        <option value="@address.Id">@address.Number @address.Name, @address.City</option>
+                        <option value="@address.Id">@address.AddressNumber @address.AddressName, @address.City, @address.CountryCode</option>
                         }
                     </select>
                 </div>

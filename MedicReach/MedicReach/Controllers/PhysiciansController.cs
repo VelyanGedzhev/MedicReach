@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static MedicReach.Data.DataConstants.Speciality;
 using static MedicReach.Data.DataConstants.Physician;
+using MedicReach.Models.MedicalCenters;
 
 namespace MedicReach.Controllers
 {
@@ -57,7 +58,7 @@ namespace MedicReach.Controllers
                     FirstName = p.FirstName,
                     LastName = p.LastName,
                     Gender = p.Gender,
-                    Address = p.Address,
+                    MedicalCenter = p.MedicalCenter,
                     Speciality = p.Speciality.Name,
                     ImageUrl = p.ImageUrl,
                     ExaminationPrice = p.ExaminationPrice,
@@ -81,16 +82,16 @@ namespace MedicReach.Controllers
 
         public IActionResult Add() => View(new BecomePhysicianFormModel
         {
-            Addresses = this.GetAddresses(),
+            MedicalCenters = this.GetMedicalCenters(),
             Specialities = this.GetSpecialities()
         });
 
         [HttpPost]
         public IActionResult Add(BecomePhysicianFormModel physicianModel)
         {
-            if (!this.data.Addresses.Any(a => a.Id == physicianModel.AddressId))
+            if (!this.data.Addresses.Any(a => a.Id == physicianModel.MedicalCenterId))
             {
-                this.ModelState.AddModelError(nameof(physicianModel.AddressId), "Address does not exist.");
+                this.ModelState.AddModelError(nameof(physicianModel.MedicalCenterId), "MedicalCenter does not exist.");
             }
 
             if (!this.data.PhysicianSpecialities.Any(ps => ps.Id == physicianModel.SpecialityId))
@@ -100,7 +101,7 @@ namespace MedicReach.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                physicianModel.Addresses = this.GetAddresses();
+                physicianModel.MedicalCenters = this.GetMedicalCenters();
                 physicianModel.Specialities = this.GetSpecialities();
 
                 return View(physicianModel);
@@ -124,7 +125,7 @@ namespace MedicReach.Controllers
                 Gender = physicianModel.Gender,
                 Email = physicianModel.Email,
                 ExaminationPrice = physicianModel.ExaminationPrice,
-                AddressId = physicianModel.AddressId,
+                MedicalCenterId = physicianModel.MedicalCenterId,
                 ImageUrl = physicianModel.ImageUrl ?? physicianImageUrl,
                 SpecialityId = physicianModel.SpecialityId,
                 IsWorkingWithChildren = physicianModel.IsWorkingWithChildren
@@ -138,15 +139,17 @@ namespace MedicReach.Controllers
 
 
 
-        private IEnumerable<PhysicianAddressViewModel> GetAddresses()
+        private IEnumerable<PhysicianMedicalCentersViewModel> GetMedicalCenters()
             => this.data
-                .Addresses
-                .Select(c => new PhysicianAddressViewModel
+                .MedicalCenters
+                .Select(mc => new PhysicianMedicalCentersViewModel
                 {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Number = c.Number,
-                    City = c.City
+                    Id = mc.Id,
+                    Name = mc.Name,
+                    Address = mc.Address.Name,
+                    AddressNumber = mc.Address.Number,
+                    City = mc.Address.City,
+                    CountryCoude = mc.Address.Country.Alpha3Code
                 })
                 .ToList();
 

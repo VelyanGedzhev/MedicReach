@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Data.Models
@@ -19,9 +18,9 @@ namespace MedicReach.Data.Models
         [Required]
         public string Gender { get; init; }
 
-        public int AddressId { get; set; }
+        public int MedicalCenterId { get; set; }
 
-        public Address Address { get; set; }
+        public MedicalCenter MedicalCenter { get; set; }
 
         [Required]
         [EmailAddress]

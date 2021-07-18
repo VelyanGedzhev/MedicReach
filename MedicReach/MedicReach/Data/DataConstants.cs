@@ -34,5 +34,13 @@
             public const int NameMaxLength = 20;
 
         }
+
+        public class County
+        {
+            public const int NameMinLength = 5;
+            public const int NameMaxLength = 70;
+            public const int Alpha3CodeMinLength = 3;
+            public const int Alpha3CodeMaxLength = 3;
+        }
     }
 }

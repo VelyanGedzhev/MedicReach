@@ -25,7 +25,7 @@ namespace MedicReach.Controllers
                 {
                     Id = mc.Id,
                     Name = mc.Name,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City}",
+                    Address = $"{mc.Address.Number} {mc.Address.Name}, {mc.Address.City}, {mc.Address.Country.Alpha3Code}",
                     Description = mc.Description,
                     ImageUrl = mc.ImageUrl
                 })
@@ -75,9 +75,10 @@ namespace MedicReach.Controllers
                 .Select(c => new MedicalCenterAddressViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name,
-                    Number = c.Number,
-                    City = c.City
+                    AddressName = c.Name,
+                    AddressNumber = c.Number,
+                    City = c.City,
+                    CountryCode = c.Country.Alpha3Code
                 })
                 .ToList();
     }
