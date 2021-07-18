@@ -69,6 +69,25 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        public IActionResult Details(int id)
+        {
+            var medicalCenter = this.data
+                .MedicalCenters
+                .Where(mc => mc.Id == id)
+                .Select(mc => new MedicalCenterDetailsViewModel
+                {
+                    Id = mc.Id,
+                    Name = mc.Name,
+                    Description = mc.Description,
+                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
+                    PhysiciansCount = mc.Physicians.Count(),
+                    ImageUrl = mc.ImageUrl
+                })
+                .FirstOrDefault();
+
+            return View(medicalCenter);
+        }
+
         private IEnumerable<MedicalCenterAddressViewModel> GetAddresses()
             => this.data
                 .Addresses

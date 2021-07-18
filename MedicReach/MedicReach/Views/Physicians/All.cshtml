@@ -21,6 +21,18 @@
                 </select>
             </div>
         </div>
+        <div class="form-group col-md-3">
+            <div class="form-group">
+                <label asp-for="MedicalCenter"></label>
+                <select asp-for="MedicalCenter" class="form-control">
+                    <option value="" selected>All</option>
+                    @foreach (var medicalCenter in Model.MedicalCenters)
+                    {
+                        <option value="@medicalCenter">@medicalCenter</option>
+                    }
+                </select>
+            </div>
+        </div>
         <div class="form-group">
             <label asp-for="Sorting"></label>
             <select asp-for="Sorting" class="form-control">

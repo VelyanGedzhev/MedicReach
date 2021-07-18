@@ -5,9 +5,7 @@ using MedicReach.Models.Physicians.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using static MedicReach.Data.DataConstants.Speciality;
 using static MedicReach.Data.DataConstants.Physician;
-using MedicReach.Models.MedicalCenters;
 
 namespace MedicReach.Controllers
 {
@@ -37,6 +35,12 @@ namespace MedicReach.Controllers
             {
                 physiciansQuery = physiciansQuery
                     .Where(p => p.Speciality.Name == allPhysiciansQuery.Speciality);
+            }
+
+            if (!string.IsNullOrEmpty(allPhysiciansQuery.MedicalCenter))
+            {
+                physiciansQuery = physiciansQuery
+                    .Where(p => p.MedicalCenter.Name == allPhysiciansQuery.MedicalCenter);
             }
 
             physiciansQuery = allPhysiciansQuery.Sorting switch
@@ -73,6 +77,14 @@ namespace MedicReach.Controllers
                 .OrderBy(name => name)
                 .ToList();
 
+            var medicalCenters = this.data
+                .MedicalCenters
+                .Select(ps => ps.Name)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+            allPhysiciansQuery.MedicalCenters = medicalCenters;
             allPhysiciansQuery.Specialities = physicianSpecialities;
             allPhysiciansQuery.Physicians = physicians;
             allPhysiciansQuery.TotalPhysiciansCount = totalPhysicians;

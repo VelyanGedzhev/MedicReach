@@ -1,0 +1,20 @@
+﻿@model MedicalCenterDetailsViewModel
+
+@{
+    ViewData["Title"] = "Medical Centers";
+}
+
+
+<div class="jumbotron">
+    <h1 class="display-4">@Model.Name</h1>
+    <div class="col-md-4" style="width: 18rem;">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Medical Center image">
+    </div>
+    <p class="lead">@Model.Address</p>
+    <hr class="my-4">
+    <p>@Model.Description</p>
+    <p>Currently there are: @Model.PhysiciansCount physicians working in our medical center.</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" role="button" asp-controller="Physicians" asp-action="All" asp-route-MedicalCenter="@Model.Name">Check our physicions</a>
+    </p>
+</div>
