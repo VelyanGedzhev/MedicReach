@@ -118,6 +118,9 @@ namespace MedicReach.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MedicalCenterTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -127,7 +130,26 @@ namespace MedicReach.Data.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("MedicalCenterTypeId");
+
                     b.ToTable("MedicalCenters");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.MedicalCenterType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MedicalCenterTypes");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>
@@ -426,7 +448,15 @@ namespace MedicReach.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("MedicReach.Data.Models.MedicalCenterType", "MedicalCenterType")
+                        .WithMany("MedicalCenters")
+                        .HasForeignKey("MedicalCenterTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("MedicalCenterType");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>
@@ -512,6 +542,11 @@ namespace MedicReach.Data.Migrations
             modelBuilder.Entity("MedicReach.Data.Models.MedicalCenter", b =>
                 {
                     b.Navigation("Physicians");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.MedicalCenterType", b =>
+                {
+                    b.Navigation("MedicalCenters");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>

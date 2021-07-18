@@ -23,6 +23,10 @@ namespace MedicReach.Data.Models
         [Url]
         public string ImageUrl { get; set; }
 
+        public int MedicalCenterTypeId { get; set; }
+
+        public MedicalCenterType MedicalCenterType { get; set; }
+
         public IEnumerable<Physician> Physicians { get; init; } = new List<Physician>();
     }
 }

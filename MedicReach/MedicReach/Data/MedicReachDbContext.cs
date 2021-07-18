@@ -13,6 +13,8 @@ namespace MedicReach.Data
 
         public DbSet<MedicalCenter> MedicalCenters { get; init; }
 
+        public DbSet<MedicalCenterType> MedicalCenterTypes { get; init; }
+
         public DbSet<Address> Addresses { get; init; }
 
         public DbSet<Country> Countries { get; init; }
@@ -30,6 +32,13 @@ namespace MedicReach.Data
                 .HasOne(mc => mc.Address)
                 .WithMany(a => a.MedicalCenters)
                 .HasForeignKey(mc => mc.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<MedicalCenter>()
+                .HasOne(t => t.MedicalCenterType)
+                .WithMany(mc => mc.MedicalCenters)
+                .HasForeignKey(mc => mc.MedicalCenterTypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

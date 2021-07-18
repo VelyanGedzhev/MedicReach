@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MedicReach.Data.Migrations
 {
-    public partial class CountryAddressMedicalCenterPhysicianSpecialitiesTables : Migration
+    public partial class CountryAddressTypeMedicalCenterPhysicianSpecialityAppointmentTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +19,19 @@ namespace MedicReach.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Countries", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MedicalCenterTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MedicalCenterTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +78,8 @@ namespace MedicReach.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MedicalCenterTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,6 +88,12 @@ namespace MedicReach.Data.Migrations
                         name: "FK_MedicalCenters_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MedicalCenters_MedicalCenterTypes_MedicalCenterTypeId",
+                        column: x => x.MedicalCenterTypeId,
+                        principalTable: "MedicalCenterTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -110,15 +131,48 @@ namespace MedicReach.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PhysicianId = table.Column<int>(type: "int", nullable: false),
+                    PatientId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_Physicians_PhysicianId",
+                        column: x => x.PhysicianId,
+                        principalTable: "Physicians",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_CountryId",
                 table: "Addresses",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Appointments_PhysicianId",
+                table: "Appointments",
+                column: "PhysicianId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MedicalCenters_AddressId",
                 table: "MedicalCenters",
                 column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MedicalCenters_MedicalCenterTypeId",
+                table: "MedicalCenters",
+                column: "MedicalCenterTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Physicians_MedicalCenterId",
@@ -134,6 +188,9 @@ namespace MedicReach.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Appointments");
+
+            migrationBuilder.DropTable(
                 name: "Physicians");
 
             migrationBuilder.DropTable(
@@ -144,6 +201,9 @@ namespace MedicReach.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "MedicalCenterTypes");
 
             migrationBuilder.DropTable(
                 name: "Countries");

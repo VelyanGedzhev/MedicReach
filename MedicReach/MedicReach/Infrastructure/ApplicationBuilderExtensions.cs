@@ -19,6 +19,7 @@ namespace MedicReach.Infrastructure
 
             SeedCountries(data);
             SeedAddresses(data);
+            SeedMedicalCenterTypes(data);
             SeedSpecialities(data);
 
             return app;
@@ -57,6 +58,23 @@ namespace MedicReach.Infrastructure
                 new Address { Name = "Royal Mile", Number = 5, City = "Edinburgh", CountryId = 5},
                 new Address { Name = "Oranienburger Strasse", Number = 2, City = "Berlin", CountryId = 7},
                 new Address { Name = "Broadway", Number = 13, City = "New York City", CountryId = 6}
+            });
+
+            data.SaveChanges();
+        }
+
+        private static void SeedMedicalCenterTypes(MedicReachDbContext data)
+        {
+            if (data.MedicalCenterTypes.Any())
+            {
+                return;
+            }
+
+            data.MedicalCenterTypes.AddRange(new[]
+            {
+                new MedicalCenterType { Name = "The Doctor's Office"},
+                new MedicalCenterType { Name = "Clinic"},
+                new MedicalCenterType { Name = "Hospital"}
             });
 
             data.SaveChanges();

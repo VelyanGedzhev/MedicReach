@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicReach.Data.Migrations
 {
     [DbContext(typeof(MedicReachDbContext))]
-    [Migration("20210718084746_CountryAddressMedicalCenterPhysicianSpecialitiesTables")]
-    partial class CountryAddressMedicalCenterPhysicianSpecialitiesTables
+    [Migration("20210718153940_CountryAddressTypeMedicalCenterPhysicianSpecialityAppointmentTables")]
+    partial class CountryAddressTypeMedicalCenterPhysicianSpecialityAppointmentTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,35 @@ namespace MedicReach.Data.Migrations
                     b.HasIndex("CountryId");
 
                     b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhysicianId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhysicianId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Country", b =>
@@ -91,6 +120,9 @@ namespace MedicReach.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MedicalCenterTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -100,7 +132,26 @@ namespace MedicReach.Data.Migrations
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("MedicalCenterTypeId");
+
                     b.ToTable("MedicalCenters");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.MedicalCenterType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MedicalCenterTypes");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>
@@ -380,6 +431,17 @@ namespace MedicReach.Data.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("MedicReach.Data.Models.Appointment", b =>
+                {
+                    b.HasOne("MedicReach.Data.Models.Physician", "Physician")
+                        .WithMany("Appointments")
+                        .HasForeignKey("PhysicianId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Physician");
+                });
+
             modelBuilder.Entity("MedicReach.Data.Models.MedicalCenter", b =>
                 {
                     b.HasOne("MedicReach.Data.Models.Address", "Address")
@@ -388,7 +450,15 @@ namespace MedicReach.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("MedicReach.Data.Models.MedicalCenterType", "MedicalCenterType")
+                        .WithMany("MedicalCenters")
+                        .HasForeignKey("MedicalCenterTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("MedicalCenterType");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>
@@ -474,6 +544,16 @@ namespace MedicReach.Data.Migrations
             modelBuilder.Entity("MedicReach.Data.Models.MedicalCenter", b =>
                 {
                     b.Navigation("Physicians");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.MedicalCenterType", b =>
+                {
+                    b.Navigation("MedicalCenters");
+                });
+
+            modelBuilder.Entity("MedicReach.Data.Models.Physician", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.PhysicianSpeciality", b =>

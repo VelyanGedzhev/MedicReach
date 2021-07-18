@@ -42,5 +42,10 @@
             public const int Alpha3CodeMinLength = 3;
             public const int Alpha3CodeMaxLength = 3;
         }
+
+        public class MedicalCenterType
+        {
+            public const int NameMaxLength = 20;
+        }
     }
 }

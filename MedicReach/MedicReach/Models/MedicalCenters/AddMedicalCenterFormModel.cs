@@ -13,6 +13,9 @@ namespace MedicReach.Models.MedicalCenters
         [Display(Name = "Address")]
         public int AddressId { get; init; }
 
+        [Display(Name = "Type")]
+        public int TypeId { get; init; }
+
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
@@ -22,5 +25,7 @@ namespace MedicReach.Models.MedicalCenters
         public string ImageUrl { get; init; }
 
         public IEnumerable<MedicalCenterAddressViewModel> Addresses { get; set; }
+
+        public IEnumerable<MedicalCenterTypeViewModel> MedicalCenterTypes { get; set; }
     }
 }

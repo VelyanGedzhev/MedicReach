@@ -26,6 +26,7 @@ namespace MedicReach.Controllers
                     Id = mc.Id,
                     Name = mc.Name,
                     Address = $"{mc.Address.Number} {mc.Address.Name}, {mc.Address.City}, {mc.Address.Country.Alpha3Code}",
+                    Type = mc.MedicalCenterType.Name,
                     Description = mc.Description,
                     ImageUrl = mc.ImageUrl
                 })
@@ -37,6 +38,7 @@ namespace MedicReach.Controllers
 
         public IActionResult Add() => View(new AddMedicalCenterFormModel
         {
+            MedicalCenterTypes = GetMedicalCenterTypes(),
             Addresses = GetAddresses()
         });
 
@@ -48,9 +50,15 @@ namespace MedicReach.Controllers
                 this.ModelState.AddModelError(nameof(medicalCenter.AddressId), "Address does not exist.");
             }
 
+            if (!this.data.MedicalCenterTypes.Any(a => a.Id == medicalCenter.TypeId))
+            {
+                this.ModelState.AddModelError(nameof(medicalCenter.AddressId), "Medical Center Type does not exist.");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 medicalCenter.Addresses = this.GetAddresses();
+                medicalCenter.MedicalCenterTypes = this.GetMedicalCenterTypes();
 
                 return View(medicalCenter);
             }
@@ -59,6 +67,7 @@ namespace MedicReach.Controllers
             {
                 Name = medicalCenter.Name,
                 AddressId = medicalCenter.AddressId,
+                MedicalCenterTypeId = medicalCenter.TypeId,
                 Description = medicalCenter.Description,
                 ImageUrl = medicalCenter.ImageUrl ?? DefaultImageUrl
             };
@@ -81,6 +90,7 @@ namespace MedicReach.Controllers
                     Name = mc.Name,
                     Description = mc.Description,
                     Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
+                    Type = mc.MedicalCenterType.Name,
                     PhysiciansCount = mc.Physicians.Count(),
                     ImageUrl = mc.ImageUrl
                 })
@@ -88,6 +98,16 @@ namespace MedicReach.Controllers
 
             return View(medicalCenter);
         }
+
+        private IEnumerable<MedicalCenterTypeViewModel> GetMedicalCenterTypes()
+            => this.data
+                .MedicalCenterTypes
+                .Select(c => new MedicalCenterTypeViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToList();
 
         private IEnumerable<MedicalCenterAddressViewModel> GetAddresses()
             => this.data

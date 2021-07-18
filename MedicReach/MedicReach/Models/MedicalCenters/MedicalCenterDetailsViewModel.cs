@@ -1,11 +1,4 @@
-﻿using MedicReach.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MedicReach.Models.MedicalCenters
+﻿namespace MedicReach.Models.MedicalCenters
 {
     public class MedicalCenterDetailsViewModel
     {
@@ -14,6 +7,8 @@ namespace MedicReach.Models.MedicalCenters
         public string Name { get; init; }
 
         public string Address { get; init; }
+
+        public string Type { get; init; }
 
         public string Description { get; init; }
 
