@@ -1,7 +1,7 @@
 ﻿@model MedicalCenterDetailsViewModel
 
 @{
-    ViewData["Title"] = "Medical Centers";
+    ViewData["Title"] = "Medical Center Details";
 }
 
 
@@ -15,6 +15,6 @@
     <p>@Model.Description</p>
     <p>Currently there are: @Model.PhysiciansCount physicians working in our medical center.</p>
     <p class="lead">
-        <a class="btn btn-primary btn-lg" role="button" asp-controller="Physicians" asp-action="All" asp-route-MedicalCenter="@Model.Name">Check our physicions</a>
+        <a class="btn btn-primary btn-lg" role="button" asp-controller="Physicians" asp-action="All" asp-route-MedicalCenter="@Model.Name">Check our physicians</a>
     </p>
 </div>

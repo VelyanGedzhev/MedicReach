@@ -18,6 +18,8 @@ namespace MedicReach.Models.Physicians
 
         public string ImageUrl { get; init; }
 
+        public string Address { get; init; }
+
         public string Speciality { get; init; }
 
         public string IsWorkingWithChildren { get; init; }

@@ -61,7 +61,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@physician.FirstName @physician.LastName</h5>
                     <p class="card-text">@physician.Speciality</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a class="btn btn-primary" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@physician.Id">Details</a>
                 </div>
             </div>
         </div>

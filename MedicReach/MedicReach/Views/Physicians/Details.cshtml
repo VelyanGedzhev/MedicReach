@@ -1,0 +1,23 @@
+﻿@model PhysicianListViewModel
+
+@{
+    ViewData["Title"] = "Physician Details";
+}
+
+
+<div class="jumbotron">
+    <h1 class="display-4">@Model.FirstName @Model.LastName</h1>
+    <div class="col-md-4" style="width: 18rem;">
+        <img class="card-img-top" src="@Model.ImageUrl" alt="Medical Center image">
+    </div>
+    <p class="lead">Works in: @Model.MedicalCenter.Name</p>
+    <p class="lead">@nameof(Model.Address): @Model.Address</p>
+    <hr class="my-4">
+    <p>@nameof(Model.Speciality): @Model.Speciality</p>
+    <p>Works with children: @Model.IsWorkingWithChildren</p>
+    <p>Examination Price: @Model.ExaminationPrice</p>
+    <p>@nameof(Model.Gender): @Model.Gender</p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lg" role="button" asp-controller="Physicians" asp-action="All" asp-route-MedicalCenter="@Model.Id">Book appointment</a>
+    </p>
+</div>

@@ -69,11 +69,11 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int medicalCenterId)
         {
             var medicalCenter = this.data
                 .MedicalCenters
-                .Where(mc => mc.Id == id)
+                .Where(mc => mc.Id == medicalCenterId)
                 .Select(mc => new MedicalCenterDetailsViewModel
                 {
                     Id = mc.Id,

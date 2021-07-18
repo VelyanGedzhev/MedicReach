@@ -59,6 +59,7 @@ namespace MedicReach.Controllers
                 .Take(AllPhysiciansQueryModel.PhysiciansPerPage)
                 .Select(p => new PhysicianListViewModel
                 {
+                    Id = p.Id,
                     FirstName = p.FirstName,
                     LastName = p.LastName,
                     Gender = p.Gender,
@@ -149,6 +150,28 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        public IActionResult Details(int physicianId)
+        {
+            var physician = this.data
+                .Physicians
+                .Where(p => p.Id == physicianId)
+                .Select(p => new PhysicianListViewModel
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Gender = p.Gender,
+                    ExaminationPrice = p.ExaminationPrice,
+                    Speciality = p.Speciality.Name,
+                    ImageUrl = p.ImageUrl,
+                    Address = $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}",
+                    IsWorkingWithChildren = p.IsWorkingWithChildren == true ? "Yes" : "No",
+                    MedicalCenter = p.MedicalCenter
+                })
+                .FirstOrDefault();
+
+            return View(physician);
+        }
 
 
         private IEnumerable<PhysicianMedicalCentersViewModel> GetMedicalCenters()
