@@ -24,6 +24,7 @@ namespace MedicReach.Controllers
                 {
                     Id = mc.Id,
                     Name = mc.Name,
+                    Type = mc.MedicalCenterType.Name,
                     Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City}",
                     Description = mc.Description,
                     ImageUrl = mc.ImageUrl
