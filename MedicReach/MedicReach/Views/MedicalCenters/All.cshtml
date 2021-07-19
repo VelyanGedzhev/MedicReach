@@ -1,21 +1,102 @@
-﻿@model List<MedicalCenterListingViewModel>
+﻿@model AllMedicalCentersQueryModel
 
 @{
-    ViewData["Title"] = "Medical Centers";
+    ViewData["Title"] = "Available Medical Centers";
+}
+
+<form method="get">
+    <div class="row">
+        <div class="form-group col-md-3">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="First Clinic, ...">
+        </div>
+        <div class="form-group col-md-3">
+            <div class="form-group">
+                <label asp-for="Type"></label>
+                <select asp-for="Type" class="form-control">
+                    <option value="" selected>All</option>
+                    @foreach (var type in Model.Types)
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <div class="form-group">
+                <label asp-for="Country"></label>
+                <select asp-for="Country" class="form-control">
+                    <option value="" selected>All</option>
+                    @foreach (var country in Model.Countries)
+                    {
+                        <option value="@country">@country</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Sorting"></label>
+            <select asp-for="Sorting" class="form-control">
+                <option value="0" selected>Creation date</option>
+                <option value="1">Physician count (ascending)</option>
+                <option value="2">EPhysician count (descending)</option>
+                <option value="3">Name (ascending)</option>
+                <option value="4">Name (descending)</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3 mb-2">
+            <input type="submit" class="btn btn-primary" value="Search">
+        </div>
+    </div>
+</form>
+
+
+<div class="row mb-5">
+    @foreach (var medicalCenter in Model.MedicalCenters)
+    {
+     <div class="col-md-4">
+         <div class="card" style="width: 18rem;">
+             <img class="card-img-top" src="@medicalCenter.ImageUrl" alt="Medical Center image">
+             <div class="card-body">
+                 <h5 class="card-title">@medicalCenter.Name</h5>
+                 <p class="card-text">@medicalCenter.Description.</p>
+                 <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Details" asp-route-medicalCenterId="@medicalCenter.Id">Details</a>
+             </div>
+         </div>
+     </div>
+    }
+</div>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalMedicalCenters / AllMedicalCentersQueryModel.MedicalCentersPerPage);
 }
 
 <div class="row">
-    @foreach (var mc in Model)
-    {
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="@mc.ImageUrl" alt="Medical Center image">
-                <div class="card-body">
-                    <h5 class="card-title">@mc.Name</h5>
-                    <p class="card-text">@mc.Description.</p>
-                    <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Details" asp-route-medicalCenterId="@mc.Id">Details</a>
-                </div>
-            </div>
-        </div>
-    }
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="MedicalCenters"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-type="@Model.Type"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@Model.Sorting"><<</a>
+    </div>
+    <div class="col-md-6">
+        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+           asp-controller="MedicalCenters"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-type="@Model.Type"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@Model.Sorting">>></a>
+    </div>
 </div>

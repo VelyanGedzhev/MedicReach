@@ -1,5 +1,4 @@
-﻿using MedicReach.Models.MedicalCenters;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 

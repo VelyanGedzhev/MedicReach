@@ -1,6 +1,7 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters;
+using MedicReach.Models.MedicalCenters.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,22 +18,76 @@ namespace MedicReach.Controllers
             this.data = data;
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllMedicalCentersQueryModel allMedicalCentersQuery)
         {
-            var medicalCenters = this.data
+            var medicalCentersQuery = this.data
                 .MedicalCenters
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(allMedicalCentersQuery.SearchTerm))
+            {
+                medicalCentersQuery = medicalCentersQuery
+                    .Where(mc =>
+                    mc.Name.ToLower().Contains(allMedicalCentersQuery.SearchTerm.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(allMedicalCentersQuery.Type))
+            {
+                medicalCentersQuery = medicalCentersQuery
+                    .Where(mc => mc.MedicalCenterType.Name == allMedicalCentersQuery.Type);
+            }
+
+            if (!string.IsNullOrEmpty(allMedicalCentersQuery.Country))
+            {
+                medicalCentersQuery = medicalCentersQuery
+                    .Where(mc => mc.Address.Country.Name == allMedicalCentersQuery.Country);
+            }
+
+            medicalCentersQuery = allMedicalCentersQuery.Sorting switch
+            {
+                MedicalCentersSorting.PhysciansCountDesc => medicalCentersQuery.OrderByDescending(mc => mc.Physicians.Count()),
+                MedicalCentersSorting.PhysciansCountAsc => medicalCentersQuery.OrderBy(mc => mc.Physicians.Count()),
+                MedicalCentersSorting.NameAsc => medicalCentersQuery.OrderBy(p => p.Name),
+                MedicalCentersSorting.NameDesc => medicalCentersQuery.OrderByDescending(p => p.Name),
+                MedicalCentersSorting.DateCreated or _ => medicalCentersQuery.OrderByDescending(p => p.Id)
+            };
+
+            var totalMedicalCenters = medicalCentersQuery.Count();
+
+            var medicalCenters = medicalCentersQuery
+                .Skip((allMedicalCentersQuery.CurrentPage - 1) * AllMedicalCentersQueryModel.MedicalCentersPerPage)
+                .Take(AllMedicalCentersQueryModel.MedicalCentersPerPage)
                 .Select(mc => new MedicalCenterListingViewModel
                 {
                     Id = mc.Id,
                     Name = mc.Name,
-                    Address = $"{mc.Address.Number} {mc.Address.Name}, {mc.Address.City}, {mc.Address.Country.Alpha3Code}",
-                    Type = mc.MedicalCenterType.Name,
+                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
                     Description = mc.Description,
-                    ImageUrl = mc.ImageUrl
+                    Type = mc.MedicalCenterType.Name,
+                    ImageUrl = mc.ImageUrl,
                 })
                 .ToList();
 
-            return View(medicalCenters);
+            var medicalCentersTypes = this.data
+                .MedicalCenterTypes
+                .Select(ps => ps.Name)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+            var countries = this.data
+                .Countries
+                .Select(ps => ps.Name)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+            allMedicalCentersQuery.MedicalCenters = medicalCenters;
+            allMedicalCentersQuery.Countries = countries;
+            allMedicalCentersQuery.Types = medicalCentersTypes;
+            allMedicalCentersQuery.TotalMedicalCenters = totalMedicalCenters;
+
+            return View(allMedicalCentersQuery);
         }
 
 
