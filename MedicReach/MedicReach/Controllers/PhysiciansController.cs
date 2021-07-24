@@ -32,7 +32,6 @@ namespace MedicReach.Controllers
                 AllPhysiciansQueryModel.PhysiciansPerPage);
 
             var physicianSpecialities = this.physicians.AllSpecialities();
-
             var medicalCenters = this.physicians.AllMedicalCenters();
 
             query.MedicalCenters = medicalCenters;

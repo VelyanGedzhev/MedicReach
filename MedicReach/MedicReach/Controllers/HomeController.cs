@@ -1,6 +1,6 @@
 ﻿using MedicReach.Data;
 using MedicReach.Models;
-using MedicReach.Models.MedicalCenters;
+using MedicReach.Services.MedicalCenters.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace MedicReach.Controllers
         {
             var medicalCenters = this.data
                 .MedicalCenters
-                .Select(mc => new MedicalCenterListingViewModel
+                .Select(mc => new MedicalCenterServiceModel
                 {
                     Id = mc.Id,
                     Name = mc.Name,

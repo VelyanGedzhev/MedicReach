@@ -1,25 +1,24 @@
 ﻿using MedicReach.Models.MedicalCenters.Enums;
-using MedicReach.Services.MedicalCenters.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedicReach.Models.MedicalCenters
+namespace MedicReach.Services.MedicalCenters.Models
 {
-    public class AllMedicalCentersQueryModel
+    public class MedicalCenterQueryServiceModel
     {
-        public const int MedicalCentersPerPage = 3;
+        public int CurrentPage { get; init; }
 
-        public int CurrentPage { get; init; } = 1;
+        public int MedicalCentersPerPage { get; init; }
 
         public string Type { get; init; }
 
         [Display(Name = "Find by Type")]
         public IEnumerable<string> Types { get; set; }
 
+        public string Country { get; init; }
+
         [Display(Name = "Find by Country")]
         public IEnumerable<string> Countries { get; set; }
-
-        public string Country { get; init; }
 
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }

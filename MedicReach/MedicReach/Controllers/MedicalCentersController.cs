@@ -1,7 +1,8 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters;
-using MedicReach.Models.MedicalCenters.Enums;
+using MedicReach.Services.MedicalCenters;
+using MedicReach.Services.MedicalCenters.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,83 +12,34 @@ namespace MedicReach.Controllers
 {
     public class MedicalCentersController : Controller
     {
+        private readonly IMedicalCenterService medicalCenters;
         private readonly MedicReachDbContext data;
 
-        public MedicalCentersController(MedicReachDbContext data)
+        public MedicalCentersController(MedicReachDbContext data, IMedicalCenterService medicalCenters)
         {
             this.data = data;
+            this.medicalCenters = medicalCenters;
         }
 
-        public IActionResult All([FromQuery] AllMedicalCentersQueryModel allMedicalCentersQuery)
+        public IActionResult All([FromQuery] AllMedicalCentersQueryModel query)
         {
-            var medicalCentersQuery = this.data
-                .MedicalCenters
-                .AsQueryable();
+            var queryResult = this.medicalCenters.All(
+                query.Type,
+                query.Country,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllMedicalCentersQueryModel.MedicalCentersPerPage);
 
-            if (!string.IsNullOrEmpty(allMedicalCentersQuery.SearchTerm))
-            {
-                medicalCentersQuery = medicalCentersQuery
-                    .Where(mc =>
-                    mc.Name.ToLower().Contains(allMedicalCentersQuery.SearchTerm.ToLower()));
-            }
+            var medicalCentersTypes = this.medicalCenters.AllTypes();
+            var countries = this.medicalCenters.AllCountries();
 
-            if (!string.IsNullOrEmpty(allMedicalCentersQuery.Type))
-            {
-                medicalCentersQuery = medicalCentersQuery
-                    .Where(mc => mc.MedicalCenterType.Name == allMedicalCentersQuery.Type);
-            }
+            query.Countries = countries;
+            query.Types = medicalCentersTypes;
+            query.TotalMedicalCenters = queryResult.TotalMedicalCenters;
+            query.MedicalCenters = queryResult.MedicalCenters;
 
-            if (!string.IsNullOrEmpty(allMedicalCentersQuery.Country))
-            {
-                medicalCentersQuery = medicalCentersQuery
-                    .Where(mc => mc.Address.Country.Name == allMedicalCentersQuery.Country);
-            }
-
-            medicalCentersQuery = allMedicalCentersQuery.Sorting switch
-            {
-                MedicalCentersSorting.PhysciansCountDesc => medicalCentersQuery.OrderByDescending(mc => mc.Physicians.Count()),
-                MedicalCentersSorting.PhysciansCountAsc => medicalCentersQuery.OrderBy(mc => mc.Physicians.Count()),
-                MedicalCentersSorting.NameAsc => medicalCentersQuery.OrderBy(p => p.Name),
-                MedicalCentersSorting.NameDesc => medicalCentersQuery.OrderByDescending(p => p.Name),
-                MedicalCentersSorting.DateCreated or _ => medicalCentersQuery.OrderByDescending(p => p.Id)
-            };
-
-            var totalMedicalCenters = medicalCentersQuery.Count();
-
-            var medicalCenters = medicalCentersQuery
-                .Skip((allMedicalCentersQuery.CurrentPage - 1) * AllMedicalCentersQueryModel.MedicalCentersPerPage)
-                .Take(AllMedicalCentersQueryModel.MedicalCentersPerPage)
-                .Select(mc => new MedicalCenterListingViewModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
-                    Description = mc.Description,
-                    Type = mc.MedicalCenterType.Name,
-                    ImageUrl = mc.ImageUrl,
-                })
-                .ToList();
-
-            var medicalCentersTypes = this.data
-                .MedicalCenterTypes
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-            var countries = this.data
-                .Countries
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-            allMedicalCentersQuery.MedicalCenters = medicalCenters;
-            allMedicalCentersQuery.Countries = countries;
-            allMedicalCentersQuery.Types = medicalCentersTypes;
-            allMedicalCentersQuery.TotalMedicalCenters = totalMedicalCenters;
-
-            return View(allMedicalCentersQuery);
+            return View(query);
         }
 
 
@@ -139,7 +91,7 @@ namespace MedicReach.Controllers
             var medicalCenter = this.data
                 .MedicalCenters
                 .Where(mc => mc.Id == medicalCenterId)
-                .Select(mc => new MedicalCenterDetailsViewModel
+                .Select(mc => new MedicalCenterServiceModel
                 {
                     Id = mc.Id,
                     Name = mc.Name,
