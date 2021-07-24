@@ -1,17 +1,16 @@
 ﻿using MedicReach.Models.Physicians.Enums;
-using MedicReach.Services.Physicians.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MedicReach.Models.Physicians
+namespace MedicReach.Services.Physicians.Models
 {
-    public class AllPhysiciansQueryModel
+    public class PhysicanQueryServiceModel
     {
-        public const int PhysiciansPerPage = 3;
+        public int CurrentPage { get; init; }
 
-        public int CurrentPage { get; init; } = 1;
+        public int PhysiciansPerPage { get; init; }
 
-        public string Speciality { get; init; }
+    public string Speciality { get; init; }
 
         [Display(Name = "Find by Speciality")]
         public IEnumerable<string> Specialities { get; set; }

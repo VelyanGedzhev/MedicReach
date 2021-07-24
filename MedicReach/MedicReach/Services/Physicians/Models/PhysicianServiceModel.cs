@@ -1,8 +1,8 @@
 ﻿using MedicReach.Data.Models;
 
-namespace MedicReach.Models.Physicians
+namespace MedicReach.Services.Physicians.Models
 {
-    public class PhysicianListViewModel
+    public class PhysicianServiceModel
     {
         public int Id { get; init; }
 

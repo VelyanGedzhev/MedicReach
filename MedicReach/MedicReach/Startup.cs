@@ -1,5 +1,6 @@
 using MedicReach.Data;
 using MedicReach.Infrastructure;
+using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +37,7 @@ namespace MedicReach
                 .AddEntityFrameworkStores<MedicReachDbContext>();
 
             services.AddControllersWithViews();
+            services.AddTransient<IPhysicianService, PhysicianService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

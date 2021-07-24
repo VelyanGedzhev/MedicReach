@@ -1,7 +1,8 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians;
-using MedicReach.Models.Physicians.Enums;
+using MedicReach.Services.Physicians;
+using MedicReach.Services.Physicians.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,86 +12,35 @@ namespace MedicReach.Controllers
 {
     public class PhysiciansController : Controller
     {
+        private readonly IPhysicianService physicians;
         private readonly MedicReachDbContext data;
 
-        public PhysiciansController(MedicReachDbContext data)
+        public PhysiciansController(MedicReachDbContext data, IPhysicianService physicians)
         {
             this.data = data;
+            this.physicians = physicians;
         }
 
-        public IActionResult All([FromQuery]AllPhysiciansQueryModel allPhysiciansQuery)
+        public IActionResult All([FromQuery]AllPhysiciansQueryModel query)
         {
-            var physiciansQuery = this.data
-                .Physicians
-                .AsQueryable();
+            var queryResult = this.physicians.All(
+                query.Speciality,
+                query.MedicalCenter,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllPhysiciansQueryModel.PhysiciansPerPage);
 
-            if (!string.IsNullOrEmpty(allPhysiciansQuery.SearchTerm))
-            {
-                physiciansQuery = physiciansQuery
-                    .Where(p =>
-                    (p.FirstName.ToLower() + " " + p.LastName.ToLower()).Contains(allPhysiciansQuery.SearchTerm.ToLower()));
-            }
+            var physicianSpecialities = this.physicians.AllSpecialities();
 
-            if (!string.IsNullOrEmpty(allPhysiciansQuery.Speciality))
-            {
-                physiciansQuery = physiciansQuery
-                    .Where(p => p.Speciality.Name == allPhysiciansQuery.Speciality);
-            }
+            var medicalCenters = this.physicians.AllMedicalCenters();
 
-            if (!string.IsNullOrEmpty(allPhysiciansQuery.MedicalCenter))
-            {
-                physiciansQuery = physiciansQuery
-                    .Where(p => p.MedicalCenter.Name == allPhysiciansQuery.MedicalCenter);
-            }
+            query.MedicalCenters = medicalCenters;
+            query.Specialities = physicianSpecialities;
+            query.Physicians = queryResult.Physicians;
+            query.TotalPhysicians = queryResult.TotalPhysicians;
 
-            physiciansQuery = allPhysiciansQuery.Sorting switch
-            {
-                PhysicianSorting.ExaminationPriceDesc => physiciansQuery.OrderByDescending(p => p.ExaminationPrice),
-                PhysicianSorting.ExaminationPriceAsc => physiciansQuery.OrderBy(p => p.ExaminationPrice),
-                PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.FirstName).ThenBy(p => p.LastName),
-                PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.FirstName).ThenByDescending(p => p.LastName),
-                PhysicianSorting.DateCreated or _ => physiciansQuery.OrderByDescending(p => p.Id)
-            };
-
-            var totalPhysicians = physiciansQuery.Count();
-
-            var physicians = physiciansQuery
-                .Skip((allPhysiciansQuery.CurrentPage - 1)  * AllPhysiciansQueryModel.PhysiciansPerPage)
-                .Take(AllPhysiciansQueryModel.PhysiciansPerPage)
-                .Select(p => new PhysicianListViewModel
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Gender = p.Gender,
-                    MedicalCenter = p.MedicalCenter,
-                    Speciality = p.Speciality.Name,
-                    ImageUrl = p.ImageUrl,
-                    ExaminationPrice = p.ExaminationPrice,
-                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
-                })
-                .ToList();
-
-            var physicianSpecialities = this.data
-                .PhysicianSpecialities
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-            var medicalCenters = this.data
-                .MedicalCenters
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-            allPhysiciansQuery.MedicalCenters = medicalCenters;
-            allPhysiciansQuery.Specialities = physicianSpecialities;
-            allPhysiciansQuery.Physicians = physicians;
-            allPhysiciansQuery.TotalPhysiciansCount = totalPhysicians;
-
-            return View(allPhysiciansQuery);
+            return View(query);
         }
 
         public IActionResult Add() => View(new BecomePhysicianFormModel
@@ -155,7 +105,7 @@ namespace MedicReach.Controllers
             var physician = this.data
                 .Physicians
                 .Where(p => p.Id == physicianId)
-                .Select(p => new PhysicianListViewModel
+                .Select(p => new PhysicianServiceModel
                 {
                     Id = p.Id,
                     FirstName = p.FirstName,
