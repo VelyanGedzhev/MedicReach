@@ -1,4 +1,5 @@
 using MedicReach.Data;
+using MedicReach.Data.Models;
 using MedicReach.Infrastructure;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
@@ -28,13 +29,14 @@ namespace MedicReach
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
                 })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MedicReachDbContext>();
 
             services.AddControllersWithViews();

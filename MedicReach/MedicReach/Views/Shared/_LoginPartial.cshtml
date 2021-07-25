@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using MedicReach.Data.Models
 @using MedicReach.Services.Physicians
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject IPhysicianService Physicians
 
 <ul class="navbar-nav">
@@ -10,14 +11,15 @@
     {
         var userId = User.GetId();
         var userIsPhysician = Physicians.IsPhysician(userId);
+        var userIsAdmin = User.IsAdmin();
 
-        @if (!userIsPhysician)
+        @if (!userIsPhysician && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Become Physician</a>
             </li>
         }
-        else
+        else if(!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Edit">Edit</a>

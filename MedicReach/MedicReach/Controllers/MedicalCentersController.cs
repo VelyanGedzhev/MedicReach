@@ -1,23 +1,16 @@
-﻿using MedicReach.Data;
-using MedicReach.Data.Models;
-using MedicReach.Models.MedicalCenters;
+﻿using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
-using MedicReach.Services.MedicalCenters.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using static MedicReach.Data.DataConstants.MedicalCenter;
 
 namespace MedicReach.Controllers
 {
     public class MedicalCentersController : Controller
     {
         private readonly IMedicalCenterService medicalCenters;
-        private readonly MedicReachDbContext data;
 
-        public MedicalCentersController(MedicReachDbContext data, IMedicalCenterService medicalCenters)
+        public MedicalCentersController(IMedicalCenterService medicalCenters)
         {
-            this.data = data;
             this.medicalCenters = medicalCenters;
         }
 

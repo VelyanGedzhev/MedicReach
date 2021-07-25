@@ -1,7 +1,11 @@
 ﻿@model MedicalCenterFormModel
 
-@{ 
+@{
     ViewData["Title"] = "Add Medical Center";
 }
 
-<partial name="_MedicalCenterFormPartial" model="@Model"/>
+<partial name="_MedicalCenterFormPartial" model="@Model" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

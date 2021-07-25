@@ -1,9 +1,13 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Infrastructure
 {
@@ -11,21 +15,64 @@ namespace MedicReach.Infrastructure
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            var scopedServices = app.ApplicationServices.CreateScope();
+            var serviceScope = app.ApplicationServices.CreateScope();
+            var services = serviceScope.ServiceProvider;
 
-            var data = scopedServices.ServiceProvider.GetService<MedicReachDbContext>();
+            MigrateDatabase(services);
 
-            data.Database.Migrate();
-
-            SeedCountries(data);
-            SeedAddresses(data);
-            SeedMedicalCenterTypes(data);
-            SeedSpecialities(data);
+            SeedAdministrator(services);
+            SeedCountries(services);
+            SeedAddresses(services);
+            SeedMedicalCenterTypes(services);
+            SeedSpecialities(services);
 
             return app;
         }
-        private static void SeedCountries(MedicReachDbContext data)
+
+        private static void MigrateDatabase(IServiceProvider services)
         {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+            {
+                if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                {
+                    return;
+                }
+
+                var role = new IdentityRole { Name = AdministratorRoleName };
+
+                await roleManager.CreateAsync(role);
+
+                const string adminEmail = "admin@medicReach.com";
+                const string adminPassword = "admin123456";
+
+                var user = new User
+                {
+                    Email = adminEmail,
+                    UserName = adminEmail,
+                    FullName = "Admin"
+                };
+
+                await userManager.CreateAsync(user, adminPassword);
+                await userManager.AddToRoleAsync(user, role.Name);
+            })
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        private static void SeedCountries(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
             if (data.Countries.Any())
             {
                 return;
@@ -45,8 +92,10 @@ namespace MedicReach.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeedAddresses(MedicReachDbContext data)
+        private static void SeedAddresses(IServiceProvider services)
         {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
             if (data.Addresses.Any())
             {
                 return;
@@ -63,8 +112,10 @@ namespace MedicReach.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeedMedicalCenterTypes(MedicReachDbContext data)
+        private static void SeedMedicalCenterTypes(IServiceProvider services)
         {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
             if (data.MedicalCenterTypes.Any())
             {
                 return;
@@ -80,8 +131,10 @@ namespace MedicReach.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeedSpecialities(MedicReachDbContext data)
+        private static void SeedSpecialities(IServiceProvider services)
         {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
             if (data.PhysicianSpecialities.Any())
             {
                 return;
