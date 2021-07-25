@@ -24,6 +24,19 @@ namespace MedicReach.Services.Physicians
 
         IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters();
 
+        PhysicianServiceModel Details(int physicianId);
+
+        void Create(
+            string firstName,
+            string lastName,
+            string gender,
+            int examinationPrice,
+            int medicalCenterId,
+            string imageUrl,
+            int specialityId,
+            bool IsWorkingWithChildren,
+            string UserId);
+
         string PrepareDefaultImage(string gender);
     }
 }

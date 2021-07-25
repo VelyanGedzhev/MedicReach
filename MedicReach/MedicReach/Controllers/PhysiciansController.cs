@@ -3,12 +3,9 @@ using MedicReach.Data.Models;
 using MedicReach.Infrastructure;
 using MedicReach.Models.Physicians;
 using MedicReach.Services.Physicians;
-using MedicReach.Services.Physicians.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
-using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Controllers
 {
@@ -47,9 +44,7 @@ namespace MedicReach.Controllers
         [Authorize]
         public IActionResult Become()
         {
-            var userIsPhysicians = this.data
-                .Physicians
-                .Any(p => p.UserId == this.User.GetId());
+            var userIsPhysicians = this.physicians.IsPhysician(this.User.GetId());
 
             if (userIsPhysicians)
             {
@@ -85,46 +80,25 @@ namespace MedicReach.Controllers
                 return View(physicianModel);
             }
 
-            string defaultImage = this.physicians.PrepareDefaultImage(physicianModel.Gender);
 
-            var physician = new Physician
-            {
-                FirstName = physicianModel.FirstName,
-                LastName = physicianModel.LastName,
-                Gender = physicianModel.Gender,
-                ExaminationPrice = physicianModel.ExaminationPrice,
-                MedicalCenterId = physicianModel.MedicalCenterId,
-                ImageUrl = physicianModel.ImageUrl ?? defaultImage,
-                SpecialityId = physicianModel.SpecialityId,
-                IsWorkingWithChildren = physicianModel.IsWorkingWithChildren,
-                UserId = this.User.GetId()
-            };
 
-            this.data.Physicians.Add(physician);
-            this.data.SaveChanges();
+            this.physicians.Create(
+                physicianModel.FirstName,
+                physicianModel.LastName,
+                physicianModel.Gender,
+                physicianModel.ExaminationPrice,
+                physicianModel.MedicalCenterId,
+                physicianModel.ImageUrl,
+                physicianModel.SpecialityId,
+                physicianModel.IsWorkingWithChildren,
+                this.User.GetId());
 
             return RedirectToAction(nameof(All));
         }
 
         public IActionResult Details(int physicianId)
         {
-            var physician = this.data
-                .Physicians
-                .Where(p => p.Id == physicianId)
-                .Select(p => new PhysicianServiceModel
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Gender = p.Gender,
-                    ExaminationPrice = p.ExaminationPrice,
-                    Speciality = p.Speciality.Name,
-                    ImageUrl = p.ImageUrl,
-                    Address = $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}",
-                    IsWorkingWithChildren = p.IsWorkingWithChildren == true ? "Yes" : "No",
-                    MedicalCenter = p.MedicalCenter
-                })
-                .FirstOrDefault();
+            var physician = this.physicians.Details(physicianId);
 
             return View(physician);
         }

@@ -12,7 +12,7 @@ namespace MedicReach.Services.Physicians
     {
         private readonly MedicReachDbContext data;
 
-        public PhysicianService(MedicReachDbContext data) 
+        public PhysicianService(MedicReachDbContext data)
             => this.data = data;
 
         public PhysicanQueryServiceModel All(
@@ -61,7 +61,7 @@ namespace MedicReach.Services.Physicians
                     physiciansQuery
                         .Skip((currentPage - 1) * physiciansPerPage)
                         .Take(physiciansPerPage));
-                
+
 
             return new PhysicanQueryServiceModel
             {
@@ -133,7 +133,56 @@ namespace MedicReach.Services.Physicians
                 })
                 .ToList();
 
-        public string PrepareDefaultImage(string gender) 
+        public string PrepareDefaultImage(string gender)
             => gender == GenderMale ? DefaultMaleImageUrl : DefaultFemaleImageUrl;
+
+        public PhysicianServiceModel Details(int physicianId)
+            => this.data
+                .Physicians
+                .Where(p => p.Id == physicianId)
+                .Select(p => new PhysicianServiceModel
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Gender = p.Gender,
+                    ExaminationPrice = p.ExaminationPrice,
+                    Speciality = p.Speciality.Name,
+                    ImageUrl = p.ImageUrl,
+                    Address = $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}",
+                    IsWorkingWithChildren = p.IsWorkingWithChildren == true ? "Yes" : "No",
+                    MedicalCenter = p.MedicalCenter
+                })
+                .FirstOrDefault();
+
+        public void Create(
+            string firstName, 
+            string lastName, 
+            string gender, 
+            int examinationPrice, 
+            int medicalCenterId, 
+            string imageUrl, 
+            int specialityId, 
+            bool isWorkingWithChildren, 
+            string userId)
+        {
+            string defaultImage = PrepareDefaultImage(gender);
+
+            var physician = new Physician
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                ExaminationPrice = examinationPrice,
+                MedicalCenterId = medicalCenterId,
+                ImageUrl = imageUrl ?? defaultImage,
+                SpecialityId = specialityId,
+                IsWorkingWithChildren = isWorkingWithChildren,
+                UserId = userId
+            };
+
+            this.data.Physicians.Add(physician);
+            this.data.SaveChanges();
+        }
     }
 }
