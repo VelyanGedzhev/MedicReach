@@ -20,10 +20,6 @@ namespace MedicReach.Models.Physicians
         [Display(Name = "Medical Center")]
         public int MedicalCenterId { get; init; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; init; }
-
         [Range(ExaminationPriceMinValie, ExaminationPriceMaxValie)]
         public int ExaminationPrice { get; set; }
 

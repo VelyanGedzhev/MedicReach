@@ -1,8 +1,10 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
+using MedicReach.Infrastructure;
 using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.MedicalCenters.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,7 @@ namespace MedicReach.Controllers
             this.medicalCenters = medicalCenters;
         }
 
-        public IActionResult All([FromQuery] AllMedicalCentersQueryModel query)
+        public IActionResult All([FromQuery]AllMedicalCentersQueryModel query)
         {
             var queryResult = this.medicalCenters.All(
                 query.Type,
@@ -42,13 +44,17 @@ namespace MedicReach.Controllers
             return View(query);
         }
 
-
-        public IActionResult Add() => View(new AddMedicalCenterFormModel
+        [Authorize]
+        public IActionResult Add()
         {
-            MedicalCenterTypes = GetMedicalCenterTypes(),
-            Addresses = GetAddresses()
-        });
+            return View(new AddMedicalCenterFormModel
+            {
+                MedicalCenterTypes = GetMedicalCenterTypes(),
+                Addresses = GetAddresses()
+            });
+        }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add(AddMedicalCenterFormModel medicalCenter)
         {
@@ -83,7 +89,7 @@ namespace MedicReach.Controllers
             this.data.SaveChanges();
 
             //TODO: better way to create medical center while created physician
-            return Redirect("/Physicians/Add");
+            return RedirectToAction("Become", "Physicians");
         }
 
         public IActionResult Details(int medicalCenterId)
@@ -128,5 +134,10 @@ namespace MedicReach.Controllers
                     CountryCode = c.Country.Alpha3Code
                 })
                 .ToList();
+
+        private bool UserIsPhysician()
+            => this.data
+                .Physicians
+                .Any(p => p.UserId == this.User.GetId());
     }
 }

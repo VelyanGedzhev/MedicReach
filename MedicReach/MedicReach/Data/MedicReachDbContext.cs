@@ -1,4 +1,5 @@
 ﻿using MedicReach.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -39,6 +40,13 @@ namespace MedicReach.Data
                 .HasOne(t => t.MedicalCenterType)
                 .WithMany(mc => mc.MedicalCenters)
                 .HasForeignKey(mc => mc.MedicalCenterTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Physician>()
+                .HasOne<IdentityUser>()
+                .WithOne()
+                .HasForeignKey<Physician>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

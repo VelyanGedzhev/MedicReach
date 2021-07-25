@@ -1,8 +1,10 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
+using MedicReach.Infrastructure;
 using MedicReach.Models.Physicians;
 using MedicReach.Services.Physicians;
 using MedicReach.Services.Physicians.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,14 +44,28 @@ namespace MedicReach.Controllers
             return View(query);
         }
 
-        public IActionResult Add() => View(new BecomePhysicianFormModel
+        [Authorize]
+        public IActionResult Become()
         {
-            MedicalCenters = this.GetMedicalCenters(),
-            Specialities = this.GetSpecialities()
-        });
+            var userIsPhysicians = this.data
+                .Physicians
+                .Any(p => p.UserId == this.User.GetId());
 
+            if (userIsPhysicians)
+            {
+                return BadRequest();
+            }
+
+            return View(new BecomePhysicianFormModel
+            {
+                MedicalCenters = this.GetMedicalCenters(),
+                Specialities = this.GetSpecialities()
+            });
+        }
+
+        [Authorize]
         [HttpPost]
-        public IActionResult Add(BecomePhysicianFormModel physicianModel)
+        public IActionResult Become(BecomePhysicianFormModel physicianModel)
         {
             if (!this.data.Addresses.Any(a => a.Id == physicianModel.MedicalCenterId))
             {
@@ -69,28 +85,19 @@ namespace MedicReach.Controllers
                 return View(physicianModel);
             }
 
-            var physicianImageUrl = string.Empty;
-
-            if (physicianModel.Gender == GenderMale)
-            {
-                physicianImageUrl = DefaultMaleImageUrl;
-            }
-            else
-            {
-                physicianImageUrl = DefaultFemaleImageUrl;
-            }
+            string defaultImage = PrepareDefaultImage(physicianModel);
 
             var physician = new Physician
             {
                 FirstName = physicianModel.FirstName,
                 LastName = physicianModel.LastName,
                 Gender = physicianModel.Gender,
-                Email = physicianModel.Email,
                 ExaminationPrice = physicianModel.ExaminationPrice,
                 MedicalCenterId = physicianModel.MedicalCenterId,
-                ImageUrl = physicianModel.ImageUrl ?? physicianImageUrl,
+                ImageUrl = physicianModel.ImageUrl ?? defaultImage,
                 SpecialityId = physicianModel.SpecialityId,
-                IsWorkingWithChildren = physicianModel.IsWorkingWithChildren
+                IsWorkingWithChildren = physicianModel.IsWorkingWithChildren,
+                UserId = this.User.GetId()
             };
 
             this.data.Physicians.Add(physician);
@@ -145,5 +152,15 @@ namespace MedicReach.Controllers
                     Name = ps.Name
                 })
                 .ToList();
+
+        private static string PrepareDefaultImage(BecomePhysicianFormModel physicianModel)
+        {
+            if (physicianModel.Gender == GenderMale)
+            {
+                return DefaultMaleImageUrl;
+            }
+
+            return DefaultFemaleImageUrl;
+        }
     }
 }

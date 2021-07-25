@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
@@ -10,11 +11,11 @@ namespace MedicReach.Data.Models
 
         [Required]
         [StringLength(NameMaxLength)]
-        public string FirstName { get; init; }
+        public string FirstName { get; set; }
 
         [Required]
         [StringLength(NameMaxLength)]
-        public string LastName { get; init; }
+        public string LastName { get; set; }
 
         [Required]
         public string Gender { get; init; }
@@ -23,9 +24,9 @@ namespace MedicReach.Data.Models
 
         public MedicalCenter MedicalCenter { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; init; }
+        //[Required]
+        //[EmailAddress]
+        //public string Email { get; init; }
 
         public int ExaminationPrice { get; set; }
 
@@ -40,9 +41,7 @@ namespace MedicReach.Data.Models
 
         public IEnumerable<Appointment> Appointments { get; init; } = new List<Appointment>();
 
-        //[Required]
-        //public string UserId { get; set; }
-
-        //public IdentityUser User { get; set; }
+        [Required]
+        public string UserId { get; set; }
     }
 }

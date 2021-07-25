@@ -72,7 +72,7 @@ namespace MedicReach.Infrastructure
 
             data.MedicalCenterTypes.AddRange(new[]
             {
-                new MedicalCenterType { Name = "The Doctor's Office"},
+                new MedicalCenterType { Name = "Doctor's Office"},
                 new MedicalCenterType { Name = "Clinic"},
                 new MedicalCenterType { Name = "Hospital"}
             });
