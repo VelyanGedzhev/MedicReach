@@ -56,7 +56,7 @@ namespace MedicReach.Controllers
                 return BadRequest();
             }
 
-            return View(new BecomePhysicianFormModel
+            return View(new PhysicianFormModel
             {
                 MedicalCenters = this.physicians.GetMedicalCenters(),
                 Specialities = this.physicians.GetSpecialities()
@@ -65,7 +65,7 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Become(BecomePhysicianFormModel physicianModel)
+        public IActionResult Become(PhysicianFormModel physicianModel)
         {
             if (!this.data.Addresses.Any(a => a.Id == physicianModel.MedicalCenterId))
             {

@@ -1,12 +1,10 @@
 ﻿using MedicReach.Data;
 using MedicReach.Data.Models;
-using MedicReach.Infrastructure;
 using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.MedicalCenters.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using static MedicReach.Data.DataConstants.MedicalCenter;
 
@@ -47,7 +45,7 @@ namespace MedicReach.Controllers
         [Authorize]
         public IActionResult Add()
         {
-            return View(new AddMedicalCenterFormModel
+            return View(new MedicalCenterFormModel
             {
                 MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
                 Addresses = this.medicalCenters.GetAddresses()
@@ -56,16 +54,16 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(AddMedicalCenterFormModel medicalCenter)
+        public IActionResult Add(MedicalCenterFormModel medicalCenter)
         {
-            if (!this.data.Addresses.Any(a => a.Id == medicalCenter.AddressId))
+            if (!this.medicalCenters.MedicalCenterAddressExists(medicalCenter.AddressId))
             {
                 this.ModelState.AddModelError(nameof(medicalCenter.AddressId), "Address does not exist.");
             }
 
-            if (!this.data.MedicalCenterTypes.Any(a => a.Id == medicalCenter.TypeId))
+            if (!this.medicalCenters.MedicalCenterTypeExists(medicalCenter.TypeId))
             {
-                this.ModelState.AddModelError(nameof(medicalCenter.AddressId), "Medical Center Type does not exist.");
+                this.ModelState.AddModelError(nameof(medicalCenter.TypeId), "Medical Center Type does not exist.");
             }
 
             if (!this.ModelState.IsValid)
@@ -76,38 +74,52 @@ namespace MedicReach.Controllers
                 return View(medicalCenter);
             }
 
-            var medicalCenterToAdd = new MedicalCenter
-            {
-                Name = medicalCenter.Name,
-                AddressId = medicalCenter.AddressId,
-                MedicalCenterTypeId = medicalCenter.TypeId,
-                Description = medicalCenter.Description,
-                ImageUrl = medicalCenter.ImageUrl ?? DefaultImageUrl
-            };
-
-            this.data.MedicalCenters.Add(medicalCenterToAdd);
-            this.data.SaveChanges();
+            this.medicalCenters.Create(
+                medicalCenter.Name,
+                medicalCenter.AddressId,
+                medicalCenter.TypeId,
+                medicalCenter.Description,
+                medicalCenter.ImageUrl);
 
             //TODO: better way to create medical center while created physician
             return RedirectToAction("Become", "Physicians");
         }
 
+        [Authorize]
+        public IActionResult Edit(int medicalCenterId)
+        {
+            var medicalCenter = this.medicalCenters.Details(medicalCenterId);
+
+            return View(new MedicalCenterFormModel
+            {
+                Name = medicalCenter.Name,
+                Description = medicalCenter.Description,
+                ImageUrl = medicalCenter.ImageUrl,
+                AddressId = medicalCenter.AddressId,
+                TypeId = medicalCenter.TypeId,
+                MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
+                Addresses = this.medicalCenters.GetAddresses()
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
+        {
+            this.medicalCenters.Edit(
+                medicalCenterId,
+                medicalCenter.Name,
+                medicalCenter.AddressId,
+                medicalCenter.TypeId,
+                medicalCenter.Description,
+                medicalCenter.ImageUrl);
+
+            return RedirectToAction(nameof(All));
+        }
+
         public IActionResult Details(int medicalCenterId)
         {
-            var medicalCenter = this.data
-                .MedicalCenters
-                .Where(mc => mc.Id == medicalCenterId)
-                .Select(mc => new MedicalCenterServiceModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Description = mc.Description,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
-                    Type = mc.MedicalCenterType.Name,
-                    PhysiciansCount = mc.Physicians.Count(),
-                    ImageUrl = mc.ImageUrl
-                })
-                .FirstOrDefault();
+            var medicalCenter = this.medicalCenters.Details(medicalCenterId);
 
             return View(medicalCenter);
         }

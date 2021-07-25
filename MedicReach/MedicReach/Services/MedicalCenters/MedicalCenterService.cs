@@ -1,8 +1,10 @@
 ﻿using MedicReach.Data;
+using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters.Enums;
 using MedicReach.Services.MedicalCenters.Models;
 using System.Collections.Generic;
 using System.Linq;
+using static MedicReach.Data.DataConstants.MedicalCenter;
 
 namespace MedicReach.Services.MedicalCenters
 {
@@ -97,6 +99,63 @@ namespace MedicReach.Services.MedicalCenters
                 .OrderBy(name => name)
                 .ToList();
 
+        public void Create(
+            string name,
+            int addressId,
+            int typeId,
+            string description,
+            string imageUrl)
+        {
+            var medicalCenterToAdd = new MedicalCenter
+            {
+                Name = name,
+                AddressId = addressId,
+                MedicalCenterTypeId = typeId,
+                Description = description,
+                ImageUrl = imageUrl ?? DefaultImageUrl
+            };
+
+            this.data.MedicalCenters.Add(medicalCenterToAdd);
+            this.data.SaveChanges();
+        }
+
+        public void Edit(
+           int id,
+           string name,
+           int addressId,
+           int typeId,
+           string description,
+           string imageUrl)
+        {
+            var medicalCenterToEdit = this.data
+                .MedicalCenters
+                .Find(id);
+
+            medicalCenterToEdit.Name = name;
+            medicalCenterToEdit.AddressId = addressId;
+            medicalCenterToEdit.MedicalCenterTypeId = typeId;
+            medicalCenterToEdit.Description = description;
+            medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
+            
+            this.data.SaveChanges();
+        }
+
+        public MedicalCenterServiceModel Details(int medicalCenterId)
+            => this.data
+                .MedicalCenters
+                .Where(mc => mc.Id == medicalCenterId)
+                .Select(mc => new MedicalCenterServiceModel
+                {
+                    Id = mc.Id,
+                    Name = mc.Name,
+                    Description = mc.Description,
+                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
+                    Type = mc.MedicalCenterType.Name,
+                    PhysiciansCount = mc.Physicians.Count(),
+                    ImageUrl = mc.ImageUrl
+                })
+                .FirstOrDefault();
+
         public IEnumerable<MedicalCenterAddressServiceModel> GetAddresses()
             => this.data
                 .Addresses
@@ -118,5 +177,11 @@ namespace MedicReach.Services.MedicalCenters
                     Name = c.Name
                 })
                 .ToList();
+
+        public bool MedicalCenterAddressExists(int addressId)
+            => this.data.Addresses.Any(a => a.Id == addressId);
+
+        public bool MedicalCenterTypeExists(int typeId)
+            => this.data.MedicalCenterTypes.Any(a => a.Id == typeId);
     }
 }

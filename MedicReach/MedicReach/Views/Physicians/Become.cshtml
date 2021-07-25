@@ -1,4 +1,4 @@
-﻿@model BecomePhysicianFormModel
+﻿@model PhysicianFormModel
 
 @{
     ViewData["Title"] = "Add Physician";
@@ -39,6 +39,7 @@
                 <div class="form-group">
                     <label asp-for="IsWorkingWithChildren"></label>
                     <select asp-for="IsWorkingWithChildren" class="form-control">
+                        <option value="" selected></option>
                         <option value="True">Yes</option>
                         <option value="False">No</option>
                     </select>
@@ -46,6 +47,7 @@
                 <div class="form-group">
                     <label asp-for="MedicalCenterId"></label>
                     <select asp-for="MedicalCenterId" class="form-control">
+                        <option value="" selected></option>
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
                             <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCoude</option>
@@ -59,6 +61,7 @@
                 <div class="form-group">
                     <label asp-for="SpecialityId"></label>
                     <select asp-for="SpecialityId" class="form-control">
+                        <option value="" selected>All</option>
                         @foreach (var speciality in Model.Specialities)
                         {
                             <option value="@speciality.Id">@speciality.Name</option>

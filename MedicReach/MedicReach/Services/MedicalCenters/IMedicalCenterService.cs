@@ -14,6 +14,24 @@ namespace MedicReach.Services.MedicalCenters
             int currentPage,
             int physiciansPerPage);
 
+        void Create(
+            string name,
+            int addressId,
+            int medicalCenterTypeId,
+            string description,
+            string imageUrl);
+
+        void Edit(
+            int id,
+            string name,
+            int addressId,
+            int medicalCenterTypeId,
+            string description,
+            string imageUrl);
+
+
+        MedicalCenterServiceModel Details(int medicalCenterId);
+
         IEnumerable<string> AllCountries();
 
         IEnumerable<string> AllTypes();
@@ -21,5 +39,10 @@ namespace MedicReach.Services.MedicalCenters
         IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes();
 
         IEnumerable<MedicalCenterAddressServiceModel> GetAddresses();
+
+        bool MedicalCenterTypeExists(int typeId);
+
+        bool MedicalCenterAddressExists(int addressId);
+            
     }
 }

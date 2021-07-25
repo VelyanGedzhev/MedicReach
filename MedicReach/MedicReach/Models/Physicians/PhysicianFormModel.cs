@@ -5,7 +5,7 @@ using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Models.Physicians
 {
-    public class BecomePhysicianFormModel
+    public class PhysicianFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]

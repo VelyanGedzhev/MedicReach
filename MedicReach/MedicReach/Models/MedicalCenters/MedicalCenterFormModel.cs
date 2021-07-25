@@ -5,7 +5,7 @@ using static MedicReach.Data.DataConstants.MedicalCenter;
 
 namespace MedicReach.Models.MedicalCenters
 {
-    public class AddMedicalCenterFormModel
+    public class MedicalCenterFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
