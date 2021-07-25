@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MedicReach.Services.Physicians.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
@@ -29,9 +30,9 @@ namespace MedicReach.Models.Physicians
 
         public int SpecialityId { get; set; }
 
-        public IEnumerable<PhysicianMedicalCentersViewModel> MedicalCenters { get; set; }
+        public IEnumerable<PhysicianMedicalCentersServiceModel> MedicalCenters { get; set; }
 
-        public IEnumerable<PhysicianSpecialityViewModel> Specialities { get; set; }
+        public IEnumerable<PhysicianSpecialityServiceModel> Specialities { get; set; }
 
         public bool IsWorkingWithChildren { get; set; }
     }

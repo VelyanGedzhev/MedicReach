@@ -1,6 +1,6 @@
-﻿namespace MedicReach.Models.MedicalCenters
+﻿namespace MedicReach.Services.MedicalCenters.Models
 {
-    public class MedicalCenterAddressViewModel
+    public class MedicalCenterAddressServiceModel
     {
         public int Id { get; init; }
 

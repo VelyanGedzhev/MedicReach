@@ -58,8 +58,8 @@ namespace MedicReach.Controllers
 
             return View(new BecomePhysicianFormModel
             {
-                MedicalCenters = this.GetMedicalCenters(),
-                Specialities = this.GetSpecialities()
+                MedicalCenters = this.physicians.GetMedicalCenters(),
+                Specialities = this.physicians.GetSpecialities()
             });
         }
 
@@ -79,13 +79,13 @@ namespace MedicReach.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                physicianModel.MedicalCenters = this.GetMedicalCenters();
-                physicianModel.Specialities = this.GetSpecialities();
+                physicianModel.MedicalCenters = this.physicians.GetMedicalCenters();
+                physicianModel.Specialities = this.physicians.GetSpecialities();
 
                 return View(physicianModel);
             }
 
-            string defaultImage = PrepareDefaultImage(physicianModel);
+            string defaultImage = this.physicians.PrepareDefaultImage(physicianModel.Gender);
 
             var physician = new Physician
             {
@@ -127,40 +127,6 @@ namespace MedicReach.Controllers
                 .FirstOrDefault();
 
             return View(physician);
-        }
-
-        private IEnumerable<PhysicianMedicalCentersViewModel> GetMedicalCenters()
-            => this.data
-                .MedicalCenters
-                .Select(mc => new PhysicianMedicalCentersViewModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Address = mc.Address.Name,
-                    AddressNumber = mc.Address.Number,
-                    City = mc.Address.City,
-                    CountryCoude = mc.Address.Country.Alpha3Code
-                })
-                .ToList();
-
-        private IEnumerable<PhysicianSpecialityViewModel> GetSpecialities()
-            => this.data
-                .PhysicianSpecialities
-                .Select(ps => new PhysicianSpecialityViewModel
-                {
-                    Id = ps.Id,
-                    Name = ps.Name
-                })
-                .ToList();
-
-        private static string PrepareDefaultImage(BecomePhysicianFormModel physicianModel)
-        {
-            if (physicianModel.Gender == GenderMale)
-            {
-                return DefaultMaleImageUrl;
-            }
-
-            return DefaultFemaleImageUrl;
         }
     }
 }

@@ -49,8 +49,8 @@ namespace MedicReach.Controllers
         {
             return View(new AddMedicalCenterFormModel
             {
-                MedicalCenterTypes = GetMedicalCenterTypes(),
-                Addresses = GetAddresses()
+                MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
+                Addresses = this.medicalCenters.GetAddresses()
             });
         }
 
@@ -70,8 +70,8 @@ namespace MedicReach.Controllers
 
             if (!this.ModelState.IsValid)
             {
-                medicalCenter.Addresses = this.GetAddresses();
-                medicalCenter.MedicalCenterTypes = this.GetMedicalCenterTypes();
+                medicalCenter.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
                 return View(medicalCenter);
             }
@@ -111,33 +111,5 @@ namespace MedicReach.Controllers
 
             return View(medicalCenter);
         }
-
-        private IEnumerable<MedicalCenterTypeViewModel> GetMedicalCenterTypes()
-            => this.data
-                .MedicalCenterTypes
-                .Select(c => new MedicalCenterTypeViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
-                .ToList();
-
-        private IEnumerable<MedicalCenterAddressViewModel> GetAddresses()
-            => this.data
-                .Addresses
-                .Select(c => new MedicalCenterAddressViewModel
-                {
-                    Id = c.Id,
-                    AddressName = c.Name,
-                    AddressNumber = c.Number,
-                    City = c.City,
-                    CountryCode = c.Country.Alpha3Code
-                })
-                .ToList();
-
-        private bool UserIsPhysician()
-            => this.data
-                .Physicians
-                .Any(p => p.UserId == this.User.GetId());
     }
 }

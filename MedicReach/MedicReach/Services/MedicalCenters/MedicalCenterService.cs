@@ -16,11 +16,11 @@ namespace MedicReach.Services.MedicalCenters
         }
 
         public MedicalCenterQueryServiceModel All(
-            string type, 
-            string country, 
-            string searchTerm, 
-            MedicalCentersSorting sorting, 
-            int currentPage, 
+            string type,
+            string country,
+            string searchTerm,
+            MedicalCentersSorting sorting,
+            int currentPage,
             int medicalCentersPerPage)
         {
             var medicalCentersQuery = this.data
@@ -81,7 +81,7 @@ namespace MedicReach.Services.MedicalCenters
             };
         }
 
-        public IEnumerable<string> AllCountries() 
+        public IEnumerable<string> AllCountries()
             => this.data
                 .Countries
                 .Select(ps => ps.Name)
@@ -89,12 +89,34 @@ namespace MedicReach.Services.MedicalCenters
                 .OrderBy(name => name)
                 .ToList();
 
-        public IEnumerable<string> AllTypes() 
+        public IEnumerable<string> AllTypes()
             => this.data
                 .MedicalCenterTypes
                 .Select(ps => ps.Name)
                 .Distinct()
                 .OrderBy(name => name)
+                .ToList();
+
+        public IEnumerable<MedicalCenterAddressServiceModel> GetAddresses()
+            => this.data
+                .Addresses
+                .Select(c => new MedicalCenterAddressServiceModel
+                {
+                    Id = c.Id,
+                    AddressName = c.Name,
+                    AddressNumber = c.Number,
+                    City = c.City,
+                    CountryCode = c.Country.Alpha3Code
+                })
+                .ToList();
+        public IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes()
+            => this.data
+                .MedicalCenterTypes
+                .Select(c => new MedicalCenterTypeServiceModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
                 .ToList();
     }
 }

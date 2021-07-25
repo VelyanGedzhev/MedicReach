@@ -1,13 +1,28 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using MedicReach.Services.Physicians
+
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IPhysicianService Physicians
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Become Physician</a>
-        </li>
+        var userId = User.GetId();
+        var userIsPhysician = Physicians.IsPhysician(userId);
+
+        @if (!userIsPhysician)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Become Physician</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Details">My info</a>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
         </li>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MedicReach.Services.MedicalCenters.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.MedicalCenter;
 
@@ -24,8 +25,8 @@ namespace MedicReach.Models.MedicalCenters
         [Display(Name = "Image URL")]
         public string ImageUrl { get; init; }
 
-        public IEnumerable<MedicalCenterAddressViewModel> Addresses { get; set; }
+        public IEnumerable<MedicalCenterAddressServiceModel> Addresses { get; set; }
 
-        public IEnumerable<MedicalCenterTypeViewModel> MedicalCenterTypes { get; set; }
+        public IEnumerable<MedicalCenterTypeServiceModel> MedicalCenterTypes { get; set; }
     }
 }

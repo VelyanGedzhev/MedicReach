@@ -17,5 +17,9 @@ namespace MedicReach.Services.MedicalCenters
         IEnumerable<string> AllCountries();
 
         IEnumerable<string> AllTypes();
+
+        IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes();
+
+        IEnumerable<MedicalCenterAddressServiceModel> GetAddresses();
     }
 }

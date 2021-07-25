@@ -17,5 +17,13 @@ namespace MedicReach.Services.Physicians
         IEnumerable<string> AllMedicalCenters();
 
         IEnumerable<string> AllSpecialities();
+
+        bool IsPhysician(string userId);
+
+        IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities();
+
+        IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters();
+
+        string PrepareDefaultImage(string gender);
     }
 }

@@ -1,8 +1,10 @@
 ﻿using MedicReach.Data;
+using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians.Models;
 using System.Collections.Generic;
 using System.Linq;
+using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Services.Physicians
 {
@@ -55,22 +57,11 @@ namespace MedicReach.Services.Physicians
 
             var totalPhysicians = physiciansQuery.Count();
 
-            var physicians = physiciansQuery
-                .Skip((currentPage - 1) * physiciansPerPage)
-                .Take(physiciansPerPage)
-                .Select(p => new PhysicianServiceModel
-                {
-                    Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
-                    Gender = p.Gender,
-                    MedicalCenter = p.MedicalCenter,
-                    Speciality = p.Speciality.Name,
-                    ImageUrl = p.ImageUrl,
-                    ExaminationPrice = p.ExaminationPrice,
-                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
-                })
-                .ToList();
+            var physicians = GetPhysicians(
+                    physiciansQuery
+                        .Skip((currentPage - 1) * physiciansPerPage)
+                        .Take(physiciansPerPage));
+                
 
             return new PhysicanQueryServiceModel
             {
@@ -96,5 +87,53 @@ namespace MedicReach.Services.Physicians
                 .Distinct()
                 .OrderBy(name => name)
                 .ToList();
+
+        public bool IsPhysician(string userId)
+            => this.data
+                .Physicians
+                .Any(p => p.UserId == userId);
+
+        private static IEnumerable<PhysicianServiceModel> GetPhysicians(IQueryable<Physician> physicianQuery)
+            => physicianQuery
+                .Select(p => new PhysicianServiceModel
+                {
+                    Id = p.Id,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Gender = p.Gender,
+                    MedicalCenter = p.MedicalCenter,
+                    Speciality = p.Speciality.Name,
+                    ImageUrl = p.ImageUrl,
+                    ExaminationPrice = p.ExaminationPrice,
+                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
+                })
+                .ToList();
+
+        public IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities()
+            => this.data
+                .PhysicianSpecialities
+                .Select(ps => new PhysicianSpecialityServiceModel
+                {
+                    Id = ps.Id,
+                    Name = ps.Name
+                })
+                .ToList();
+
+        public IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters()
+            => this.data
+                .MedicalCenters
+                .Select(mc => new PhysicianMedicalCentersServiceModel
+                {
+                    Id = mc.Id,
+                    Name = mc.Name,
+                    Address = mc.Address.Name,
+                    AddressNumber = mc.Address.Number,
+                    City = mc.Address.City,
+                    CountryCoude = mc.Address.Country.Alpha3Code
+                })
+                .ToList();
+
+        public string PrepareDefaultImage(string gender) 
+            => gender == GenderMale ? DefaultMaleImageUrl : DefaultFemaleImageUrl;
     }
 }
