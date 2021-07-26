@@ -25,6 +25,10 @@ namespace MedicReach.Data.Models
 
         public int MedicalCenterTypeId { get; set; }
 
+        //public int CreatorId { get; init; }
+
+        //public int JoiningCode { get; set; }
+
         public MedicalCenterType MedicalCenterType { get; set; }
 
         public IEnumerable<Physician> Physicians { get; init; } = new List<Physician>();

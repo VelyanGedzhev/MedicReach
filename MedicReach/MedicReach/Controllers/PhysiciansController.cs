@@ -102,5 +102,60 @@ namespace MedicReach.Controllers
 
             return View(physician);
         }
+
+        [Authorize]
+        public IActionResult Edit()
+        {
+            var userId = this.User.GetId();
+            var physicianId = this.physicians.GetPhysicianId(userId);
+
+            if (physicianId == 0)
+            {
+                return BadRequest();
+            }
+
+            var physician = this.physicians.Details(physicianId);
+
+            return View(new PhysicianFormModel
+            {
+                FirstName = physician.FirstName,
+                LastName = physician.LastName,
+                Gender = physician.Gender,
+                ImageUrl = physician.ImageUrl,
+                IsWorkingWithChildren = physician.IsWorkingWithChildren == "Yes",
+                ExaminationPrice = physician.ExaminationPrice,
+                MedicalCenterId = physician.MedicalCenterId,
+                SpecialityId = physician.SpecialityId,
+                MedicalCenters = this.physicians.GetMedicalCenters(),
+                Specialities = this.physicians.GetSpecialities()
+            });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(PhysicianFormModel physician)
+        {
+            var userId = this.User.GetId();
+            var physicianId = this.physicians.GetPhysicianId(userId);
+
+            if (physicianId == 0)
+            {
+                return BadRequest();
+            }
+
+            this.physicians.Edit(
+                physicianId,
+                physician.FirstName,
+                physician.LastName,
+                physician.Gender,
+                physician.ExaminationPrice,
+                physician.MedicalCenterId,
+                physician.ImageUrl,
+                physician.SpecialityId,
+                physician.IsWorkingWithChildren,
+                this.User.GetId());
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

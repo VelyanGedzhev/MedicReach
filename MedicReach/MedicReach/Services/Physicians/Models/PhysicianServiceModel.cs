@@ -12,6 +12,8 @@ namespace MedicReach.Services.Physicians.Models
 
         public string Gender { get; init; }
 
+        public int MedicalCenterId { get; init; }
+
         public MedicalCenter MedicalCenter { get; init; }
 
         public int ExaminationPrice { get; init; }
@@ -19,6 +21,8 @@ namespace MedicReach.Services.Physicians.Models
         public string ImageUrl { get; init; }
 
         public string Address { get; init; }
+
+        public int SpecialityId { get; init; }
 
         public string Speciality { get; init; }
 

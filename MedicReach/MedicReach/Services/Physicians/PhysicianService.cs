@@ -184,5 +184,39 @@ namespace MedicReach.Services.Physicians
             this.data.Physicians.Add(physician);
             this.data.SaveChanges();
         }
+
+        public int GetPhysicianId(string userId)
+            => this.data
+                .Physicians
+                .Where(p => p.UserId == userId)
+                .Select(p => p.Id)
+                .FirstOrDefault();
+
+        public void Edit(
+            int id, 
+            string firstName, 
+            string lastName, 
+            string gender, 
+            int examinationPrice,
+            int medicalCenterId, 
+            string imageUrl, 
+            int specialityId, 
+            bool IsWorkingWithChildren, 
+            string UserId)
+        {
+            var physicanToEdit = this.data
+                .Physicians
+                .Find(id);
+
+            physicanToEdit.FirstName = firstName;
+            physicanToEdit.LastName = lastName;
+            physicanToEdit.ExaminationPrice = examinationPrice;
+            physicanToEdit.MedicalCenterId = medicalCenterId;
+            physicanToEdit.SpecialityId = specialityId;
+            physicanToEdit.IsWorkingWithChildren = IsWorkingWithChildren;
+            physicanToEdit.ImageUrl = imageUrl ?? PrepareDefaultImage(physicanToEdit.Gender);
+
+            this.data.SaveChanges();
+        }
     }
 }

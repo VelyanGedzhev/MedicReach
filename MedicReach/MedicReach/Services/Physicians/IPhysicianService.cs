@@ -20,6 +20,8 @@ namespace MedicReach.Services.Physicians
 
         bool IsPhysician(string userId);
 
+        int GetPhysicianId(string userId);
+
         IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities();
 
         IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters();
@@ -27,6 +29,18 @@ namespace MedicReach.Services.Physicians
         PhysicianServiceModel Details(int physicianId);
 
         void Create(
+            string firstName,
+            string lastName,
+            string gender,
+            int examinationPrice,
+            int medicalCenterId,
+            string imageUrl,
+            int specialityId,
+            bool IsWorkingWithChildren,
+            string UserId);
+
+        void Edit(
+            int id,
             string firstName,
             string lastName,
             string gender,

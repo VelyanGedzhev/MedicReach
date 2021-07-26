@@ -1,0 +1,71 @@
+﻿@model PhysicianFormModel
+
+<div class="container">
+    <div class="row">
+        <div class="offset-lg-2 col-lg-8 col-sm-12 ">
+            <h2 class="heading-margin text-center">@ViewData["Title"]</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="Ivan, John...">
+                    <span asp-validation-for="FirstName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="Ivanov, Johnson...">
+                    <span asp-validation-for="LastName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender"></label>
+                    <select asp-for="Gender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageUrl"></label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://example.com">
+                    <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ExaminationPrice"></label>
+                    <input asp-for="ExaminationPrice" class="form-control" placeholder="">
+                    <span asp-validation-for="ExaminationPrice" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="IsWorkingWithChildren"></label>
+                    <select asp-for="IsWorkingWithChildren" class="form-control">
+                        <option value="" selected></option>
+                        <option value="True">Yes</option>
+                        <option value="False">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="MedicalCenterId"></label>
+                    <select asp-for="MedicalCenterId" class="form-control">
+                        <option value="" selected></option>
+                        @foreach (var medicalCenter in Model.MedicalCenters)
+                        {
+                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCoude</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    @*TODO: add medical center in case it doesnt exist*@
+                    <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Add">Add Medical Center</a>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SpecialityId"></label>
+                    <select asp-for="SpecialityId" class="form-control">
+                        <option value="" selected>All</option>
+                        @foreach (var speciality in Model.Specialities)
+                        {
+                            <option value="@speciality.Id">@speciality.Name</option>
+                        }
+                    </select>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>

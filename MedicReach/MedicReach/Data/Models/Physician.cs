@@ -43,5 +43,7 @@ namespace MedicReach.Data.Models
 
         [Required]
         public string UserId { get; set; }
+
+        //public bool IsApproved { get; set; }
     }
 }
