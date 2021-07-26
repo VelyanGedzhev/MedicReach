@@ -11,7 +11,9 @@ namespace MedicReach.Data.Models
 
         public Physician Physician { get; init; }
 
-        public int PatientId { get; init; } = 1;
+        public int PatientId { get; init; }
+
+        public Patient Patient { get; set; }
 
         public DateTime? Date { get; set; }
 

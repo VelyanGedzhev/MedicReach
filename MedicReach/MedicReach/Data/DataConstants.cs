@@ -36,6 +36,12 @@
             public const int ExaminationPriceMaxValie = 600;
         }
 
+        public class Patient
+        {
+            public const int NameMinLength = 5;
+            public const int NameMaxLength = 40;
+        }
+
         public class Speciality
         {
             public const int NameMinLength = 3;
