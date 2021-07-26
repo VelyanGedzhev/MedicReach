@@ -12,6 +12,6 @@
 
         public string  City { get; init; }
 
-        public string  CountryCoude { get; init; }
+        public string  CountryCode { get; init; }
     }
 }

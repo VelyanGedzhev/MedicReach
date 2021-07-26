@@ -52,5 +52,8 @@ namespace MedicReach.Services.Physicians
             string UserId);
 
         string PrepareDefaultImage(string gender);
+
+        bool SpecialityExists(int specialityId);
+        bool MedicalCenterExists(int medicalCenterId);
     }
 }

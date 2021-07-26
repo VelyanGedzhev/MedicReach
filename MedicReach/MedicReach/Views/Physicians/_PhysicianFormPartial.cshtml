@@ -46,7 +46,7 @@
                         <option value="" selected></option>
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
-                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCoude</option>
+                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCode</option>
                         }
                     </select>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="form-group">
                     <label asp-for="SpecialityId"></label>
                     <select asp-for="SpecialityId" class="form-control">
-                        <option value="" selected>All</option>
+                        <option value="" selected></option>
                         @foreach (var speciality in Model.Specialities)
                         {
                             <option value="@speciality.Id">@speciality.Name</option>

@@ -1,22 +1,17 @@
-﻿using MedicReach.Data;
-using MedicReach.Data.Models;
-using MedicReach.Infrastructure;
+﻿using MedicReach.Infrastructure;
 using MedicReach.Models.Physicians;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace MedicReach.Controllers
 {
     public class PhysiciansController : Controller
     {
         private readonly IPhysicianService physicians;
-        private readonly MedicReachDbContext data;
 
-        public PhysiciansController(MedicReachDbContext data, IPhysicianService physicians)
+        public PhysiciansController(IPhysicianService physicians)
         {
-            this.data = data;
             this.physicians = physicians;
         }
 
@@ -62,12 +57,12 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Become(PhysicianFormModel physicianModel)
         {
-            if (!this.data.Addresses.Any(a => a.Id == physicianModel.MedicalCenterId))
+            if (!this.physicians.MedicalCenterExists(physicianModel.MedicalCenterId))
             {
                 this.ModelState.AddModelError(nameof(physicianModel.MedicalCenterId), "MedicalCenter does not exist.");
             }
 
-            if (!this.data.PhysicianSpecialities.Any(ps => ps.Id == physicianModel.SpecialityId))
+            if (!this.physicians.SpecialityExists(physicianModel.SpecialityId))
             {
                 this.ModelState.AddModelError(nameof(physicianModel.SpecialityId), "Speciality does not exist.");
             }
@@ -79,8 +74,6 @@ namespace MedicReach.Controllers
 
                 return View(physicianModel);
             }
-
-
 
             this.physicians.Create(
                 physicianModel.FirstName,

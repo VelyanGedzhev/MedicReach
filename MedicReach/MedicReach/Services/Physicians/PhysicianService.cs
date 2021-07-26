@@ -129,7 +129,7 @@ namespace MedicReach.Services.Physicians
                     Address = mc.Address.Name,
                     AddressNumber = mc.Address.Number,
                     City = mc.Address.City,
-                    CountryCoude = mc.Address.Country.Alpha3Code
+                    CountryCode = mc.Address.Country.Alpha3Code
                 })
                 .ToList();
 
@@ -218,5 +218,11 @@ namespace MedicReach.Services.Physicians
 
             this.data.SaveChanges();
         }
+
+        public bool SpecialityExists(int specialityId)
+            => this.data.PhysicianSpecialities.Any(ps => ps.Id == specialityId);
+
+        public bool MedicalCenterExists(int medicalCenterId)
+            => this.data.MedicalCenters.Any(a => a.Id == medicalCenterId);
     }
 }
