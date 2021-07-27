@@ -150,7 +150,9 @@ namespace MedicReach.Services.MedicalCenters
                     Name = mc.Name,
                     Description = mc.Description,
                     Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
+                    AddressId = mc.AddressId,
                     Type = mc.MedicalCenterType.Name,
+                    TypeId = mc.MedicalCenterTypeId,
                     PhysiciansCount = mc.Physicians.Count(),
                     ImageUrl = mc.ImageUrl
                 })

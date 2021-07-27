@@ -23,7 +23,6 @@
                 <div class="form-group">
                     <label asp-for="TypeId"></label>
                     <select asp-for="TypeId" class="form-control">
-                        <option value="" selected></option>
                         @foreach (var type in Model.MedicalCenterTypes)
                         {
                             <option value="@type.Id"> @type.Name</option>
@@ -33,7 +32,6 @@
                 <div class="form-group">
                     <label asp-for="AddressId"></label>
                     <select asp-for="AddressId" class="form-control">
-                        <option value="" selected></option>
                         @foreach (var address in Model.Addresses)
                         {
                             <option value="@address.Id">@address.AddressNumber @address.AddressName, @address.City, @address.CountryCode</option>

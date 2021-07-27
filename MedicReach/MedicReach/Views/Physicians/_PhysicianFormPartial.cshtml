@@ -32,7 +32,6 @@
                 <div class="form-group">
                     <label asp-for="MedicalCenterId"></label>
                     <select asp-for="MedicalCenterId" class="form-control">
-                        <option value="@Model.MedicalCenterId" selected>@Model.MedicalCenters.Where(mc => mc.Id == Model.MedicalCenterId).Select(mc => mc.Name).FirstOrDefault()</option>
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
                             <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCode</option>
@@ -46,7 +45,6 @@
                 <div class="form-group">
                     <label asp-for="SpecialityId"></label>
                     <select asp-for="SpecialityId" class="form-control">
-                        <option value="@Model.SpecialityId" selected>@Model.Specialities.Where(s => s.Id == Model.SpecialityId).Select(s => s.Name).FirstOrDefault()</option>
                         @foreach (var speciality in Model.Specialities)
                         {
                             <option value="@speciality.Id">@speciality.Name</option>
