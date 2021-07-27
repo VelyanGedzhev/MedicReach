@@ -31,7 +31,7 @@ namespace MedicReach.Services.Physicians
             {
                 physiciansQuery = physiciansQuery
                     .Where(p =>
-                    (p.FirstName.ToLower() + " " + p.LastName.ToLower()).Contains(searchTerm.ToLower()));
+                    p.User.FullName.ToLower().Contains(searchTerm.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(speciality))
@@ -50,8 +50,8 @@ namespace MedicReach.Services.Physicians
             {
                 PhysicianSorting.ExaminationPriceDesc => physiciansQuery.OrderByDescending(p => p.ExaminationPrice),
                 PhysicianSorting.ExaminationPriceAsc => physiciansQuery.OrderBy(p => p.ExaminationPrice),
-                PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.FirstName).ThenBy(p => p.LastName),
-                PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.FirstName).ThenByDescending(p => p.LastName),
+                PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.User.FullName),
+                PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.User.FullName),
                 PhysicianSorting.DateCreated or _ => physiciansQuery.OrderByDescending(p => p.Id)
             };
 
@@ -98,8 +98,7 @@ namespace MedicReach.Services.Physicians
                 .Select(p => new PhysicianServiceModel
                 {
                     Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
+                    FullName = p.User.FullName,
                     Gender = p.Gender,
                     MedicalCenter = p.MedicalCenter,
                     Speciality = p.Speciality.Name,
@@ -143,21 +142,20 @@ namespace MedicReach.Services.Physicians
                 .Select(p => new PhysicianServiceModel
                 {
                     Id = p.Id,
-                    FirstName = p.FirstName,
-                    LastName = p.LastName,
+                    FullName = p.User.FullName,
                     Gender = p.Gender,
                     ExaminationPrice = p.ExaminationPrice,
                     Speciality = p.Speciality.Name,
+                    SpecialityId = p.SpecialityId,
                     ImageUrl = p.ImageUrl,
                     Address = $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}",
                     IsWorkingWithChildren = p.IsWorkingWithChildren == true ? "Yes" : "No",
+                    MedicalCenterId = p.MedicalCenterId,
                     MedicalCenter = p.MedicalCenter
                 })
                 .FirstOrDefault();
 
         public void Create(
-            string firstName, 
-            string lastName, 
             string gender, 
             int examinationPrice, 
             int medicalCenterId, 
@@ -170,8 +168,6 @@ namespace MedicReach.Services.Physicians
 
             var physician = new Physician
             {
-                FirstName = firstName,
-                LastName = lastName,
                 Gender = gender,
                 ExaminationPrice = examinationPrice,
                 MedicalCenterId = medicalCenterId,
@@ -194,8 +190,6 @@ namespace MedicReach.Services.Physicians
 
         public void Edit(
             int id, 
-            string firstName, 
-            string lastName, 
             string gender, 
             int examinationPrice,
             int medicalCenterId, 
@@ -208,8 +202,6 @@ namespace MedicReach.Services.Physicians
                 .Physicians
                 .Find(id);
 
-            physicanToEdit.FirstName = firstName;
-            physicanToEdit.LastName = lastName;
             physicanToEdit.ExaminationPrice = examinationPrice;
             physicanToEdit.MedicalCenterId = medicalCenterId;
             physicanToEdit.SpecialityId = specialityId;

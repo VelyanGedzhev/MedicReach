@@ -29,8 +29,6 @@ namespace MedicReach.Services.Physicians
         PhysicianServiceModel Details(int physicianId);
 
         void Create(
-            string firstName,
-            string lastName,
             string gender,
             int examinationPrice,
             int medicalCenterId,
@@ -41,8 +39,6 @@ namespace MedicReach.Services.Physicians
 
         void Edit(
             int id,
-            string firstName,
-            string lastName,
             string gender,
             int examinationPrice,
             int medicalCenterId,
@@ -54,6 +50,7 @@ namespace MedicReach.Services.Physicians
         string PrepareDefaultImage(string gender);
 
         bool SpecialityExists(int specialityId);
+
         bool MedicalCenterExists(int medicalCenterId);
     }
 }

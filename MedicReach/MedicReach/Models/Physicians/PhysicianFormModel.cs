@@ -8,14 +8,6 @@ namespace MedicReach.Models.Physicians
     public class PhysicianFormModel
     {
         [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        public string FirstName { get; init; }
-
-        [Required]
-        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
-        public string LastName { get; init; }
-
-        [Required]
         public string Gender { get; init; }
 
         [Display(Name = "Medical Center")]

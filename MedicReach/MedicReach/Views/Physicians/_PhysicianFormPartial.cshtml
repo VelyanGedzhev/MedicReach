@@ -6,16 +6,6 @@
             <h2 class="heading-margin text-center">@ViewData["Title"]</h2>
             <form method="post">
                 <div class="form-group">
-                    <label asp-for="FirstName"></label>
-                    <input asp-for="FirstName" class="form-control" placeholder="Ivan, John...">
-                    <span asp-validation-for="FirstName" class="small text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="LastName"></label>
-                    <input asp-for="LastName" class="form-control" placeholder="Ivanov, Johnson...">
-                    <span asp-validation-for="LastName" class="small text-danger"></span>
-                </div>
-                <div class="form-group">
                     <label asp-for="Gender"></label>
                     <select asp-for="Gender" class="form-control">
                         <option value="Male">Male</option>
@@ -35,7 +25,6 @@
                 <div class="form-group">
                     <label asp-for="IsWorkingWithChildren"></label>
                     <select asp-for="IsWorkingWithChildren" class="form-control">
-                        <option value="" selected></option>
                         <option value="True">Yes</option>
                         <option value="False">No</option>
                     </select>
@@ -43,7 +32,7 @@
                 <div class="form-group">
                     <label asp-for="MedicalCenterId"></label>
                     <select asp-for="MedicalCenterId" class="form-control">
-                        <option value="" selected></option>
+                        <option value="@Model.MedicalCenterId" selected>@Model.MedicalCenters.Where(mc => mc.Id == Model.MedicalCenterId).Select(mc => mc.Name).FirstOrDefault()</option>
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
                             <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCode</option>
@@ -57,7 +46,7 @@
                 <div class="form-group">
                     <label asp-for="SpecialityId"></label>
                     <select asp-for="SpecialityId" class="form-control">
-                        <option value="" selected></option>
+                        <option value="@Model.SpecialityId" selected>@Model.Specialities.Where(s => s.Id == Model.SpecialityId).Select(s => s.Name).FirstOrDefault()</option>
                         @foreach (var speciality in Model.Specialities)
                         {
                             <option value="@speciality.Id">@speciality.Name</option>

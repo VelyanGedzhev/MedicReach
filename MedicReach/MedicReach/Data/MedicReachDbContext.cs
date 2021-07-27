@@ -43,7 +43,7 @@ namespace MedicReach.Data
 
             builder
                 .Entity<Physician>()
-                .HasOne<User>()
+                .HasOne(p => p.User)
                 .WithOne()
                 .HasForeignKey<Physician>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

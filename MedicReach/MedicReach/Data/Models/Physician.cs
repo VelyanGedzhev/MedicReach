@@ -9,14 +9,6 @@ namespace MedicReach.Data.Models
         public int Id { get; init; }
 
         [Required]
-        [StringLength(NameMaxLength)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(NameMaxLength)]
-        public string LastName { get; set; }
-
-        [Required]
         public string Gender { get; init; }
 
         public int MedicalCenterId { get; set; }

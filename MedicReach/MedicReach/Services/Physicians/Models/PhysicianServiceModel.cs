@@ -6,9 +6,7 @@ namespace MedicReach.Services.Physicians.Models
     {
         public int Id { get; init; }
 
-        public string FirstName { get; init; }
-
-        public string LastName { get; init; }
+        public string FullName { get; init; }
 
         public string Gender { get; init; }
 

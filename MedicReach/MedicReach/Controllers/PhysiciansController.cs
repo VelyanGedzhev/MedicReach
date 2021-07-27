@@ -76,8 +76,6 @@ namespace MedicReach.Controllers
             }
 
             this.physicians.Create(
-                physicianModel.FirstName,
-                physicianModel.LastName,
                 physicianModel.Gender,
                 physicianModel.ExaminationPrice,
                 physicianModel.MedicalCenterId,
@@ -111,8 +109,6 @@ namespace MedicReach.Controllers
 
             return View(new PhysicianFormModel
             {
-                FirstName = physician.FirstName,
-                LastName = physician.LastName,
                 Gender = physician.Gender,
                 ImageUrl = physician.ImageUrl,
                 IsWorkingWithChildren = physician.IsWorkingWithChildren == "Yes",
@@ -138,8 +134,6 @@ namespace MedicReach.Controllers
 
             this.physicians.Edit(
                 physicianId,
-                physician.FirstName,
-                physician.LastName,
                 physician.Gender,
                 physician.ExaminationPrice,
                 physician.MedicalCenterId,
