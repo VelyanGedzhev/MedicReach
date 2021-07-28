@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using static MedicReach.WebConstants;
+using static MedicReach.Areas.Admin.AdminConstants;
 
 namespace MedicReach.Infrastructure
 {

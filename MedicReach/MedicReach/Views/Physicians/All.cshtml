@@ -33,7 +33,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group col-md-3">
             <label asp-for="Sorting"></label>
             <select asp-for="Sorting" class="form-control">
                 <option value="0" selected>Joining date</option>
@@ -45,14 +45,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="form-group col-md-3 mb-2">
+        <div class="form-group col-md-3">
             <input type="submit" class="btn btn-primary" value="Search">
         </div>
     </div>
 </form>
 
 
-<div class="row mb-5">
+<div class="row mb-4">
     @foreach (var physician in Model.Physicians)
     {
         <div class="col-md-4">
