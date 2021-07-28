@@ -1,4 +1,5 @@
-﻿using MedicReach.Infrastructure;
+﻿using AutoMapper;
+using MedicReach.Infrastructure;
 using MedicReach.Models.Physicians;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
@@ -9,10 +10,14 @@ namespace MedicReach.Controllers
     public class PhysiciansController : Controller
     {
         private readonly IPhysicianService physicians;
+        private readonly IMapper mapper;
 
-        public PhysiciansController(IPhysicianService physicians)
+        public PhysiciansController(
+            IPhysicianService physicians, 
+            IMapper mapper)
         {
             this.physicians = physicians;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery]AllPhysiciansQueryModel query)
@@ -107,17 +112,12 @@ namespace MedicReach.Controllers
 
             var physician = this.physicians.Details(physicianId);
 
-            return View(new PhysicianFormModel
-            {
-                Gender = physician.Gender,
-                ImageUrl = physician.ImageUrl,
-                IsWorkingWithChildren = physician.IsWorkingWithChildren == "Yes",
-                ExaminationPrice = physician.ExaminationPrice,
-                MedicalCenterId = physician.MedicalCenterId,
-                SpecialityId = physician.SpecialityId,
-                MedicalCenters = this.physicians.GetMedicalCenters(),
-                Specialities = this.physicians.GetSpecialities()
-            });
+            var physicianForm = this.mapper.Map<PhysicianFormModel>(physician);
+
+            physicianForm.MedicalCenters = this.physicians.GetMedicalCenters();
+            physicianForm.Specialities = this.physicians.GetSpecialities();
+
+            return View(physicianForm);
         }
 
         [Authorize]

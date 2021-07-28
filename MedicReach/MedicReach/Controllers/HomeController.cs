@@ -1,4 +1,6 @@
-﻿using MedicReach.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MedicReach.Data;
 using MedicReach.Models;
 using MedicReach.Services.MedicalCenters.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,25 +12,21 @@ namespace MedicReach.Controllers
     public class HomeController : Controller
     {
         private readonly MedicReachDbContext data;
+        private readonly IMapper mapper;
 
-        public HomeController(MedicReachDbContext data)
+        public HomeController(
+            MedicReachDbContext data, 
+            IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
             var medicalCenters = this.data
                 .MedicalCenters
-                .Select(mc => new MedicalCenterServiceModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Type = mc.MedicalCenterType.Name,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City}",
-                    Description = mc.Description,
-                    ImageUrl = mc.ImageUrl
-                })
+                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
                 .Take(3)
                 .ToList();
 

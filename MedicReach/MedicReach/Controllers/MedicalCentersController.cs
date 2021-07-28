@@ -1,4 +1,5 @@
-﻿using MedicReach.Models.MedicalCenters;
+﻿using AutoMapper;
+using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +9,14 @@ namespace MedicReach.Controllers
     public class MedicalCentersController : Controller
     {
         private readonly IMedicalCenterService medicalCenters;
+        private readonly IMapper mapper;
 
-        public MedicalCentersController(IMedicalCenterService medicalCenters)
+        public MedicalCentersController(
+            IMedicalCenterService medicalCenters, 
+            IMapper mapper)
         {
             this.medicalCenters = medicalCenters;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery]AllMedicalCentersQueryModel query)
@@ -83,16 +88,11 @@ namespace MedicReach.Controllers
         {
             var medicalCenter = this.medicalCenters.Details(medicalCenterId);
 
-            return View(new MedicalCenterFormModel
-            {
-                Name = medicalCenter.Name,
-                Description = medicalCenter.Description,
-                ImageUrl = medicalCenter.ImageUrl,
-                AddressId = medicalCenter.AddressId,
-                TypeId = medicalCenter.TypeId,
-                MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
-                Addresses = this.medicalCenters.GetAddresses()
-            });
+            var medicalCenterForm = this.mapper.Map<MedicalCenterFormModel>(medicalCenter);
+            medicalCenterForm.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
+            medicalCenterForm.Addresses = this.medicalCenters.GetAddresses();
+
+            return View(medicalCenterForm);
         }
 
         [Authorize]
