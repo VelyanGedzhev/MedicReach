@@ -65,6 +65,11 @@ namespace MedicReach.Controllers
                 this.ModelState.AddModelError(nameof(medicalCenter.TypeId), "Medical Center Type does not exist.");
             }
 
+            if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
+            {
+                this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 medicalCenter.Addresses = this.medicalCenters.GetAddresses();
@@ -102,6 +107,21 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
         {
+            //TODO: Check joining codes except the one for the current Medical Center
+
+            //if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
+            //{
+            //    this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
+            //}
+
+            //if (!this.ModelState.IsValid)
+            //{
+            //    medicalCenter.Addresses = this.medicalCenters.GetAddresses();
+            //    medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
+
+            //    return View(medicalCenter);
+            //}
+
             this.medicalCenters.Edit(
                 medicalCenterId,
                 medicalCenter.Name,

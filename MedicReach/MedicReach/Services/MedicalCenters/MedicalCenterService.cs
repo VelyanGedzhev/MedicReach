@@ -21,6 +21,64 @@ namespace MedicReach.Services.MedicalCenters
             this.mapper = mapper;
         }
 
+        public void Create(
+            string name,
+            int addressId,
+            int typeId,
+            string description,
+            string joiningCode,
+            string creatorId,
+            string imageUrl)
+        {
+            if (IsJoiningCodeUsed(joiningCode))
+            {
+                return;
+            }
+
+            var medicalCenterToAdd = new MedicalCenter
+            {
+                Name = name,
+                AddressId = addressId,
+                MedicalCenterTypeId = typeId,
+                Description = description,
+                JoiningCode = joiningCode,
+                CreatorId = creatorId,
+                ImageUrl = imageUrl ?? DefaultImageUrl
+            };
+
+            this.data.MedicalCenters.Add(medicalCenterToAdd);
+            this.data.SaveChanges();
+        }
+
+        public void Edit(
+           int id,
+           string name,
+           int addressId,
+           int typeId,
+           string description,
+           string joiningCode,
+           string imageUrl)
+        {
+            var medicalCenterToEdit = this.data
+                .MedicalCenters
+                .Find(id);
+
+            //if (medicalCenterToEdit.JoiningCode != joiningCode
+            //    && IsJoiningCodeUsed(joiningCode))
+            //{
+            //    return;
+            //}
+
+            medicalCenterToEdit.Name = name;
+            medicalCenterToEdit.AddressId = addressId;
+            medicalCenterToEdit.MedicalCenterTypeId = typeId;
+            medicalCenterToEdit.Description = description;
+            medicalCenterToEdit.JoiningCode = joiningCode;
+            medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
+
+            this.data.SaveChanges();
+        }
+
         public MedicalCenterQueryServiceModel All(
             string type,
             string country,
@@ -79,80 +137,6 @@ namespace MedicReach.Services.MedicalCenters
             };
         }
 
-        public IEnumerable<string> AllCountries()
-            => this.data
-                .Countries
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-        public IEnumerable<string> AllTypes()
-            => this.data
-                .MedicalCenterTypes
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-        public void Create(
-            string name,
-            int addressId,
-            int typeId,
-            string description,
-            string joiningCode,
-            string creatorId,
-            string imageUrl)
-        {
-            if (IsJoiningCodeUsed(joiningCode))
-            {
-                return;
-            }
-
-            var medicalCenterToAdd = new MedicalCenter
-            {
-                Name = name,
-                AddressId = addressId,
-                MedicalCenterTypeId = typeId,
-                Description = description,
-                JoiningCode = joiningCode,
-                CreatorId = creatorId,
-                ImageUrl = imageUrl ?? DefaultImageUrl
-            };
-
-            this.data.MedicalCenters.Add(medicalCenterToAdd);
-            this.data.SaveChanges();
-        }
-
-        public void Edit(
-           int id,
-           string name,
-           int addressId,
-           int typeId,
-           string description,
-           string joiningCode,
-           string imageUrl)
-        {
-            var medicalCenterToEdit = this.data
-                .MedicalCenters
-                .Find(id);
-
-            if (medicalCenterToEdit.JoiningCode != joiningCode
-                && IsJoiningCodeUsed(joiningCode))
-            {
-                return;
-            }
-
-            medicalCenterToEdit.Name = name;
-            medicalCenterToEdit.AddressId = addressId;
-            medicalCenterToEdit.MedicalCenterTypeId = typeId;
-            medicalCenterToEdit.Description = description;
-            medicalCenterToEdit.JoiningCode = joiningCode;
-            medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
-            
-            this.data.SaveChanges();
-        }
-
         public MedicalCenterServiceModel Details(int medicalCenterId)
             => this.data
                 .MedicalCenters
@@ -171,6 +155,22 @@ namespace MedicReach.Services.MedicalCenters
                 .MedicalCenterTypes
                 .ProjectTo<MedicalCenterTypeServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
+
+        public IEnumerable<string> AllCountries()
+            => this.data
+                .Countries
+                .Select(ps => ps.Name)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();
+
+        public IEnumerable<string> AllTypes()
+            => this.data
+                .MedicalCenterTypes
+                .Select(ps => ps.Name)
+                .Distinct()
+                .OrderBy(name => name)
+                .ToList();        
 
         public bool MedicalCenterAddressExists(int addressId)
             => this.data.Addresses.Any(a => a.Id == addressId);

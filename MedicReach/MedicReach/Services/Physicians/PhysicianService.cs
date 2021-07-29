@@ -27,6 +27,55 @@ namespace MedicReach.Services.Physicians
             this.medicalCenters = medicalCenters;
         }
 
+        public void Create(
+            string gender,
+            int examinationPrice,
+            int medicalCenterId,
+            string imageUrl,
+            int specialityId,
+            bool isWorkingWithChildren,
+            string userId)
+        {
+            string defaultImage = PrepareDefaultImage(gender);
+
+            var physician = new Physician
+            {
+                Gender = gender,
+                ExaminationPrice = examinationPrice,
+                MedicalCenterId = medicalCenterId,
+                ImageUrl = imageUrl ?? defaultImage,
+                SpecialityId = specialityId,
+                IsWorkingWithChildren = isWorkingWithChildren,
+                UserId = userId
+            };
+
+            this.data.Physicians.Add(physician);
+            this.data.SaveChanges();
+        }
+
+        public void Edit(
+            int id,
+            string gender,
+            int examinationPrice,
+            int medicalCenterId,
+            string imageUrl,
+            int specialityId,
+            bool IsWorkingWithChildren,
+            string UserId)
+        {
+            var physicanToEdit = this.data
+                .Physicians
+                .Find(id);
+
+            physicanToEdit.ExaminationPrice = examinationPrice;
+            physicanToEdit.MedicalCenterId = medicalCenterId;
+            physicanToEdit.SpecialityId = specialityId;
+            physicanToEdit.IsWorkingWithChildren = IsWorkingWithChildren;
+            physicanToEdit.ImageUrl = imageUrl ?? PrepareDefaultImage(physicanToEdit.Gender);
+
+            this.data.SaveChanges();
+        }
+
         public PhysicanQueryServiceModel All(
             string speciality,
             string medicalCenter,
@@ -84,6 +133,25 @@ namespace MedicReach.Services.Physicians
             };
         }
 
+        public PhysicianServiceModel Details(int physicianId)
+            => this.data
+                .Physicians
+                .Where(p => p.Id == physicianId)
+                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
+        public IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities()
+            => this.data
+                .PhysicianSpecialities
+                .ProjectTo<PhysicianSpecialityServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
+        public IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters()
+            => this.data
+                .MedicalCenters
+                .ProjectTo<PhysicianMedicalCentersServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
+
         public IEnumerable<string> AllSpecialities()
             => this.data
                 .PhysicianSpecialities
@@ -100,10 +168,26 @@ namespace MedicReach.Services.Physicians
                 .OrderBy(name => name)
                 .ToList();
 
+        public bool SpecialityExists(int specialityId)
+            => this.data.PhysicianSpecialities.Any(ps => ps.Id == specialityId);
+
+        public bool MedicalCenterExists(int medicalCenterId)
+            => this.data.MedicalCenters.Any(a => a.Id == medicalCenterId);
+
         public bool IsPhysician(string userId)
             => this.data
                 .Physicians
                 .Any(p => p.UserId == userId);
+
+        public int GetPhysicianId(string userId)
+            => this.data
+                .Physicians
+                .Where(p => p.UserId == userId)
+                .Select(p => p.Id)
+                .FirstOrDefault();
+
+        public string PrepareDefaultImage(string gender)
+            => gender == GenderMale ? DefaultMaleImageUrl : DefaultFemaleImageUrl;
 
         private static IEnumerable<PhysicianServiceModel> GetPhysicians(IQueryable<Physician> physicianQuery)
             => physicianQuery
@@ -118,90 +202,6 @@ namespace MedicReach.Services.Physicians
                     ExaminationPrice = p.ExaminationPrice,
                     IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
                 })
-                .ToList();
-
-        public IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities()
-            => this.data
-                .PhysicianSpecialities
-                .ProjectTo<PhysicianSpecialityServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
-
-        public IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters()
-            => this.data
-                .MedicalCenters
-                .ProjectTo<PhysicianMedicalCentersServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
-
-        public string PrepareDefaultImage(string gender)
-            => gender == GenderMale ? DefaultMaleImageUrl : DefaultFemaleImageUrl;
-
-        public PhysicianServiceModel Details(int physicianId)
-            => this.data
-                .Physicians
-                .Where(p => p.Id == physicianId)
-                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
-                .FirstOrDefault();
-
-        public void Create(
-            string gender, 
-            int examinationPrice, 
-            int medicalCenterId, 
-            string imageUrl, 
-            int specialityId, 
-            bool isWorkingWithChildren, 
-            string userId)
-        {
-            string defaultImage = PrepareDefaultImage(gender);
-
-            var physician = new Physician
-            {
-                Gender = gender,
-                ExaminationPrice = examinationPrice,
-                MedicalCenterId = medicalCenterId,
-                ImageUrl = imageUrl ?? defaultImage,
-                SpecialityId = specialityId,
-                IsWorkingWithChildren = isWorkingWithChildren,
-                UserId = userId
-            };
-
-            this.data.Physicians.Add(physician);
-            this.data.SaveChanges();
-        }
-
-        public int GetPhysicianId(string userId)
-            => this.data
-                .Physicians
-                .Where(p => p.UserId == userId)
-                .Select(p => p.Id)
-                .FirstOrDefault();
-
-        public void Edit(
-            int id, 
-            string gender, 
-            int examinationPrice,
-            int medicalCenterId, 
-            string imageUrl, 
-            int specialityId, 
-            bool IsWorkingWithChildren, 
-            string UserId)
-        {
-            var physicanToEdit = this.data
-                .Physicians
-                .Find(id);
-
-            physicanToEdit.ExaminationPrice = examinationPrice;
-            physicanToEdit.MedicalCenterId = medicalCenterId;
-            physicanToEdit.SpecialityId = specialityId;
-            physicanToEdit.IsWorkingWithChildren = IsWorkingWithChildren;
-            physicanToEdit.ImageUrl = imageUrl ?? PrepareDefaultImage(physicanToEdit.Gender);
-
-            this.data.SaveChanges();
-        }
-
-        public bool SpecialityExists(int specialityId)
-            => this.data.PhysicianSpecialities.Any(ps => ps.Id == specialityId);
-
-        public bool MedicalCenterExists(int medicalCenterId)
-            => this.data.MedicalCenters.Any(a => a.Id == medicalCenterId);
+                .ToList();  
     }
 }

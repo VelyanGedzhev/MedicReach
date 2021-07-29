@@ -6,14 +6,6 @@ namespace MedicReach.Services.MedicalCenters
 {
     public interface IMedicalCenterService
     {
-        MedicalCenterQueryServiceModel All(
-            string Type,
-            string Country,
-            string searchTerm,
-            MedicalCentersSorting sorting,
-            int currentPage,
-            int physiciansPerPage);
-
         void Create(
             string name,
             int addressId,
@@ -32,20 +24,27 @@ namespace MedicReach.Services.MedicalCenters
             string joiningCode,
             string imageUrl);
 
+        MedicalCenterQueryServiceModel All(
+            string Type,
+            string Country,
+            string searchTerm,
+            MedicalCentersSorting sorting,
+            int currentPage,
+            int physiciansPerPage);
 
         MedicalCenterServiceModel Details(int medicalCenterId);
-
-        IEnumerable<string> AllCountries();
-
-        IEnumerable<string> AllTypes();
 
         IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes();
 
         IEnumerable<MedicalCenterAddressServiceModel> GetAddresses();
 
-        bool MedicalCenterTypeExists(int typeId);
+        IEnumerable<string> AllCountries();
+
+        IEnumerable<string> AllTypes();
 
         bool MedicalCenterAddressExists(int addressId);
+
+        bool MedicalCenterTypeExists(int typeId);
 
         bool IsJoiningCodeUsed(string joiningCode);
 
