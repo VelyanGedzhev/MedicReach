@@ -104,6 +104,11 @@ namespace MedicReach.Services.MedicalCenters
             string creatorId,
             string imageUrl)
         {
+            if (IsJoiningCodeUsed(joiningCode))
+            {
+                return;
+            }
+
             var medicalCenterToAdd = new MedicalCenter
             {
                 Name = name,
@@ -131,6 +136,12 @@ namespace MedicReach.Services.MedicalCenters
             var medicalCenterToEdit = this.data
                 .MedicalCenters
                 .Find(id);
+
+            if (medicalCenterToEdit.JoiningCode != joiningCode
+                && IsJoiningCodeUsed(joiningCode))
+            {
+                return;
+            }
 
             medicalCenterToEdit.Name = name;
             medicalCenterToEdit.AddressId = addressId;
@@ -166,5 +177,10 @@ namespace MedicReach.Services.MedicalCenters
 
         public bool MedicalCenterTypeExists(int typeId)
             => this.data.MedicalCenterTypes.Any(a => a.Id == typeId);
+
+        public bool IsJoiningCodeUsed(string joiningCode)
+            => this.data
+                .MedicalCenters
+                .Any(mc => mc.JoiningCode == joiningCode);
     }
 }
