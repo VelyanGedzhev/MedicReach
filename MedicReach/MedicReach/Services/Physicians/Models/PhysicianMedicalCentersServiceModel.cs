@@ -8,7 +8,7 @@
 
         public string  Address { get; init; }
 
-        public int AddressNumber { get; init; }
+        public int Number { get; init; }
 
         public string  City { get; init; }
 

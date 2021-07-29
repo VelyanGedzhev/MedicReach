@@ -10,7 +10,7 @@
                     <select asp-for="MedicalCenterId" class="form-control">
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
-                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.AddressNumber @medicalCenter.Address @medicalCenter.City @medicalCenter.CountryCode</option>
+                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.Number @medicalCenter.Address, @medicalCenter.City, @medicalCenter.CountryCode</option>
                         }
                     </select>
                 </div>

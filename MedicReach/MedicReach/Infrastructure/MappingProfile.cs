@@ -28,6 +28,15 @@ namespace MedicReach.Infrastructure
 
             this.CreateMap<MedicalCenter, PhysicianMedicalCentersServiceModel>()
                 .ForMember(
+                    a => a.Address,
+                    cfg => cfg.MapFrom(mc => mc.Address.Name))
+                .ForMember(
+                    n => n.Number,
+                    cfg => cfg.MapFrom(mc => mc.Address.Number))
+                .ForMember(
+                    c => c.City,
+                    cfg => cfg.MapFrom(mc => mc.Address.City))
+                .ForMember(
                     mc => mc.CountryCode,
                     cfg => cfg.MapFrom(mc => mc.Address.Country.Alpha3Code));
 
