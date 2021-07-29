@@ -182,5 +182,17 @@ namespace MedicReach.Services.MedicalCenters
             => this.data
                 .MedicalCenters
                 .Any(mc => mc.JoiningCode == joiningCode);
+
+        public bool IsJoiningCodeCorrect(string joiningCode, int medicalCenterId)
+            => this.data
+                .MedicalCenters
+                .Any(mc => mc.JoiningCode == joiningCode && mc.Id == medicalCenterId);
+
+        public string GetJoiningCode(int medicalCenterId)
+            => this.data
+                .MedicalCenters
+                .Where(mc => mc.Id == medicalCenterId)
+                .Select(mc => mc.JoiningCode)
+                .FirstOrDefault();
     }
 }

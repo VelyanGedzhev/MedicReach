@@ -47,6 +47,10 @@ namespace MedicReach.Services.MedicalCenters
 
         bool MedicalCenterAddressExists(int addressId);
 
-        bool IsJoiningCodeUsed(string joiningCode);  
+        bool IsJoiningCodeUsed(string joiningCode);
+
+        bool IsJoiningCodeCorrect(string joiningCode, int medicalCenterId);
+
+        string GetJoiningCode(int medicalCenterId);
     }
 }

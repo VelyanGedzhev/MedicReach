@@ -13,6 +13,10 @@ namespace MedicReach.Models.Physicians
         [Display(Name = "Medical Center")]
         public int MedicalCenterId { get; init; }
 
+        [Required]
+        [Display(Name = "Medical Center Joining Code")]
+        public string JoiningCode { get; set; }
+
         [Range(ExaminationPriceMinValie, ExaminationPriceMaxValie)]
         public int ExaminationPrice { get; set; }
 

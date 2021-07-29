@@ -12,6 +12,8 @@ namespace MedicReach.Services.Physicians.Models
 
         public int MedicalCenterId { get; init; }
 
+        public string JoiningCode { get; set; }
+
         public MedicalCenter MedicalCenter { get; init; }
 
         public int ExaminationPrice { get; init; }

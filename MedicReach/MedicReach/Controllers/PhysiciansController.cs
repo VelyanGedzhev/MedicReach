@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MedicReach.Infrastructure;
 using MedicReach.Models.Physicians;
+using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,16 @@ namespace MedicReach.Controllers
     public class PhysiciansController : Controller
     {
         private readonly IPhysicianService physicians;
+        private readonly IMedicalCenterService medicalCenters;
         private readonly IMapper mapper;
 
         public PhysiciansController(
-            IPhysicianService physicians, 
+            IPhysicianService physicians,
+            IMedicalCenterService medicalCenters,
             IMapper mapper)
         {
             this.physicians = physicians;
+            this.medicalCenters = medicalCenters;
             this.mapper = mapper;
         }
 
@@ -48,7 +52,7 @@ namespace MedicReach.Controllers
 
             if (userIsPhysicians)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(Edit));
             }
 
             return View(new PhysicianFormModel
@@ -70,6 +74,11 @@ namespace MedicReach.Controllers
             if (!this.physicians.SpecialityExists(physicianModel.SpecialityId))
             {
                 this.ModelState.AddModelError(nameof(physicianModel.SpecialityId), "Speciality does not exist.");
+            }
+
+            if (!this.medicalCenters.IsJoiningCodeCorrect(physicianModel.JoiningCode, physicianModel.MedicalCenterId))
+            {
+                this.ModelState.AddModelError(nameof(physicianModel.JoiningCode), "Joining code is incorrect.");
             }
 
             if (!this.ModelState.IsValid)
@@ -116,6 +125,7 @@ namespace MedicReach.Controllers
 
             physicianForm.MedicalCenters = this.physicians.GetMedicalCenters();
             physicianForm.Specialities = this.physicians.GetSpecialities();
+            physicianForm.JoiningCode = this.medicalCenters.GetJoiningCode(physicianForm.MedicalCenterId);
 
             return View(physicianForm);
         }
@@ -130,6 +140,19 @@ namespace MedicReach.Controllers
             if (physicianId == 0)
             {
                 return BadRequest();
+            }
+
+            if (!this.medicalCenters.IsJoiningCodeCorrect(physician.JoiningCode, physician.MedicalCenterId))
+            {
+                this.ModelState.AddModelError(nameof(physician.JoiningCode), "Joining code is incorrect.");
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                physician.MedicalCenters = this.physicians.GetMedicalCenters();
+                physician.Specialities = this.physicians.GetSpecialities();
+
+                return View(physician);
             }
 
             this.physicians.Edit(

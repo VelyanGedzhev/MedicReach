@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
+using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,17 @@ namespace MedicReach.Services.Physicians
     public class PhysicianService : IPhysicianService
     {
         private readonly MedicReachDbContext data;
+        private readonly IMedicalCenterService medicalCenters;
         private readonly IMapper mapper;
 
-        public PhysicianService(MedicReachDbContext data, IMapper mapper)
+        public PhysicianService(
+            MedicReachDbContext data, 
+            IMapper mapper, 
+            IMedicalCenterService medicalCenters)
         {
             this.data = data;
             this.mapper = mapper;
+            this.medicalCenters = medicalCenters;
         }
 
         public PhysicanQueryServiceModel All(
