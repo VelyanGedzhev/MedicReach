@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MedicReach.Infrastructure;
 using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Authorization;
@@ -77,6 +78,8 @@ namespace MedicReach.Controllers
                 medicalCenter.AddressId,
                 medicalCenter.TypeId,
                 medicalCenter.Description,
+                medicalCenter.JoiningCode,
+                this.User.GetId(),
                 medicalCenter.ImageUrl);
 
             //TODO: better way to create medical center while created physician
@@ -105,6 +108,7 @@ namespace MedicReach.Controllers
                 medicalCenter.AddressId,
                 medicalCenter.TypeId,
                 medicalCenter.Description,
+                medicalCenter.JoiningCode,
                 medicalCenter.ImageUrl);
 
             return RedirectToAction(nameof(All));

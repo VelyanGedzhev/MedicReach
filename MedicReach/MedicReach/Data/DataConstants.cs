@@ -16,6 +16,8 @@
             public const int NameMaxLength = 30;
             public const int DescriptionMinLength = 10;
             public const int DescriptionMaxLength = 400;
+            public const int JoiningCodeMinLength = 4;
+            public const int JoiningCodeMaxLength = 12;
             public const string DefaultImageUrl = "https://ehrintelligence.com/images/site/article_headers/_normal/rural_hospital_access.jpg";
         }
 

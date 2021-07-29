@@ -19,6 +19,8 @@ namespace MedicReach.Services.MedicalCenters
             int addressId,
             int medicalCenterTypeId,
             string description,
+            string joiningCode,
+            string CreatorId,
             string imageUrl);
 
         void Edit(
@@ -27,6 +29,7 @@ namespace MedicReach.Services.MedicalCenters
             int addressId,
             int medicalCenterTypeId,
             string description,
+            string joiningCode,
             string imageUrl);
 
 

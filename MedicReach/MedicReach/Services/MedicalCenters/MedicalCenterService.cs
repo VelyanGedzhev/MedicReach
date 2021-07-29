@@ -100,6 +100,8 @@ namespace MedicReach.Services.MedicalCenters
             int addressId,
             int typeId,
             string description,
+            string joiningCode,
+            string creatorId,
             string imageUrl)
         {
             var medicalCenterToAdd = new MedicalCenter
@@ -108,6 +110,8 @@ namespace MedicReach.Services.MedicalCenters
                 AddressId = addressId,
                 MedicalCenterTypeId = typeId,
                 Description = description,
+                JoiningCode = joiningCode,
+                CreatorId = creatorId,
                 ImageUrl = imageUrl ?? DefaultImageUrl
             };
 
@@ -121,6 +125,7 @@ namespace MedicReach.Services.MedicalCenters
            int addressId,
            int typeId,
            string description,
+           string joiningCode,
            string imageUrl)
         {
             var medicalCenterToEdit = this.data
@@ -131,6 +136,7 @@ namespace MedicReach.Services.MedicalCenters
             medicalCenterToEdit.AddressId = addressId;
             medicalCenterToEdit.MedicalCenterTypeId = typeId;
             medicalCenterToEdit.Description = description;
+            medicalCenterToEdit.JoiningCode = joiningCode;
             medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
             
             this.data.SaveChanges();

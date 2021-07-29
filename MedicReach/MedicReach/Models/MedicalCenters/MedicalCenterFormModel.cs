@@ -21,6 +21,10 @@ namespace MedicReach.Models.MedicalCenters
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
         public string Description { get; init; }
 
+        [Required]
+        [StringLength(JoiningCodeMaxLength, MinimumLength = JoiningCodeMinLength)]
+        public string JoiningCode { get; init; }
+
         [Url]
         [Display(Name = "Image URL")]
         public string ImageUrl { get; init; }

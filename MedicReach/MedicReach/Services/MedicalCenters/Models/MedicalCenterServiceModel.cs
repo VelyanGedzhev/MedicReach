@@ -16,6 +16,8 @@
 
         public string Description { get; init; }
 
+        public string JoiningCode { get; init; }
+
         public string ImageUrl { get; init; }
 
         public int PhysiciansCount { get; init; }

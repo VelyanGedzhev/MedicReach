@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Data.Models
 {

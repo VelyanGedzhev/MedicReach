@@ -25,9 +25,12 @@ namespace MedicReach.Data.Models
 
         public int MedicalCenterTypeId { get; set; }
 
-        //public int CreatorId { get; init; }
+        [Required]
+        public string CreatorId { get; init; }
 
-        //public int JoiningCode { get; set; }
+        [Required]
+        [MaxLength(JoiningCodeMaxLength)]
+        public string JoiningCode { get; set; }
 
         public MedicalCenterType MedicalCenterType { get; set; }
 
