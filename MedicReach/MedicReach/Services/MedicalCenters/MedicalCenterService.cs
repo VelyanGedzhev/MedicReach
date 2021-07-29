@@ -1,4 +1,6 @@
-﻿using MedicReach.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters.Enums;
 using MedicReach.Services.MedicalCenters.Models;
@@ -11,10 +13,12 @@ namespace MedicReach.Services.MedicalCenters
     public class MedicalCenterService : IMedicalCenterService
     {
         private readonly MedicReachDbContext data;
+        private readonly IMapper mapper;
 
-        public MedicalCenterService(MedicReachDbContext data)
+        public MedicalCenterService(MedicReachDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public MedicalCenterQueryServiceModel All(
@@ -27,6 +31,7 @@ namespace MedicReach.Services.MedicalCenters
         {
             var medicalCentersQuery = this.data
                 .MedicalCenters
+                .Where(x => x.Physicians.Any())
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))
@@ -62,16 +67,7 @@ namespace MedicReach.Services.MedicalCenters
             var medicalCenters = medicalCentersQuery
                 .Skip((currentPage - 1) * medicalCentersPerPage)
                 .Take(medicalCentersPerPage)
-                .Select(mc => new MedicalCenterServiceModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
-                    Description = mc.Description,
-                    Type = mc.MedicalCenterType.Name,
-                    ImageUrl = mc.ImageUrl,
-                    PhysiciansCount = mc.Physicians.Count()
-                })
+                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
             return new MedicalCenterQueryServiceModel
@@ -144,40 +140,19 @@ namespace MedicReach.Services.MedicalCenters
             => this.data
                 .MedicalCenters
                 .Where(mc => mc.Id == medicalCenterId)
-                .Select(mc => new MedicalCenterServiceModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Description = mc.Description,
-                    Address = $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City} {mc.Address.Country.Name}",
-                    AddressId = mc.AddressId,
-                    Type = mc.MedicalCenterType.Name,
-                    TypeId = mc.MedicalCenterTypeId,
-                    PhysiciansCount = mc.Physicians.Count(),
-                    ImageUrl = mc.ImageUrl
-                })
+                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
         public IEnumerable<MedicalCenterAddressServiceModel> GetAddresses()
             => this.data
                 .Addresses
-                .Select(c => new MedicalCenterAddressServiceModel
-                {
-                    Id = c.Id,
-                    AddressName = c.Name,
-                    AddressNumber = c.Number,
-                    City = c.City,
-                    CountryCode = c.Country.Alpha3Code
-                })
+                .ProjectTo<MedicalCenterAddressServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
+
         public IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes()
             => this.data
                 .MedicalCenterTypes
-                .Select(c => new MedicalCenterTypeServiceModel
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
+                .ProjectTo<MedicalCenterTypeServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
         public bool MedicalCenterAddressExists(int addressId)

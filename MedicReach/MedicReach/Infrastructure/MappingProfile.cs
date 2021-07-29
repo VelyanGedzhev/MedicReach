@@ -11,6 +11,11 @@ namespace MedicReach.Infrastructure
     {
         public MappingProfile()
         {
+            this.CreateMap<Address, MedicalCenterAddressServiceModel>()
+                .ForMember(
+                    mc => mc.CountryCode,
+                    cfg => cfg.MapFrom(mc => mc.Country.Alpha3Code));
+
             this.CreateMap<MedicalCenterServiceModel, MedicalCenterFormModel>();
 
             this.CreateMap<MedicalCenter, MedicalCenterServiceModel>()
@@ -19,12 +24,35 @@ namespace MedicReach.Infrastructure
                     cfg => cfg.MapFrom(mc => mc.MedicalCenterType.Name))
                 .ForMember(
                     mc => mc.Address,
-                    cfg => cfg.MapFrom(mc => $"{mc.Address.Number} {mc.Address.Name} {mc.Address.City}"));
+                    cfg => cfg.MapFrom(mc => $"{mc.Address.Number} {mc.Address.Name}, {mc.Address.City}, {mc.Address.Country.Alpha3Code}"));
+
+            this.CreateMap<MedicalCenter, PhysicianMedicalCentersServiceModel>()
+                .ForMember(
+                    mc => mc.CountryCode,
+                    cfg => cfg.MapFrom(mc => mc.Address.Country.Alpha3Code));
+
+            this.CreateMap<MedicalCenterType, MedicalCenterTypeServiceModel>();
 
             this.CreateMap<PhysicianServiceModel, PhysicianFormModel>()
                 .ForMember(
                     p => p.IsWorkingWithChildren,
                     cfg => cfg.MapFrom(p => p.IsWorkingWithChildren == "Yes"));
+
+            this.CreateMap<Physician, PhysicianServiceModel>()
+                .ForMember(
+                    p => p.FullName,
+                    cfg => cfg.MapFrom(p => p.User.FullName))
+                .ForMember(
+                    p => p.Speciality,
+                    cfg => cfg.MapFrom(p => p.Speciality.Name))
+                .ForMember(
+                    p => p.Address,
+                    cfg => cfg.MapFrom(p => $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}"))
+                .ForMember(
+                    p => p.IsWorkingWithChildren,
+                    cfg => cfg.MapFrom(p => p.IsWorkingWithChildren == true ? "Yes" : "No"));
+
+            this.CreateMap<PhysicianSpeciality, PhysicianSpecialityServiceModel>();
         }
     }
 }

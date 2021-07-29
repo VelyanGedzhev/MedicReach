@@ -80,7 +80,7 @@ namespace MedicReach.Controllers
                 medicalCenter.ImageUrl);
 
             //TODO: better way to create medical center while created physician
-            return RedirectToAction("Become", "Physicians");
+            return Redirect("/Physicians/Become");
         }
 
         [Authorize]

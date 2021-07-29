@@ -1,4 +1,6 @@
-﻿using MedicReach.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians.Models;
@@ -11,9 +13,13 @@ namespace MedicReach.Services.Physicians
     public class PhysicianService : IPhysicianService
     {
         private readonly MedicReachDbContext data;
+        private readonly IMapper mapper;
 
-        public PhysicianService(MedicReachDbContext data)
-            => this.data = data;
+        public PhysicianService(MedicReachDbContext data, IMapper mapper)
+        {
+            this.data = data;
+            this.mapper = mapper;
+        }
 
         public PhysicanQueryServiceModel All(
             string speciality,
@@ -111,25 +117,13 @@ namespace MedicReach.Services.Physicians
         public IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities()
             => this.data
                 .PhysicianSpecialities
-                .Select(ps => new PhysicianSpecialityServiceModel
-                {
-                    Id = ps.Id,
-                    Name = ps.Name
-                })
+                .ProjectTo<PhysicianSpecialityServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
         public IEnumerable<PhysicianMedicalCentersServiceModel> GetMedicalCenters()
             => this.data
                 .MedicalCenters
-                .Select(mc => new PhysicianMedicalCentersServiceModel
-                {
-                    Id = mc.Id,
-                    Name = mc.Name,
-                    Address = mc.Address.Name,
-                    AddressNumber = mc.Address.Number,
-                    City = mc.Address.City,
-                    CountryCode = mc.Address.Country.Alpha3Code
-                })
+                .ProjectTo<PhysicianMedicalCentersServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
         public string PrepareDefaultImage(string gender)
@@ -139,20 +133,7 @@ namespace MedicReach.Services.Physicians
             => this.data
                 .Physicians
                 .Where(p => p.Id == physicianId)
-                .Select(p => new PhysicianServiceModel
-                {
-                    Id = p.Id,
-                    FullName = p.User.FullName,
-                    Gender = p.Gender,
-                    ExaminationPrice = p.ExaminationPrice,
-                    Speciality = p.Speciality.Name,
-                    SpecialityId = p.SpecialityId,
-                    ImageUrl = p.ImageUrl,
-                    Address = $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}",
-                    IsWorkingWithChildren = p.IsWorkingWithChildren == true ? "Yes" : "No",
-                    MedicalCenterId = p.MedicalCenterId,
-                    MedicalCenter = p.MedicalCenter
-                })
+                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
         public void Create(
