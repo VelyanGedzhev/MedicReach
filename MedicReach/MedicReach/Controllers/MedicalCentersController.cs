@@ -107,20 +107,21 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
         {
-            //TODO: Check joining codes except the one for the current Medical Center
+            if (medicalCenter.JoiningCode != this.medicalCenters.GetJoiningCode(medicalCenterId))
+            {
+                if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
+                {
+                    this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
+                }
+            }
 
-            //if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
-            //{
-            //    this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
-            //}
+            if (!this.ModelState.IsValid)
+            {
+                medicalCenter.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
-            //if (!this.ModelState.IsValid)
-            //{
-            //    medicalCenter.Addresses = this.medicalCenters.GetAddresses();
-            //    medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
-
-            //    return View(medicalCenter);
-            //}
+                return View(medicalCenter);
+            }
 
             this.medicalCenters.Edit(
                 medicalCenterId,
