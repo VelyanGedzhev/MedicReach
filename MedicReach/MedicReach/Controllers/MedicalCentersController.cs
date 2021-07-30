@@ -92,14 +92,13 @@ namespace MedicReach.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit()
+        public IActionResult Edit(int medicalCenterId)
         {
-            var creatorId = this.User.GetId();
-            var medicalCenterId = this.medicalCenters.GetMedicalCenterByCreatorId(creatorId);
+            var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
 
-            if (medicalCenterId == 0)
+            if (!isUserCreator && !User.IsAdmin())
             {
-                return BadRequest();
+                return Unauthorized();
             }
 
             var medicalCenter = this.medicalCenters.Details(medicalCenterId);
@@ -113,10 +112,14 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(MedicalCenterFormModel medicalCenter)
+        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
         {
-            var creatorId = this.User.GetId();
-            var medicalCenterId = this.medicalCenters.GetMedicalCenterByCreatorId(creatorId);
+            var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
+
+            if (!isUserCreator && !User.IsAdmin())
+            {
+                return Unauthorized();
+            }
 
             if (medicalCenter.JoiningCode != this.medicalCenters.GetJoiningCode(medicalCenterId))
             {
@@ -151,6 +154,13 @@ namespace MedicReach.Controllers
             var medicalCenter = this.medicalCenters.Details(medicalCenterId);
 
             return View(medicalCenter);
+        }
+
+        public IActionResult Mine()
+        {
+            var myMedicalCenter = this.medicalCenters.GetMedicalCenterByUser(this.User.GetId());
+
+            return View(myMedicalCenter);
         }
     }
 }

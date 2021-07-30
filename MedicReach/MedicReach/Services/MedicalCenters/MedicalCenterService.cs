@@ -195,11 +195,16 @@ namespace MedicReach.Services.MedicalCenters
                 .Select(mc => mc.JoiningCode)
                 .FirstOrDefault();
 
-        public int GetMedicalCenterByCreatorId(string creatorId)
+        public bool IsCreator(string userId, int medicalCenterId)
             => this.data
                 .MedicalCenters
-                .Where(mc => mc.CreatorId == creatorId)
-                .Select(mc => mc.Id)
-                .FirstOrDefault();
+                .Any(mc => mc.Id == medicalCenterId && mc.CreatorId == userId);
+
+        public IEnumerable<MedicalCenterServiceModel> GetMedicalCenterByUser(string userId)
+            => this.data
+                .MedicalCenters
+                .Where(mc => mc.CreatorId == userId)
+                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
     }
 }

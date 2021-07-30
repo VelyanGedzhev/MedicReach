@@ -52,6 +52,8 @@ namespace MedicReach.Services.MedicalCenters
 
         string GetJoiningCode(int medicalCenterId);
 
-        int GetMedicalCenterByCreatorId(string creatorId);
+        bool IsCreator(string userId, int medicalCenterId);
+
+        IEnumerable<MedicalCenterServiceModel> GetMedicalCenterByUser(string userId);
     }
 }
