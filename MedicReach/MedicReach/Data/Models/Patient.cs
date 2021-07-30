@@ -14,6 +14,8 @@ namespace MedicReach.Data.Models
 
         public User User { get; set; }
 
+        public IEnumerable<Appointment> Appointments { get; init; } = new List<Appointment>();
+
         public IEnumerable<Review> Reviews { get; init; } = new List<Review>();
     }
 }

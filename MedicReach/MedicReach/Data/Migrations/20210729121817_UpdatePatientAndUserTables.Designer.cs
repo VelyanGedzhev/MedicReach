@@ -4,14 +4,16 @@ using MedicReach.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicReach.Data.Migrations
 {
     [DbContext(typeof(MedicReachDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210729121817_UpdatePatientAndUserTables")]
+    partial class UpdatePatientAndUserTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,19 +131,19 @@ namespace MedicReach.Data.Migrations
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
+                    b.Property<int>("MedicalCenterTypeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("MedicalCenterTypeId");
 
                     b.ToTable("MedicalCenters");
                 });
@@ -521,15 +523,15 @@ namespace MedicReach.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MedicReach.Data.Models.MedicalCenterType", "Type")
+                    b.HasOne("MedicReach.Data.Models.MedicalCenterType", "MedicalCenterType")
                         .WithMany("MedicalCenters")
-                        .HasForeignKey("TypeId")
+                        .HasForeignKey("MedicalCenterTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Address");
 
-                    b.Navigation("Type");
+                    b.Navigation("MedicalCenterType");
                 });
 
             modelBuilder.Entity("MedicReach.Data.Models.Patient", b =>

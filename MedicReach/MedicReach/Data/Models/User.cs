@@ -8,5 +8,8 @@ namespace MedicReach.Data.Models
     {
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
+
+        [Required]
+        public string Type { get; set; }
     }
 }

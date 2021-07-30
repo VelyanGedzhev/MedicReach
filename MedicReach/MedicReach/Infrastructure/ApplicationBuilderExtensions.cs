@@ -59,7 +59,8 @@ namespace MedicReach.Infrastructure
                 {
                     Email = adminEmail,
                     UserName = adminEmail,
-                    FullName = "Admin"
+                    FullName = FullName,
+                    Type = UserType
                 };
 
                 await userManager.CreateAsync(user, adminPassword);

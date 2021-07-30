@@ -51,5 +51,7 @@ namespace MedicReach.Services.MedicalCenters
         bool IsJoiningCodeCorrect(string joiningCode, int medicalCenterId);
 
         string GetJoiningCode(int medicalCenterId);
+
+        int GetMedicalCenterByCreatorId(string creatorId);
     }
 }

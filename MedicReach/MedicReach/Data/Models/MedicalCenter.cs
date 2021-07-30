@@ -23,8 +23,6 @@ namespace MedicReach.Data.Models
         [Url]
         public string ImageUrl { get; set; }
 
-        public int MedicalCenterTypeId { get; set; }
-
         [Required]
         public string CreatorId { get; init; }
 
@@ -32,7 +30,9 @@ namespace MedicReach.Data.Models
         [MaxLength(JoiningCodeMaxLength)]
         public string JoiningCode { get; set; }
 
-        public MedicalCenterType MedicalCenterType { get; set; }
+        public int TypeId { get; set; }
+
+        public MedicalCenterType Type { get; set; }
 
         public IEnumerable<Physician> Physicians { get; init; } = new List<Physician>();
     }

@@ -32,9 +32,14 @@ namespace MedicReach.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
 
+            [Required]
             [Display(Name = "Full Name")]
             [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
             public string FullName { get; set; }
+
+            [Required]
+            [Display(Name = "User Type")]
+            public string UserType { get; set; }
 
             [Required]
             [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
@@ -62,7 +67,8 @@ namespace MedicReach.Areas.Identity.Pages.Account
                 { 
                     UserName = Input.Email, 
                     Email = Input.Email,
-                    FullName = Input.FullName
+                    FullName = Input.FullName,
+                    Type = Input.UserType
                 };
 
                 var result = await this.userManager.CreateAsync(user, Input.Password);
@@ -70,8 +76,15 @@ namespace MedicReach.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await this.signInManager.SignInAsync(user, isPersistent: false);
+
+                    if (user.Type == "Physician")
+                    {
+
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);

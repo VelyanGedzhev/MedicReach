@@ -39,7 +39,7 @@ namespace MedicReach.Services.MedicalCenters
             {
                 Name = name,
                 AddressId = addressId,
-                MedicalCenterTypeId = typeId,
+                TypeId = typeId,
                 Description = description,
                 JoiningCode = joiningCode,
                 CreatorId = creatorId,
@@ -71,7 +71,7 @@ namespace MedicReach.Services.MedicalCenters
 
             medicalCenterToEdit.Name = name;
             medicalCenterToEdit.AddressId = addressId;
-            medicalCenterToEdit.MedicalCenterTypeId = typeId;
+            medicalCenterToEdit.TypeId = typeId;
             medicalCenterToEdit.Description = description;
             medicalCenterToEdit.JoiningCode = joiningCode;
             medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
@@ -102,7 +102,7 @@ namespace MedicReach.Services.MedicalCenters
             if (!string.IsNullOrEmpty(type))
             {
                 medicalCentersQuery = medicalCentersQuery
-                    .Where(mc => mc.MedicalCenterType.Name == type);
+                    .Where(mc => mc.Type.Name == type);
             }
 
             if (!string.IsNullOrEmpty(country))
@@ -193,6 +193,13 @@ namespace MedicReach.Services.MedicalCenters
                 .MedicalCenters
                 .Where(mc => mc.Id == medicalCenterId)
                 .Select(mc => mc.JoiningCode)
+                .FirstOrDefault();
+
+        public int GetMedicalCenterByCreatorId(string creatorId)
+            => this.data
+                .MedicalCenters
+                .Where(mc => mc.CreatorId == creatorId)
+                .Select(mc => mc.Id)
                 .FirstOrDefault();
     }
 }

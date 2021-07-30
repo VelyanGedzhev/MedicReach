@@ -36,9 +36,9 @@ namespace MedicReach.Data
 
             builder
                 .Entity<MedicalCenter>()
-                .HasOne(t => t.MedicalCenterType)
+                .HasOne(t => t.Type)
                 .WithMany(mc => mc.MedicalCenters)
-                .HasForeignKey(mc => mc.MedicalCenterTypeId)
+                .HasForeignKey(mc => mc.TypeId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

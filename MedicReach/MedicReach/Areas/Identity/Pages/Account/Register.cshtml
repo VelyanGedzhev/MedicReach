@@ -21,6 +21,13 @@
                 <span asp-validation-for="Input.FullName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Input.UserType"></label>
+                <select asp-for="Input.UserType" class="form-control">
+                    <option value="Patient">Patient</option>
+                    <option value="Physician">Physician</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Input.Password"></label>
                 <input asp-for="Input.Password" class="form-control" />
                 <span asp-validation-for="Input.Password" class="text-danger"></span>

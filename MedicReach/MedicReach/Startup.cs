@@ -3,6 +3,7 @@ using MedicReach.Data.Models;
 using MedicReach.Infrastructure;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
+using MedicReach.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -48,6 +49,7 @@ namespace MedicReach
             });
 
             services.AddControllersWithViews();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhysicianService, PhysicianService>();
             services.AddTransient<IMedicalCenterService, MedicalCenterService>();
         }

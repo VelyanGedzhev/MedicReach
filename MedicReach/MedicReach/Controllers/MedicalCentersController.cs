@@ -92,8 +92,16 @@ namespace MedicReach.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(int medicalCenterId)
+        public IActionResult Edit()
         {
+            var creatorId = this.User.GetId();
+            var medicalCenterId = this.medicalCenters.GetMedicalCenterByCreatorId(creatorId);
+
+            if (medicalCenterId == 0)
+            {
+                return BadRequest();
+            }
+
             var medicalCenter = this.medicalCenters.Details(medicalCenterId);
 
             var medicalCenterForm = this.mapper.Map<MedicalCenterFormModel>(medicalCenter);
@@ -105,8 +113,11 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
+        public IActionResult Edit(MedicalCenterFormModel medicalCenter)
         {
+            var creatorId = this.User.GetId();
+            var medicalCenterId = this.medicalCenters.GetMedicalCenterByCreatorId(creatorId);
+
             if (medicalCenter.JoiningCode != this.medicalCenters.GetJoiningCode(medicalCenterId))
             {
                 if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))

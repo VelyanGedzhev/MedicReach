@@ -1,28 +1,44 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MedicReach.Data.Models
 @using MedicReach.Services.Physicians
+@using MedicReach.Services.Users
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @inject IPhysicianService Physicians
+@inject IUserService Users
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.GetId();
+        var userIsPhysicianType = Users.IsPhysician(userId);
         var userIsPhysician = Physicians.IsPhysician(userId);
         var userIsAdmin = User.IsAdmin();
 
-        @if (!userIsPhysician && !userIsAdmin)
+        @if (!userIsPhysician && userIsPhysicianType && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Become Physician</a>
             </li>
         }
-        else if(!userIsAdmin)
+        else if (!userIsAdmin && userIsPhysicianType)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Edit">Edit</a>
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Edit</a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Edit">Physician Profile</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="MedicalCenters" asp-action="Edit">Medical Center</a>
+                    </div>
+                </div>
+            </li>
+        }
+        else if (!userIsAdmin && !userIsPhysicianType)
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Become">Become Patient</a>
             </li>
         }
         <li class="nav-item">
