@@ -1,0 +1,21 @@
+﻿@model IEnumerable<PhysicianServiceModel>
+
+<div class="row mb-4 float-none">
+    @foreach (var physician in Model)
+    {
+        <div class="col-md-4">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@physician.ImageUrl" alt="Physician image">
+                <div class="card-body">
+                    <h5 class="card-title">@physician.FullName</h5>
+                    <p class="card-text">@physician.Speciality</p>
+                    <a class="btn btn-primary" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@physician.Id">Details</a>
+                    @if (ViewBag.AllowEdit == true || User.IsAdmin())
+                    {
+                        <a class="btn btn-warning" asp-controller="Physicians" asp-action="Edit" asp-route-physicianId="@physician.Id">Edit</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

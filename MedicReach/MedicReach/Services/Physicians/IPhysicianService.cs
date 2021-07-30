@@ -53,6 +53,6 @@ namespace MedicReach.Services.Physicians
 
         string PrepareDefaultImage(string gender);
 
-
+        IEnumerable<PhysicianServiceModel> GetPhysicianByUserId(string userId);
     }
 }

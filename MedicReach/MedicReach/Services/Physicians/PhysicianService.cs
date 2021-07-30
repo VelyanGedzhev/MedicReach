@@ -202,6 +202,13 @@ namespace MedicReach.Services.Physicians
                     ExaminationPrice = p.ExaminationPrice,
                     IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
                 })
-                .ToList();  
+                .ToList();
+
+        public IEnumerable<PhysicianServiceModel> GetPhysicianByUserId(string userId)
+            => this.data
+                .Physicians
+                .Where(p => p.UserId == userId)
+                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
     }
 }

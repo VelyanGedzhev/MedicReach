@@ -51,22 +51,7 @@
     </div>
 </form>
 
-
-<div class="row mb-4">
-    @foreach (var physician in Model.Physicians)
-    {
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="@physician.ImageUrl" alt="Physician image">
-                <div class="card-body">
-                    <h5 class="card-title">@physician.FullName</h5>
-                    <p class="card-text">@physician.Speciality</p>
-                    <a class="btn btn-primary" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@physician.Id">Details</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_PhysiciansPartial" model="@Model.Physicians" />
 
 @{ 
     var previousPage = Model.CurrentPage - 1;

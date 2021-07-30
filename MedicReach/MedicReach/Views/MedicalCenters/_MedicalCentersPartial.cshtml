@@ -12,7 +12,7 @@
                     <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Details" asp-route-medicalCenterId="@medicalCenter.Id">Details</a>
                     @if (ViewBag.AllowEdit == true || User.IsAdmin())
                     {
-                        <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Edit" asp-route-medicalCenterId="@medicalCenter.Id">Edit</a>
+                        <a class="btn btn-warning" asp-controller="MedicalCenters" asp-action="Edit" asp-route-medicalCenterId="@medicalCenter.Id">Edit</a>
                     }
                 </div>
             </div>

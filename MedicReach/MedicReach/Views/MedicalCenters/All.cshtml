@@ -54,39 +54,39 @@
 
 <partial name="_MedicalCentersPartial" model="@Model.MedicalCenters" />
 
-@{
-    var previousPage = Model.CurrentPage - 1;
+    @{
+        var previousPage = Model.CurrentPage - 1;
 
-    if (previousPage < 1)
-    {
-        previousPage = 1;
+        if (previousPage < 1)
+        {
+            previousPage = 1;
+        }
+
+        var maxPage = Math.Ceiling((double)Model.TotalMedicalCenters / AllMedicalCentersQueryModel.MedicalCentersPerPage);
     }
 
-    var maxPage = Math.Ceiling((double)Model.TotalMedicalCenters / AllMedicalCentersQueryModel.MedicalCentersPerPage);
-}
-
-<div class="row">
-    <div class="col-md-6">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
-           asp-controller="MedicalCenters"
-           asp-action="All"
-           asp-route-currentPage="@previousPage"
-           asp-route-type="@Model.Type"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@Model.Sorting"><<</a>
+    <div class="row">
+        <div class="col-md-6">
+            <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+               asp-controller="MedicalCenters"
+               asp-action="All"
+               asp-route-currentPage="@previousPage"
+               asp-route-type="@Model.Type"
+               asp-route-searchTerm="@Model.SearchTerm"
+               asp-route-sorting="@Model.Sorting"><<</a>
+        </div>
+        <div class="col-md-6">
+            <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+               asp-controller="MedicalCenters"
+               asp-action="All"
+               asp-route-currentPage="@(Model.CurrentPage + 1)"
+               asp-route-type="@Model.Type"
+               asp-route-searchTerm="@Model.SearchTerm"
+               asp-route-sorting="@Model.Sorting">>></a>
+        </div>
     </div>
-    <div class="col-md-6">
-        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
-           asp-controller="MedicalCenters"
-           asp-action="All"
-           asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-type="@Model.Type"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-sorting="@Model.Sorting">>></a>
-    </div>
-</div>
 
-@if (!Model.MedicalCenters.Any())
-{
-    <h2 class="text-center">No cars found by the given criteria!</h2>
-}
+    @if (!Model.MedicalCenters.Any())
+    {
+        <h2 class="text-center">No cars found by the given criteria!</h2>
+    }

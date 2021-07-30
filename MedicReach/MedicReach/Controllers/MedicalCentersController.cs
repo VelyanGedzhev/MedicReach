@@ -158,6 +158,7 @@ namespace MedicReach.Controllers
 
         public IActionResult Mine()
         {
+            // TODO: Check if can be done without using a collection
             var myMedicalCenter = this.medicalCenters.GetMedicalCenterByUser(this.User.GetId());
 
             return View(myMedicalCenter);

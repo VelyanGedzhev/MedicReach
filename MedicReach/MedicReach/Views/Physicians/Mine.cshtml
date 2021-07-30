@@ -1,0 +1,10 @@
+﻿@model IEnumerable<PhysicianServiceModel>
+
+@{
+    ViewData["Title"] = "My Physician Profile";
+    ViewBag.AllowEdit = true;
+}
+
+<div class="row justify-content-center">
+    <partial name="_PhysiciansPartial" model="@Model" />
+</div>

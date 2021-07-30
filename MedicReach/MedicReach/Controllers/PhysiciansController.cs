@@ -5,6 +5,7 @@ using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace MedicReach.Controllers
 {
@@ -101,24 +102,9 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult Details(int physicianId)
-        {
-            var physician = this.physicians.Details(physicianId);
-
-            return View(physician);
-        }
-
         [Authorize]
-        public IActionResult Edit()
+        public IActionResult Edit(int physicianId)
         {
-            var userId = this.User.GetId();
-            var physicianId = this.physicians.GetPhysicianId(userId);
-
-            if (physicianId == 0)
-            {
-                return BadRequest();
-            }
-
             var physician = this.physicians.Details(physicianId);
 
             var physicianForm = this.mapper.Map<PhysicianFormModel>(physician);
@@ -132,15 +118,8 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(PhysicianFormModel physician)
+        public IActionResult Edit(int physicianId, PhysicianFormModel physician)
         {
-            var userId = this.User.GetId();
-            var physicianId = this.physicians.GetPhysicianId(userId);
-
-            if (physicianId == 0)
-            {
-                return BadRequest();
-            }
 
             if (!this.medicalCenters.IsJoiningCodeCorrect(physician.JoiningCode, physician.MedicalCenterId))
             {
@@ -166,6 +145,26 @@ namespace MedicReach.Controllers
                 this.User.GetId());
 
             return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult Details(int physicianId)
+        {
+            var physician = this.physicians.Details(physicianId);
+
+            return View(physician);
+        }
+
+        public IActionResult Mine()
+        {
+            // TODO: Check if can be done without using a collection
+            var myPhysicianProfile = this.physicians.GetPhysicianByUserId(this.User.GetId());
+
+            if (!myPhysicianProfile.Any())
+            {
+                return RedirectToAction(nameof(Become));
+            }
+
+            return View(myPhysicianProfile);
         }
     }
 }
