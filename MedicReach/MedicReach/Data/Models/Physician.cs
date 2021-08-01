@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Data.Models
 {
@@ -25,13 +26,16 @@ namespace MedicReach.Data.Models
 
         public bool IsWorkingWithChildren { get; set; }
 
+        [Required]
+        [MaxLength(PermissionPracticeMaxLength)]
+        public string PracticePermissionNumber { get; set; }
+
+        public bool IsApproved { get; set; } = false;
 
         [Required]
         public string UserId { get; set; }
 
         public User User { get; set; }
-
-        //public bool IsApproved { get; set; }
 
         public IEnumerable<Appointment> Appointments { get; init; } = new List<Appointment>();
 

@@ -31,5 +31,11 @@ namespace MedicReach.Models.Physicians
         public IEnumerable<PhysicianSpecialityServiceModel> Specialities { get; set; }
 
         public bool IsWorkingWithChildren { get; set; }
+
+        [Required]
+        [StringLength(PermissionPracticeMaxLength, MinimumLength = PermissionPracticeMinLength)]
+        public string PracticePermissionNumber { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

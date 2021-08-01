@@ -13,6 +13,8 @@ namespace MedicReach.Services.Physicians
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
+            string practicePermissionNumber,
+            bool isApproved,
             string UserId);
 
         void Edit(
@@ -23,6 +25,8 @@ namespace MedicReach.Services.Physicians
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
+            string practicePermissionNumber,
+            bool isApproved,
             string UserId);
 
         PhysicanQueryServiceModel All(
@@ -31,7 +35,8 @@ namespace MedicReach.Services.Physicians
             string searchTerm,
             PhysicianSorting sorting,
             int currentPage,
-            int physiciansPerPage);
+            int physiciansPerPage,
+            bool approved);
 
         PhysicianServiceModel Details(int physicianId);
 
@@ -52,7 +57,5 @@ namespace MedicReach.Services.Physicians
         int GetPhysicianId(string userId);
 
         string PrepareDefaultImage(string gender);
-
-        IEnumerable<PhysicianServiceModel> GetPhysicianByUserId(string userId);
     }
 }

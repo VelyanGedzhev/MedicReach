@@ -10,6 +10,6 @@ namespace MedicReach.Data.Models
         public string FullName { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public string Type { get; init; }
     }
 }

@@ -37,6 +37,8 @@
             public const string GenderMale = "Male";
             public const int ExaminationPriceMinValie = 0;
             public const int ExaminationPriceMaxValie = 600;
+            public const int PermissionPracticeMinLength = 8;
+            public const int PermissionPracticeMaxLength = 20;
         }
 
         public class Patient

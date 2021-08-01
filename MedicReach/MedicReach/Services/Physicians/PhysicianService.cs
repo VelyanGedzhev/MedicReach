@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
-using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +13,14 @@ namespace MedicReach.Services.Physicians
     public class PhysicianService : IPhysicianService
     {
         private readonly MedicReachDbContext data;
-        private readonly IMedicalCenterService medicalCenters;
         private readonly IMapper mapper;
 
         public PhysicianService(
-            MedicReachDbContext data, 
-            IMapper mapper, 
-            IMedicalCenterService medicalCenters)
+            MedicReachDbContext data,
+            IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper;
-            this.medicalCenters = medicalCenters;
         }
 
         public void Create(
@@ -34,6 +30,8 @@ namespace MedicReach.Services.Physicians
             string imageUrl,
             int specialityId,
             bool isWorkingWithChildren,
+            string practicePermissionNumber,
+            bool isApproved,
             string userId)
         {
             string defaultImage = PrepareDefaultImage(gender);
@@ -46,6 +44,8 @@ namespace MedicReach.Services.Physicians
                 ImageUrl = imageUrl ?? defaultImage,
                 SpecialityId = specialityId,
                 IsWorkingWithChildren = isWorkingWithChildren,
+                PracticePermissionNumber = practicePermissionNumber,
+                IsApproved = isApproved,
                 UserId = userId
             };
 
@@ -61,6 +61,8 @@ namespace MedicReach.Services.Physicians
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
+            string practicePermissionNumber,
+            bool isApproved,
             string UserId)
         {
             var physicanToEdit = this.data
@@ -72,6 +74,8 @@ namespace MedicReach.Services.Physicians
             physicanToEdit.SpecialityId = specialityId;
             physicanToEdit.IsWorkingWithChildren = IsWorkingWithChildren;
             physicanToEdit.ImageUrl = imageUrl ?? PrepareDefaultImage(physicanToEdit.Gender);
+            physicanToEdit.PracticePermissionNumber = practicePermissionNumber;
+            physicanToEdit.IsApproved = isApproved;
 
             this.data.SaveChanges();
         }
@@ -82,11 +86,15 @@ namespace MedicReach.Services.Physicians
             string searchTerm,
             PhysicianSorting sorting,
             int currentPage,
-            int physiciansPerPage)
+            int physiciansPerPage,
+            bool approved = true)
         {
             var physiciansQuery = this.data
                 .Physicians
                 .AsQueryable();
+
+            physiciansQuery = physiciansQuery
+                    .Where(p => p.IsApproved == approved);
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -202,13 +210,6 @@ namespace MedicReach.Services.Physicians
                     ExaminationPrice = p.ExaminationPrice,
                     IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
                 })
-                .ToList();
-
-        public IEnumerable<PhysicianServiceModel> GetPhysicianByUserId(string userId)
-            => this.data
-                .Physicians
-                .Where(p => p.UserId == userId)
-                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
     }
 }

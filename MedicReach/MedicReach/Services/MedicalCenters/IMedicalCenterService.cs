@@ -7,13 +7,13 @@ namespace MedicReach.Services.MedicalCenters
     public interface IMedicalCenterService
     {
         void Create(
-            string name,
-            int addressId,
-            int medicalCenterTypeId,
-            string description,
-            string joiningCode,
-            string CreatorId,
-            string imageUrl);
+             string name,
+             int addressId,
+             int medicalCenterTypeId,
+             string description,
+             string joiningCode,
+             string CreatorId,
+             string imageUrl);
 
         void Edit(
             int id,
@@ -54,6 +54,6 @@ namespace MedicReach.Services.MedicalCenters
 
         bool IsCreator(string userId, int medicalCenterId);
 
-        IEnumerable<MedicalCenterServiceModel> GetMedicalCenterByUser(string userId);
+        int GetMedicalCenterIdByUser(string userId);
     }
 }

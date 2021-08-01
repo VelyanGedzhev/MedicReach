@@ -5,7 +5,6 @@ using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace MedicReach.Controllers
 {
@@ -25,7 +24,7 @@ namespace MedicReach.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult All([FromQuery]AllPhysiciansQueryModel query)
+        public IActionResult All([FromQuery] AllPhysiciansQueryModel query)
         {
             var queryResult = this.physicians.All(
                 query.Speciality,
@@ -33,7 +32,8 @@ namespace MedicReach.Controllers
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
-                AllPhysiciansQueryModel.PhysiciansPerPage);
+                AllPhysiciansQueryModel.PhysiciansPerPage,
+                query.Approved);
 
             var physicianSpecialities = this.physicians.AllSpecialities();
             var medicalCenters = this.physicians.AllMedicalCenters();
@@ -97,6 +97,8 @@ namespace MedicReach.Controllers
                 physicianModel.ImageUrl,
                 physicianModel.SpecialityId,
                 physicianModel.IsWorkingWithChildren,
+                physicianModel.PracticePermissionNumber,
+                physicianModel.IsApproved,
                 this.User.GetId());
 
             return RedirectToAction(nameof(All));
@@ -142,6 +144,8 @@ namespace MedicReach.Controllers
                 physician.ImageUrl,
                 physician.SpecialityId,
                 physician.IsWorkingWithChildren,
+                physician.PracticePermissionNumber,
+                physician.IsApproved,
                 this.User.GetId());
 
             return RedirectToAction(nameof(All));
@@ -156,15 +160,14 @@ namespace MedicReach.Controllers
 
         public IActionResult Mine()
         {
-            // TODO: Check if can be done without using a collection
-            var myPhysicianProfile = this.physicians.GetPhysicianByUserId(this.User.GetId());
+            var physicianId = this.physicians.GetPhysicianId(this.User.GetId());
 
-            if (!myPhysicianProfile.Any())
+            if (physicianId == 0)
             {
                 return RedirectToAction(nameof(Become));
             }
 
-            return View(myPhysicianProfile);
+            return RedirectToAction("Edit", "Physicians", new { physicianId });
         }
     }
 }

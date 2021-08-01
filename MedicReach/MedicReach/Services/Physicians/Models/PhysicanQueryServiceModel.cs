@@ -10,15 +10,19 @@ namespace MedicReach.Services.Physicians.Models
 
         public int PhysiciansPerPage { get; init; }
 
-    public string Speciality { get; init; }
+        public string Speciality { get; init; }
+
 
         [Display(Name = "Find by Speciality")]
         public IEnumerable<string> Specialities { get; set; }
+
 
         [Display(Name = "Find by Medical Center")]
         public IEnumerable<string> MedicalCenters { get; set; }
 
         public string MedicalCenter { get; init; }
+
+        public bool? Approved { get; init; }
 
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }

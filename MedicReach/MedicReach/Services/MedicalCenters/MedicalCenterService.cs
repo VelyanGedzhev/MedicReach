@@ -15,7 +15,9 @@ namespace MedicReach.Services.MedicalCenters
         private readonly MedicReachDbContext data;
         private readonly IMapper mapper;
 
-        public MedicalCenterService(MedicReachDbContext data, IMapper mapper)
+        public MedicalCenterService(
+            MedicReachDbContext data,
+            IMapper mapper)
         {
             this.data = data;
             this.mapper = mapper;
@@ -62,12 +64,6 @@ namespace MedicReach.Services.MedicalCenters
             var medicalCenterToEdit = this.data
                 .MedicalCenters
                 .Find(id);
-
-            //if (medicalCenterToEdit.JoiningCode != joiningCode
-            //    && IsJoiningCodeUsed(joiningCode))
-            //{
-            //    return;
-            //}
 
             medicalCenterToEdit.Name = name;
             medicalCenterToEdit.AddressId = addressId;
@@ -170,7 +166,7 @@ namespace MedicReach.Services.MedicalCenters
                 .Select(ps => ps.Name)
                 .Distinct()
                 .OrderBy(name => name)
-                .ToList();        
+                .ToList();
 
         public bool MedicalCenterAddressExists(int addressId)
             => this.data.Addresses.Any(a => a.Id == addressId);
@@ -200,11 +196,11 @@ namespace MedicReach.Services.MedicalCenters
                 .MedicalCenters
                 .Any(mc => mc.Id == medicalCenterId && mc.CreatorId == userId);
 
-        public IEnumerable<MedicalCenterServiceModel> GetMedicalCenterByUser(string userId)
+        public int GetMedicalCenterIdByUser(string userId)
             => this.data
                 .MedicalCenters
                 .Where(mc => mc.CreatorId == userId)
-                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
+                .Select(mc => mc.Id)
+                .FirstOrDefault();
     }
 }

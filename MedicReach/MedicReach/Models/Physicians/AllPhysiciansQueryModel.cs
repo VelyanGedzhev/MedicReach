@@ -21,6 +21,8 @@ namespace MedicReach.Models.Physicians
 
         public string MedicalCenter { get; init; }
 
+        public bool Approved { get; set; } = true;
+
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }
 

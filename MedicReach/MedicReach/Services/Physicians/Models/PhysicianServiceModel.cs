@@ -27,5 +27,9 @@ namespace MedicReach.Services.Physicians.Models
         public string Speciality { get; init; }
 
         public string IsWorkingWithChildren { get; init; }
+
+        public string PracticePermissionNumber { get; init; }
+
+        public bool IsApproved { get; init; }
     }
 }

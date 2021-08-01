@@ -10,7 +10,7 @@
                     <h5 class="card-title">@physician.FullName</h5>
                     <p class="card-text">@physician.Speciality</p>
                     <a class="btn btn-primary" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@physician.Id">Details</a>
-                    @if (ViewBag.AllowEdit == true || User.IsAdmin())
+                    @if (User.IsAdmin())
                     {
                         <a class="btn btn-warning" asp-controller="Physicians" asp-action="Edit" asp-route-physicianId="@physician.Id">Edit</a>
                     }

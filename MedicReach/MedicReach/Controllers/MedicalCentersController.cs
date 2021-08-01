@@ -13,14 +13,14 @@ namespace MedicReach.Controllers
         private readonly IMapper mapper;
 
         public MedicalCentersController(
-            IMedicalCenterService medicalCenters, 
+            IMedicalCenterService medicalCenters,
             IMapper mapper)
         {
             this.medicalCenters = medicalCenters;
             this.mapper = mapper;
         }
 
-        public IActionResult All([FromQuery]AllMedicalCentersQueryModel query)
+        public IActionResult All([FromQuery] AllMedicalCentersQueryModel query)
         {
             var queryResult = this.medicalCenters.All(
                 query.Type,
@@ -158,10 +158,14 @@ namespace MedicReach.Controllers
 
         public IActionResult Mine()
         {
-            // TODO: Check if can be done without using a collection
-            var myMedicalCenter = this.medicalCenters.GetMedicalCenterByUser(this.User.GetId());
+            var medicalCenterId = this.medicalCenters.GetMedicalCenterIdByUser(this.User.GetId());
 
-            return View(myMedicalCenter);
+            if (medicalCenterId == 0)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Edit", "MedicalCenters", new { medicalCenterId });
         }
     }
 }
