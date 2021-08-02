@@ -22,7 +22,7 @@ namespace MedicReach.Services.Physicians.Models
 
         public string MedicalCenter { get; init; }
 
-        public bool? Approved { get; init; }
+        public bool Approved { get; init; }
 
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Patients\Become.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Data\Models\Enums\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

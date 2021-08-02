@@ -1,5 +1,4 @@
-﻿using MedicReach.Data.Models.Enums;
-using System;
+﻿using System;
 
 namespace MedicReach.Data.Models
 {
@@ -15,10 +14,8 @@ namespace MedicReach.Data.Models
 
         public Patient Patient { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         public bool IsAvailable { get; set; }
-
-        public AppointmentStatus Status { get; set; }
     }
 }

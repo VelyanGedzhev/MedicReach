@@ -21,6 +21,8 @@ namespace MedicReach.Data
 
         public DbSet<Physician> Physicians { get; init; }
 
+        public DbSet<Patient> Patients { get; init; }
+
         public DbSet<PhysicianSpeciality> PhysicianSpecialities { get; init; }
 
         public DbSet<Appointment> Appointments { get; init; }
@@ -74,6 +76,13 @@ namespace MedicReach.Data
                 .HasOne(a => a.Country)
                 .WithMany(c => c.Addresses)
                 .HasForeignKey(a => a.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Patient>()
+                .HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Patient>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
