@@ -1,6 +1,7 @@
 using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Infrastructure;
+using MedicReach.Services.Appointments;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Patients;
 using MedicReach.Services.Physicians;
@@ -53,6 +54,7 @@ namespace MedicReach
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhysicianService, PhysicianService>();
             services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IAppointmentService, AppointmenService>();
             services.AddTransient<IMedicalCenterService, MedicalCenterService>();
         }
 
