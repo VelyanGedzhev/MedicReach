@@ -85,7 +85,7 @@ namespace MedicReach.Services.MedicalCenters
         {
             var medicalCentersQuery = this.data
                 .MedicalCenters
-                .Where(x => x.Physicians.Any())
+                .Where(x => x.Physicians.Any(p => p.IsApproved))
                 .AsQueryable();
 
             if (!string.IsNullOrEmpty(searchTerm))

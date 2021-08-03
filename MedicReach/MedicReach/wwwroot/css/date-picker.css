@@ -12,15 +12,16 @@
 }
 
 .card {
-    box-shadow: 0px 4px 8px 0px none
+    box-shadow: 0px 4px 8px 0px none;
+    background-color: #fff
 }
 
 input {
     padding: 10px 20px !important;
-    border: 1px solid #616161 !important; 
+    border: 1px solid #0412f9 !important;
     border-radius: 10px;
     box-sizing: border-box;
-    background-color: #fff !important; /*form background*/
+    background-color: #90CAF9 !important; /*form background*/
     color: #000 !important; /*form text*/
     font-size: 16px;
     letter-spacing: 1px;
@@ -58,7 +59,7 @@ button:focus {
 }
 
 thead tr:nth-child(3) th {
-    color: #f30e0e !important; /*days label*/
+    color: #edf77a !important; /*days label*/
     font-weight: bold;
     padding-top: 20px;
     padding-bottom: 10px
@@ -102,7 +103,7 @@ thead tr:nth-child(3) th {
     padding: 20px 10px !important;
     text-transform: uppercase;
     font-size: 20px;
-    color: #f30e0e !important; /*month label*/
+    color: #edf77a !important; /*month label*/
     opacity: 0.8
 }
 
@@ -114,17 +115,17 @@ thead tr:nth-child(3) th {
     }
 
 .cell {
-    border: 1px solid #BDBDBD;
+    border: 1px solid #90CAF9;
     margin: 2px;
     cursor: pointer
 }
 
     .cell:hover {
-        border: 1px solid #BA55D3
+        border: 1px solid #fa2e2e
     }
 
     .cell.select {
-        background-color: #BA55D3;
+        background-color: #90CAF9;
         color: #fff
     }
 

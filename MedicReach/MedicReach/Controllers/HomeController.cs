@@ -26,6 +26,7 @@ namespace MedicReach.Controllers
         {
             var medicalCenters = this.data
                 .MedicalCenters
+                .Where(x => x.Physicians.Any(p => p.IsApproved))
                 .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
                 .Take(3)
                 .ToList();
