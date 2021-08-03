@@ -53,39 +53,39 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(MedicalCenterFormModel medicalCenter)
+        public IActionResult Add(MedicalCenterFormModel medicalCenterModel)
         {
-            if (!this.medicalCenters.MedicalCenterAddressExists(medicalCenter.AddressId))
+            if (!this.medicalCenters.MedicalCenterAddressExists(medicalCenterModel.AddressId))
             {
-                this.ModelState.AddModelError(nameof(medicalCenter.AddressId), "Address does not exist.");
+                this.ModelState.AddModelError(nameof(medicalCenterModel.AddressId), "Address does not exist.");
             }
 
-            if (!this.medicalCenters.MedicalCenterTypeExists(medicalCenter.TypeId))
+            if (!this.medicalCenters.MedicalCenterTypeExists(medicalCenterModel.TypeId))
             {
-                this.ModelState.AddModelError(nameof(medicalCenter.TypeId), "Medical Center Type does not exist.");
+                this.ModelState.AddModelError(nameof(medicalCenterModel.TypeId), "Medical Center Type does not exist.");
             }
 
-            if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
+            if (this.medicalCenters.IsJoiningCodeUsed(medicalCenterModel.JoiningCode))
             {
-                this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
+                this.ModelState.AddModelError(nameof(medicalCenterModel.JoiningCode), "Joining Code already exists.");
             }
 
             if (!this.ModelState.IsValid)
             {
-                medicalCenter.Addresses = this.medicalCenters.GetAddresses();
-                medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
+                medicalCenterModel.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
-                return View(medicalCenter);
+                return View(medicalCenterModel);
             }
 
             this.medicalCenters.Create(
-                medicalCenter.Name,
-                medicalCenter.AddressId,
-                medicalCenter.TypeId,
-                medicalCenter.Description,
-                medicalCenter.JoiningCode,
+                medicalCenterModel.Name,
+                medicalCenterModel.AddressId,
+                medicalCenterModel.TypeId,
+                medicalCenterModel.Description,
+                medicalCenterModel.JoiningCode,
                 this.User.GetId(),
-                medicalCenter.ImageUrl);
+                medicalCenterModel.ImageUrl);
 
             //TODO: better way to create medical center while created physician
             return Redirect("/Physicians/Become");
@@ -112,7 +112,7 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenter)
+        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenterModel)
         {
             var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
 
@@ -121,30 +121,30 @@ namespace MedicReach.Controllers
                 return Unauthorized();
             }
 
-            if (medicalCenter.JoiningCode != this.medicalCenters.GetJoiningCode(medicalCenterId))
+            if (medicalCenterModel.JoiningCode != this.medicalCenters.GetJoiningCode(medicalCenterId))
             {
-                if (this.medicalCenters.IsJoiningCodeUsed(medicalCenter.JoiningCode))
+                if (this.medicalCenters.IsJoiningCodeUsed(medicalCenterModel.JoiningCode))
                 {
-                    this.ModelState.AddModelError(nameof(medicalCenter.JoiningCode), "Joining Code already exists.");
+                    this.ModelState.AddModelError(nameof(medicalCenterModel.JoiningCode), "Joining Code already exists.");
                 }
             }
 
             if (!this.ModelState.IsValid)
             {
-                medicalCenter.Addresses = this.medicalCenters.GetAddresses();
-                medicalCenter.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
+                medicalCenterModel.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
-                return View(medicalCenter);
+                return View(medicalCenterModel);
             }
 
             this.medicalCenters.Edit(
                 medicalCenterId,
-                medicalCenter.Name,
-                medicalCenter.AddressId,
-                medicalCenter.TypeId,
-                medicalCenter.Description,
-                medicalCenter.JoiningCode,
-                medicalCenter.ImageUrl);
+                medicalCenterModel.Name,
+                medicalCenterModel.AddressId,
+                medicalCenterModel.TypeId,
+                medicalCenterModel.Description,
+                medicalCenterModel.JoiningCode,
+                medicalCenterModel.ImageUrl);
 
             return RedirectToAction(nameof(All));
         }

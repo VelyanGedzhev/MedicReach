@@ -18,24 +18,29 @@ namespace MedicReach.Models.Physicians
         public string JoiningCode { get; set; }
 
         [Range(ExaminationPriceMinValie, ExaminationPriceMaxValie)]
+        [Display(Name = "Examination Price")]
         public int ExaminationPrice { get; set; }
 
         [Url]
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
+        [Display(Name = "Speciality")]
         public int SpecialityId { get; set; }
 
         public IEnumerable<PhysicianMedicalCentersServiceModel> MedicalCenters { get; set; }
 
         public IEnumerable<PhysicianSpecialityServiceModel> Specialities { get; set; }
 
+        [Display(Name = "Works with children")]
         public bool IsWorkingWithChildren { get; set; }
 
         [Required]
         [StringLength(PermissionPracticeMaxLength, MinimumLength = PermissionPracticeMinLength)]
+        [Display(Name = "Practice Permission Number")]
         public string PracticePermissionNumber { get; set; }
 
+        [Display(Name = "Approved")]
         public bool IsApproved { get; set; }
     }
 }

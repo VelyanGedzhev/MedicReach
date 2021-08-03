@@ -53,7 +53,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Data\Models\Enums\" />
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

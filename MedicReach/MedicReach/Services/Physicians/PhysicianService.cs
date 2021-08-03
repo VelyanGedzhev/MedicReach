@@ -186,6 +186,17 @@ namespace MedicReach.Services.Physicians
             => this.data
                 .Physicians
                 .Any(p => p.UserId == userId);
+        public bool PracticePermissionNumberExists(string practicePermission)
+            => this.data
+                .Physicians
+                .Any(p => p.PracticePermissionNumber == practicePermission);
+
+        public string GetPracticePermissionByPhysiciandId(int physicianId)
+            => this.data
+                .Physicians
+                .Where(p => p.Id == physicianId)
+                .Select(p => p.PracticePermissionNumber)
+                .FirstOrDefault();
 
         public int GetPhysicianId(string userId)
             => this.data

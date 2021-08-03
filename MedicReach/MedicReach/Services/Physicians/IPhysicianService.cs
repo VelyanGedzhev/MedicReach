@@ -54,6 +54,10 @@ namespace MedicReach.Services.Physicians
 
         bool IsPhysician(string userId);
 
+        bool PracticePermissionNumberExists(string practicePermission);
+
+        string GetPracticePermissionByPhysiciandId(int physicianId);
+
         int GetPhysicianId(string userId);
 
         string PrepareDefaultImage(string gender);

@@ -1,8 +1,6 @@
 ﻿@model AllPhysiciansQueryModel
 
-@{
-    ViewData["Title"] = "Available Physicians";
-}
+@{ ViewData["Title"] = "Available Physicians"; }
 <form method="get">
     <div class="row">
         <div class="form-group col-md-3">
@@ -16,7 +14,8 @@
                     <option value="" selected>All</option>
                     @foreach (var speciality in Model.Specialities)
                     {
-        <option value="@speciality">@speciality</option>}
+        <option value="@speciality">@speciality</option>
+}
                 </select>
             </div>
         </div>
@@ -27,33 +26,32 @@
                     <option value="" selected>All</option>
                     @foreach (var medicalCenter in Model.MedicalCenters)
                     {
-        <option value="@medicalCenter">@medicalCenter</option>}
+        <option value="@medicalCenter">@medicalCenter</option>
+}
                 </select>
             </div>
         </div>
         @if (User.IsAdmin())
         {
-            <div class="form-group col-md-3">
-                <label asp-for="Approved"></label>
-                <select asp-for="Approved" class="form-control">
-                    <option value="true">Approved</option>
-                    <option value="false">Unapproved</option>
-                </select>
-            </div>
-        }
+<div class="form-group col-md-3">
+    <label asp-for="Approved"></label>
+    <select asp-for="Approved" class="form-control">
+        <option value="true">Approved</option>
+        <option value="false">Unapproved</option>
+    </select>
+</div>}
         @if (!User.IsAdmin())
         {
-            <div class="form-group col-md-3">
-                <label asp-for="Sorting"></label>
-                <select asp-for="Sorting" class="form-control">
-                    <option value="0" selected>Joining date</option>
-                    <option value="1">Examination Price (ascending)</option>
-                    <option value="2">Examination Price (descending)</option>
-                    <option value="3">Name (ascending)</option>
-                    <option value="4">Name (descending)</option>
-                </select>
-            </div>
-        }
+<div class="form-group col-md-3">
+    <label asp-for="Sorting"></label>
+    <select asp-for="Sorting" class="form-control">
+        <option value="0" selected>Joining date</option>
+        <option value="1">Examination Price (ascending)</option>
+        <option value="2">Examination Price (descending)</option>
+        <option value="3">Name (ascending)</option>
+        <option value="4">Name (descending)</option>
+    </select>
+</div>}
     </div>
     <div class="row">
         <div class="form-group col-md-3">
@@ -64,32 +62,35 @@
 
 <partial name="_PhysiciansPartial" model="@Model.Physicians" />
 
-@{ 
-    var previousPage = Model.CurrentPage - 1;
+@{ var previousPage = Model.CurrentPage - 1;
 
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
+                if (previousPage < 1)
+                {
+                    previousPage = 1;
+                }
 
-    var maxPage = Math.Ceiling((double)Model.TotalPhysicians / AllPhysiciansQueryModel.PhysiciansPerPage);
+                var maxPage = Math.Ceiling((double)Model.TotalPhysicians / AllPhysiciansQueryModel.PhysiciansPerPage); }
+
+@if (!Model.Physicians.Any())
+{
+    <h2 class="text-center">No Physicians found by the given criteria or they are yet to be approved!</h2>
 }
 
 <div class="row">
     <div class="col-md-6">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)" 
-           asp-controller="Physicians" 
-           asp-action="All" 
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Physicians"
+           asp-action="All"
            asp-route-currentPage="@previousPage"
            asp-route-speciality="@Model.Speciality"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@Model.Sorting"><<</a>
     </div>
     <div class="col-md-6">
-        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)" 
-           asp-controller="Physicians" 
-           asp-action="All" 
-           asp-route-currentPage="@(Model.CurrentPage + 1)" 
+        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+           asp-controller="Physicians"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
            asp-route-speciality="@Model.Speciality"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@Model.Sorting">>></a>

@@ -82,6 +82,11 @@ namespace MedicReach.Controllers
                 this.ModelState.AddModelError(nameof(physicianModel.JoiningCode), "Joining code is incorrect.");
             }
 
+            if (this.physicians.PracticePermissionNumberExists(physicianModel.PracticePermissionNumber))
+            {
+                this.ModelState.AddModelError(nameof(physicianModel.PracticePermissionNumber), "Practice permission number already exists.");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 physicianModel.MedicalCenters = this.physicians.GetMedicalCenters();
@@ -120,32 +125,40 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int physicianId, PhysicianFormModel physician)
+        public IActionResult Edit(int physicianId, PhysicianFormModel physicianModel)
         {
 
-            if (!this.medicalCenters.IsJoiningCodeCorrect(physician.JoiningCode, physician.MedicalCenterId))
+            if (!this.medicalCenters.IsJoiningCodeCorrect(physicianModel.JoiningCode, physicianModel.MedicalCenterId))
             {
-                this.ModelState.AddModelError(nameof(physician.JoiningCode), "Joining code is incorrect.");
+                this.ModelState.AddModelError(nameof(physicianModel.JoiningCode), "Joining code is incorrect.");
+            }
+
+            if (!physicianModel.PracticePermissionNumber.Equals(this.physicians.GetPracticePermissionByPhysiciandId(physicianId)))
+            {
+                if (this.physicians.PracticePermissionNumberExists(physicianModel.PracticePermissionNumber))
+                {
+                    this.ModelState.AddModelError(nameof(physicianModel.PracticePermissionNumber), "Practice permission number already exists.");
+                }
             }
 
             if (!this.ModelState.IsValid)
             {
-                physician.MedicalCenters = this.physicians.GetMedicalCenters();
-                physician.Specialities = this.physicians.GetSpecialities();
+                physicianModel.MedicalCenters = this.physicians.GetMedicalCenters();
+                physicianModel.Specialities = this.physicians.GetSpecialities();
 
-                return View(physician);
+                return View(physicianModel);
             }
 
             this.physicians.Edit(
                 physicianId,
-                physician.Gender,
-                physician.ExaminationPrice,
-                physician.MedicalCenterId,
-                physician.ImageUrl,
-                physician.SpecialityId,
-                physician.IsWorkingWithChildren,
-                physician.PracticePermissionNumber,
-                physician.IsApproved,
+                physicianModel.Gender,
+                physicianModel.ExaminationPrice,
+                physicianModel.MedicalCenterId,
+                physicianModel.ImageUrl,
+                physicianModel.SpecialityId,
+                physicianModel.IsWorkingWithChildren,
+                physicianModel.PracticePermissionNumber,
+                physicianModel.IsApproved,
                 this.User.GetId());
 
             return RedirectToAction(nameof(All));

@@ -23,10 +23,11 @@ namespace MedicReach.Models.MedicalCenters
 
         [Required]
         [StringLength(JoiningCodeMaxLength, MinimumLength = JoiningCodeMinLength)]
+        [Display(Name = "Joining Code")]
         public string JoiningCode { get; init; }
 
         [Url]
-        [Display(Name = "Image URL")]
+        [Display(Name = "Image")]
         public string ImageUrl { get; init; }
 
         public IEnumerable<MedicalCenterAddressServiceModel> Addresses { get; set; }
