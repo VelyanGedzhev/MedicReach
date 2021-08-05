@@ -1,10 +1,11 @@
 ﻿using MedicReach.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedicReach.Data
 {
-    public class MedicReachDbContext : IdentityDbContext<User>
+    public class MedicReachDbContext : IdentityDbContext
     {
         public MedicReachDbContext(DbContextOptions<MedicReachDbContext> options)
             : base(options)
@@ -45,7 +46,7 @@ namespace MedicReach.Data
 
             builder
                 .Entity<Physician>()
-                .HasOne(p => p.User)
+                .HasOne<IdentityUser>()
                 .WithOne()
                 .HasForeignKey<Physician>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -80,7 +81,7 @@ namespace MedicReach.Data
 
             builder
                 .Entity<Patient>()
-                .HasOne(p => p.User)
+                .HasOne<IdentityUser>()
                 .WithOne()
                 .HasForeignKey<Patient>(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

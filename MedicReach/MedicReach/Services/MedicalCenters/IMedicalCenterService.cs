@@ -16,7 +16,7 @@ namespace MedicReach.Services.MedicalCenters
              string imageUrl);
 
         void Edit(
-            int id,
+            string id,
             string name,
             int addressId,
             int medicalCenterTypeId,
@@ -32,7 +32,7 @@ namespace MedicReach.Services.MedicalCenters
             int currentPage,
             int physiciansPerPage);
 
-        MedicalCenterServiceModel Details(int medicalCenterId);
+        MedicalCenterServiceModel Details(string medicalCenterId);
 
         IEnumerable<MedicalCenterServiceModel> GetMedicalCenters();
 
@@ -50,12 +50,12 @@ namespace MedicReach.Services.MedicalCenters
 
         bool IsJoiningCodeUsed(string joiningCode);
 
-        bool IsJoiningCodeCorrect(string joiningCode, int medicalCenterId);
+        bool IsJoiningCodeCorrect(string joiningCode, string medicalCenterId);
 
-        string GetJoiningCode(int medicalCenterId);
+        string GetJoiningCode(string medicalCenterId);
 
-        bool IsCreator(string userId, int medicalCenterId);
+        bool IsCreator(string userId, string medicalCenterId);
 
-        int GetMedicalCenterIdByUser(string userId);
+        string GetMedicalCenterIdByUser(string userId);
     }
 }

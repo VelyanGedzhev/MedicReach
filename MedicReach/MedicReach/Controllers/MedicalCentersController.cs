@@ -92,7 +92,7 @@ namespace MedicReach.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(int medicalCenterId)
+        public IActionResult Edit(string medicalCenterId)
         {
             var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
 
@@ -112,7 +112,7 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int medicalCenterId, MedicalCenterFormModel medicalCenterModel)
+        public IActionResult Edit(string medicalCenterId, MedicalCenterFormModel medicalCenterModel)
         {
             var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
 
@@ -149,7 +149,7 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult Details(int medicalCenterId)
+        public IActionResult Details(string medicalCenterId)
         {
             var medicalCenter = this.medicalCenters.Details(medicalCenterId);
 
@@ -160,7 +160,7 @@ namespace MedicReach.Controllers
         {
             var medicalCenterId = this.medicalCenters.GetMedicalCenterIdByUser(this.User.GetId());
 
-            if (medicalCenterId == 0)
+            if (string.IsNullOrEmpty(medicalCenterId))
             {
                 return BadRequest();
             }

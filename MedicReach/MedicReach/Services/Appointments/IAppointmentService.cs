@@ -5,8 +5,8 @@ namespace MedicReach.Services.Appointments
 {
     public interface IAppointmentService
     {
-        void Create(int patientId, int physicianId, string date, string hour);
+        void Create(string patientId, string physicianId, string date, string hour);
 
-        IEnumerable<AppointmentServiceModel> GetPatientAppointments(int patientId);
+        IEnumerable<AppointmentServiceModel> GetPatientAppointments(string patientId);
     }
 }

@@ -7,7 +7,7 @@ namespace MedicReach.Data.Models
     public class Country
     {
         public int Id { get; init; }
-        
+
         [Required]
         [StringLength(NameMaxLength)]
         public string Name { get; init; }

@@ -7,9 +7,10 @@ namespace MedicReach.Services.Physicians
     public interface IPhysicianService
     {
         void Create(
+            string fullname,
             string gender,
             int examinationPrice,
-            int medicalCenterId,
+            string medicalCenterId,
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
@@ -18,10 +19,11 @@ namespace MedicReach.Services.Physicians
             string UserId);
 
         void Edit(
-            int id,
+            string id,
+            string fullname,
             string gender,
             int examinationPrice,
-            int medicalCenterId,
+            string medicalCenterId,
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
@@ -38,7 +40,7 @@ namespace MedicReach.Services.Physicians
             int physiciansPerPage,
             bool approved);
 
-        PhysicianServiceModel Details(int physicianId);
+        PhysicianServiceModel Details(string physicianId);
 
         IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities();
 
@@ -50,15 +52,15 @@ namespace MedicReach.Services.Physicians
 
         bool SpecialityExists(int specialityId);
 
-        bool MedicalCenterExists(int medicalCenterId);
+        bool MedicalCenterExists(string medicalCenterId);
 
         bool IsPhysician(string userId);
 
         bool PracticePermissionNumberExists(string practicePermission);
 
-        string GetPracticePermissionByPhysiciandId(int physicianId);
+        string GetPracticePermissionByPhysiciandId(string physicianId);
 
-        int GetPhysicianId(string userId);
+        string GetPhysicianId(string userId);
 
         string PrepareDefaultImage(string gender);
     }

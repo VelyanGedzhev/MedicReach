@@ -96,6 +96,7 @@ namespace MedicReach.Controllers
             }
 
             this.physicians.Create(
+                physicianModel.FullName,
                 physicianModel.Gender,
                 physicianModel.ExaminationPrice,
                 physicianModel.MedicalCenterId,
@@ -110,7 +111,7 @@ namespace MedicReach.Controllers
         }
 
         [Authorize]
-        public IActionResult Edit(int physicianId)
+        public IActionResult Edit(string physicianId)
         {
             var physician = this.physicians.Details(physicianId);
 
@@ -125,7 +126,7 @@ namespace MedicReach.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int physicianId, PhysicianFormModel physicianModel)
+        public IActionResult Edit(string physicianId, PhysicianFormModel physicianModel)
         {
 
             if (!this.medicalCenters.IsJoiningCodeCorrect(physicianModel.JoiningCode, physicianModel.MedicalCenterId))
@@ -151,6 +152,7 @@ namespace MedicReach.Controllers
 
             this.physicians.Edit(
                 physicianId,
+                physicianModel.FullName,
                 physicianModel.Gender,
                 physicianModel.ExaminationPrice,
                 physicianModel.MedicalCenterId,
@@ -164,7 +166,7 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult Details(int physicianId)
+        public IActionResult Details(string physicianId)
         {
             var physician = this.physicians.Details(physicianId);
 
@@ -175,7 +177,7 @@ namespace MedicReach.Controllers
         {
             var physicianId = this.physicians.GetPhysicianId(this.User.GetId());
 
-            if (physicianId == 0)
+            if (string.IsNullOrEmpty(physicianId))
             {
                 return RedirectToAction(nameof(Become));
             }

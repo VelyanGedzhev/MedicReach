@@ -1,16 +1,19 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicReach.Data.Models
 {
     public class Review
     {
-        public int Id { get; init; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
 
-        public int PatientId { get; set; }
+        [Required]
+        public string PatientId { get; set; }
 
         public Patient Patient { get; set; }
 
-        public int PhysicianId { get; set; }
+        [Required]
+        public string PhysicianId { get; set; }
 
         public Physician Physician { get; set; }
 

@@ -4,8 +4,10 @@ using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static MedicReach.Data.DataConstants.Physician;
 
 namespace MedicReach.Services.Physicians
@@ -14,19 +16,23 @@ namespace MedicReach.Services.Physicians
     {
         private readonly MedicReachDbContext data;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
 
         public PhysicianService(
             MedicReachDbContext data,
-            IMapper mapper)
+            IMapper mapper, 
+            UserManager<IdentityUser> userManager)
         {
             this.data = data;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         public void Create(
+            string fullname,
             string gender,
             int examinationPrice,
-            int medicalCenterId,
+            string medicalCenterId,
             string imageUrl,
             int specialityId,
             bool isWorkingWithChildren,
@@ -38,6 +44,7 @@ namespace MedicReach.Services.Physicians
 
             var physician = new Physician
             {
+                FullName = fullname,
                 Gender = gender,
                 ExaminationPrice = examinationPrice,
                 MedicalCenterId = medicalCenterId,
@@ -49,15 +56,25 @@ namespace MedicReach.Services.Physicians
                 UserId = userId
             };
 
+            var user = this.data.Users.FirstOrDefault(u => u.Id == userId);
+
+            Task.Run(async () =>
+            {
+                await userManager.AddToRoleAsync(user, GlobalConstants.PhysicianRoleName);
+            })
+                .GetAwaiter()
+                .GetResult();            
+
             this.data.Physicians.Add(physician);
             this.data.SaveChanges();
         }
 
         public void Edit(
-            int id,
+            string id,
+            string fullname,
             string gender,
             int examinationPrice,
-            int medicalCenterId,
+            string medicalCenterId,
             string imageUrl,
             int specialityId,
             bool IsWorkingWithChildren,
@@ -69,6 +86,7 @@ namespace MedicReach.Services.Physicians
                 .Physicians
                 .Find(id);
 
+            physicanToEdit.FullName = fullname;
             physicanToEdit.ExaminationPrice = examinationPrice;
             physicanToEdit.MedicalCenterId = medicalCenterId;
             physicanToEdit.SpecialityId = specialityId;
@@ -100,7 +118,7 @@ namespace MedicReach.Services.Physicians
             {
                 physiciansQuery = physiciansQuery
                     .Where(p =>
-                    p.User.FullName.ToLower().Contains(searchTerm.ToLower()));
+                    p.FullName.ToLower().Contains(searchTerm.ToLower()));
             }
 
             if (!string.IsNullOrEmpty(speciality))
@@ -119,8 +137,8 @@ namespace MedicReach.Services.Physicians
             {
                 PhysicianSorting.ExaminationPriceDesc => physiciansQuery.OrderByDescending(p => p.ExaminationPrice),
                 PhysicianSorting.ExaminationPriceAsc => physiciansQuery.OrderBy(p => p.ExaminationPrice),
-                PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.User.FullName),
-                PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.User.FullName),
+                PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.FullName),
+                PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.FullName),
                 PhysicianSorting.DateCreated or _ => physiciansQuery.OrderByDescending(p => p.Id)
             };
 
@@ -141,7 +159,7 @@ namespace MedicReach.Services.Physicians
             };
         }
 
-        public PhysicianServiceModel Details(int physicianId)
+        public PhysicianServiceModel Details(string physicianId)
             => this.data
                 .Physicians
                 .Where(p => p.Id == physicianId)
@@ -179,8 +197,8 @@ namespace MedicReach.Services.Physicians
         public bool SpecialityExists(int specialityId)
             => this.data.PhysicianSpecialities.Any(ps => ps.Id == specialityId);
 
-        public bool MedicalCenterExists(int medicalCenterId)
-            => this.data.MedicalCenters.Any(a => a.Id == medicalCenterId);
+        public bool MedicalCenterExists(string medicalCenterId)
+            => this.data.MedicalCenters.Any(a => a.Id.Equals(medicalCenterId));
 
         public bool IsPhysician(string userId)
             => this.data
@@ -191,14 +209,14 @@ namespace MedicReach.Services.Physicians
                 .Physicians
                 .Any(p => p.PracticePermissionNumber == practicePermission);
 
-        public string GetPracticePermissionByPhysiciandId(int physicianId)
+        public string GetPracticePermissionByPhysiciandId(string physicianId)
             => this.data
                 .Physicians
                 .Where(p => p.Id == physicianId)
                 .Select(p => p.PracticePermissionNumber)
                 .FirstOrDefault();
 
-        public int GetPhysicianId(string userId)
+        public string GetPhysicianId(string userId)
             => this.data
                 .Physicians
                 .Where(p => p.UserId == userId)
@@ -213,7 +231,7 @@ namespace MedicReach.Services.Physicians
                 .Select(p => new PhysicianServiceModel
                 {
                     Id = p.Id,
-                    FullName = p.User.FullName,
+                    FullName = p.FullName,
                     Gender = p.Gender,
                     MedicalCenter = p.MedicalCenter,
                     Speciality = p.Speciality.Name,

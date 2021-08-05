@@ -49,9 +49,6 @@ namespace MedicReach.Infrastructure
 
             this.CreateMap<Physician, PhysicianServiceModel>()
                 .ForMember(
-                    p => p.FullName,
-                    cfg => cfg.MapFrom(p => p.User.FullName))
-                .ForMember(
                     p => p.Speciality,
                     cfg => cfg.MapFrom(p => p.Speciality.Name))
                 .ForMember(

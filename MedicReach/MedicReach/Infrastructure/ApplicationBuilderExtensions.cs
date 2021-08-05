@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using static MedicReach.Areas.Admin.AdminConstants;
+using static MedicReach.GlobalConstants;
 
 namespace MedicReach.Infrastructure
 {
@@ -20,6 +21,7 @@ namespace MedicReach.Infrastructure
 
             MigrateDatabase(services);
 
+            SeedApplicationRoles(services);
             SeedAdministrator(services);
             SeedCountries(services);
             SeedAddresses(services);
@@ -36,9 +38,9 @@ namespace MedicReach.Infrastructure
             data.Database.Migrate();
         }
 
-        private static void SeedAdministrator(IServiceProvider services)
+        private static void SeedApplicationRoles(IServiceProvider services)
         {
-            var userManager = services.GetRequiredService<UserManager<User>>();
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
             Task.Run(async () =>
@@ -48,23 +50,53 @@ namespace MedicReach.Infrastructure
                     return;
                 }
 
-                var role = new IdentityRole { Name = AdministratorRoleName };
+                if (await roleManager.RoleExistsAsync(PatientRoleName))
+                {
+                    return;
+                }
 
-                await roleManager.CreateAsync(role);
+                if (await roleManager.RoleExistsAsync(PhysicianRoleName))
+                {
+                    return;
+                }
 
-                const string adminEmail = "admin@medicReach.com";
-                const string adminPassword = "admin123456";
+                var adminRole = new IdentityRole { Name = AdministratorRoleName };
+                var patientRole = new IdentityRole { Name = PatientRoleName };
+                var physicianRole = new IdentityRole { Name = PhysicianRoleName };
 
-                var user = new User
+                await roleManager.CreateAsync(adminRole);
+                await roleManager.CreateAsync(patientRole);
+                await roleManager.CreateAsync(physicianRole);
+            })
+                .GetAwaiter()
+                .GetResult();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            const string adminEmail = "admin@medicReach.com";
+            const string adminPassword = "admin123456";
+
+            if (userManager.Users.Any(u => u.UserName == adminEmail))
+            {
+                return;
+            }
+
+            Task.Run(async () =>
+            {
+                
+
+                var user = new IdentityUser
                 {
                     Email = adminEmail,
-                    UserName = adminEmail,
-                    FullName = FullName,
-                    Type = UserType
+                    UserName = adminEmail
                 };
 
                 await userManager.CreateAsync(user, adminPassword);
-                await userManager.AddToRoleAsync(user, role.Name);
+                await userManager.AddToRoleAsync(user, AdministratorRoleName);
             })
                 .GetAwaiter()
                 .GetResult();

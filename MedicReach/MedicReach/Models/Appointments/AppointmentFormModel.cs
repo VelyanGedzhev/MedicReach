@@ -4,9 +4,9 @@ namespace MedicReach.Models.Appointments
 {
     public class AppointmentFormModel
     {
-        public int physicianId { get; set; }
+        public string physicianId { get; set; }
 
-        public int patientId { get; set; }
+        public string patientId { get; set; }
 
         [Required]
         //[ValidateDateString(ErrorMessage = GlobalConstants.ErrorMessages.DateTime)]

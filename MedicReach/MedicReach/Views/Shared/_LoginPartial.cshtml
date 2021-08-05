@@ -1,44 +1,54 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using MedicReach.Data.Models
 @using MedicReach.Services.Physicians
-@using MedicReach.Services.Users
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @inject IPhysicianService Physicians
-@inject IUserService Users
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         var userId = User.GetId();
-        var userIsPhysicianType = Users.IsPhysician(userId);
-        var userIsPhysician = Physicians.IsPhysician(userId);
+        var userIsPhysician = User.IsPhysician();
+        var userIsPatient = User.IsPatient();
         var userIsAdmin = User.IsAdmin();
 
-        @if (!userIsPhysician && userIsPhysicianType && !userIsAdmin)
+        @if (!userIsPhysician && !userIsPatient && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Become Physician</a>
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Become</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Become">Physician</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Become">Patient</a>
+                    </div>
+                </div>
             </li>
         }
-        else if (!userIsAdmin && userIsPhysicianType)
+        @if (!userIsAdmin && userIsPhysician)
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mine</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Mine">Profile</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="MedicalCenters" asp-action="Mine">Medical Center</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">Appointments</a>
+                    </div>
+                </div>
+            </li>
+        }
+        @if (!userIsAdmin && userIsPatient)
         {
             <li class="nav-item">
                 <div class="dropdown show">
                     <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mine</a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Physicians" asp-action="Mine">Physician Profile</a>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="MedicalCenters" asp-action="Mine">Medical Center</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Mine">Profile</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Appointments" asp-action="Mine">Appointments</a>
                     </div>
                 </div>
-            </li>
-        }
-        else if (!userIsAdmin && !userIsPhysicianType)
-        {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Patients" asp-action="Become">Become Patient</a>
             </li>
         }
         <li class="nav-item">

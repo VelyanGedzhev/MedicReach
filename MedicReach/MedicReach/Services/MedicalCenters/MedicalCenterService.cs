@@ -53,7 +53,7 @@ namespace MedicReach.Services.MedicalCenters
         }
 
         public void Edit(
-           int id,
+           string id,
            string name,
            int addressId,
            int typeId,
@@ -133,7 +133,7 @@ namespace MedicReach.Services.MedicalCenters
             };
         }
 
-        public MedicalCenterServiceModel Details(int medicalCenterId)
+        public MedicalCenterServiceModel Details(string medicalCenterId)
             => this.data
                 .MedicalCenters
                 .Where(mc => mc.Id == medicalCenterId)
@@ -187,24 +187,24 @@ namespace MedicReach.Services.MedicalCenters
                 .MedicalCenters
                 .Any(mc => mc.JoiningCode == joiningCode);
 
-        public bool IsJoiningCodeCorrect(string joiningCode, int medicalCenterId)
+        public bool IsJoiningCodeCorrect(string joiningCode, string medicalCenterId)
             => this.data
                 .MedicalCenters
                 .Any(mc => mc.JoiningCode == joiningCode && mc.Id == medicalCenterId);
 
-        public string GetJoiningCode(int medicalCenterId)
+        public string GetJoiningCode(string medicalCenterId)
             => this.data
                 .MedicalCenters
                 .Where(mc => mc.Id == medicalCenterId)
                 .Select(mc => mc.JoiningCode)
                 .FirstOrDefault();
 
-        public bool IsCreator(string userId, int medicalCenterId)
+        public bool IsCreator(string userId, string medicalCenterId)
             => this.data
                 .MedicalCenters
                 .Any(mc => mc.Id == medicalCenterId && mc.CreatorId == userId);
 
-        public int GetMedicalCenterIdByUser(string userId)
+        public string GetMedicalCenterIdByUser(string userId)
             => this.data
                 .MedicalCenters
                 .Where(mc => mc.CreatorId == userId)

@@ -22,7 +22,7 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Become(PatientFormModel patient)
         {
-            this.patients.Create(patient.Gender, this.User.GetId());
+            this.patients.Create(patient.FullName, patient.Gender, this.User.GetId());
 
             return Redirect("/");
         }

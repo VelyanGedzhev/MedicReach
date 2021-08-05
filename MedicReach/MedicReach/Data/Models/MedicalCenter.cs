@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.MedicalCenter;
 
@@ -6,7 +7,7 @@ namespace MedicReach.Data.Models
 {
     public class MedicalCenter
     {
-        public int Id { get; init; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
         [MaxLength(NameMaxLength)]

@@ -7,8 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Areas\Identity\Pages\Account\Login.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\Register.cshtml" />
+    <None Include="Areas\Identity\Pages\Account\_ViewImports.cshtml" />
+    <None Include="Areas\Identity\Pages\_ViewStart.cshtml" />
+    <None Include="Views\Appointments\Book.cshtml" />
+    <None Include="Views\Appointments\Mine.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\MedicalCenters\Add.cshtml" />
+    <None Include="Views\MedicalCenters\All.cshtml" />
+    <None Include="Views\MedicalCenters\Details.cshtml" />
+    <None Include="Views\MedicalCenters\Edit.cshtml" />
+    <None Include="Views\MedicalCenters\_MedicalCenterFormPartial.cshtml" />
+    <None Include="Views\MedicalCenters\_MedicalCentersPartial.cshtml" />
     <None Include="Views\Patients\Become.cshtml" />
+    <None Include="Views\Physicians\All.cshtml" />
+    <None Include="Views\Physicians\Become.cshtml" />
+    <None Include="Views\Physicians\Details.cshtml" />
+    <None Include="Views\Physicians\Edit.cshtml" />
+    <None Include="Views\Physicians\_PhysicianFormPartial.cshtml" />
+    <None Include="Views\Physicians\_PhysiciansPartial.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
@@ -52,6 +76,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Models\Enums\" />
   </ItemGroup>
 

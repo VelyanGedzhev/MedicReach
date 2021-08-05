@@ -10,14 +10,18 @@
                     <select asp-for="MedicalCenterId" class="form-control">
                         @foreach (var medicalCenter in Model.MedicalCenters)
                         {
-                            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.Number @medicalCenter.Address, @medicalCenter.City, @medicalCenter.CountryCode</option>
-                        }
+            <option value="@medicalCenter.Id">@medicalCenter.Name, @medicalCenter.Number @medicalCenter.Address, @medicalCenter.City, @medicalCenter.CountryCode</option>}
                     </select>
                 </div>
                 <div class="form-group">
                     <label asp-for="JoiningCode"></label>
                     <input asp-for="JoiningCode" class="form-control" placeholder="">
                     <span asp-validation-for="JoiningCode" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FullName"></label>
+                    <input asp-for="FullName" class="form-control" placeholder="John Johnson, Daniel Smith...">
+                    <span asp-validation-for="FullName" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
                     <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Add">Add Medical Center</a>
@@ -29,14 +33,13 @@
                 </div>
                 @if (User.IsAdmin())
                 {
-                    <div class="form-group">
-                        <label asp-for="IsApproved"></label>
-                        <select asp-for="IsApproved" class="form-control">
-                            <option value="False">False</option>
-                            <option value="True">True</option>
-                        </select>
-                    </div>
-                }
+            <div class="form-group">
+                <label asp-for="IsApproved"></label>
+                <select asp-for="IsApproved" class="form-control">
+                    <option value="False">False</option>
+                    <option value="True">True</option>
+                </select>
+            </div>}
                 <div class="form-group">
                     <label asp-for="Gender"></label>
                     <select asp-for="Gender" class="form-control">
@@ -66,7 +69,8 @@
                     <select asp-for="SpecialityId" class="form-control">
                         @foreach (var speciality in Model.Specialities)
                         {
-            <option value="@speciality.Id">@speciality.Name</option>}
+            <option value="@speciality.Id">@speciality.Name</option>
+}
                     </select>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Save" />

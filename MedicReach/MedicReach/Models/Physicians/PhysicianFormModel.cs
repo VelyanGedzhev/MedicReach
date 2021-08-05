@@ -8,10 +8,14 @@ namespace MedicReach.Models.Physicians
     public class PhysicianFormModel
     {
         [Required]
+        [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        public string FullName { get; init; }
+
+        [Required]
         public string Gender { get; init; }
 
         [Display(Name = "Medical Center")]
-        public int MedicalCenterId { get; init; }
+        public string MedicalCenterId { get; init; }
 
         [Required]
         [Display(Name = "Medical Center Joining Code")]

@@ -1,11 +1,9 @@
 using MedicReach.Data;
-using MedicReach.Data.Models;
 using MedicReach.Infrastructure;
 using MedicReach.Services.Appointments;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Patients;
 using MedicReach.Services.Physicians;
-using MedicReach.Services.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +31,7 @@ namespace MedicReach
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<User>(options =>
+                .AddDefaultIdentity<IdentityUser>(options =>
                 {
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
@@ -51,7 +49,6 @@ namespace MedicReach
             });
 
             services.AddControllersWithViews();
-            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IPhysicianService, PhysicianService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmenService>();

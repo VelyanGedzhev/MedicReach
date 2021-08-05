@@ -6,7 +6,7 @@ namespace MedicReach.Data.Models
 {
     public class Address
     {
-        public int Id { get; init; }
+        public int Id { get; init; } 
 
         [Required]
         [MaxLength(NameMaxLength)]

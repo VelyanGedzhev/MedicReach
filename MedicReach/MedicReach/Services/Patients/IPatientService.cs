@@ -2,8 +2,8 @@
 {
     public interface IPatientService
     {
-        void Create(string gender, string userId);
+        void Create(string fullname, string gender, string userId);
 
-        int GetPatientId(string userId);
+        string GetPatientId(string userId);
     }
 }

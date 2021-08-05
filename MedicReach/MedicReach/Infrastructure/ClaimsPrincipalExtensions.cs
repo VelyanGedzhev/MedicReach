@@ -10,5 +10,11 @@ namespace MedicReach.Infrastructure
 
         public static bool IsAdmin(this ClaimsPrincipal user)
             => user.IsInRole(AdministratorRoleName);
+
+        public static bool IsPhysician(this ClaimsPrincipal user)
+            => user.IsInRole(GlobalConstants.PhysicianRoleName);
+
+        public static bool IsPatient(this ClaimsPrincipal user)
+            => user.IsInRole(GlobalConstants.PatientRoleName);
     }
 }

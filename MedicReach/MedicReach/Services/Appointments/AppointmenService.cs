@@ -12,15 +12,13 @@ namespace MedicReach.Services.Appointments
     public class AppointmenService : IAppointmentService
     {
         private readonly MedicReachDbContext data;
-        private readonly IMapper mapper;
 
-        public AppointmenService(MedicReachDbContext data, IMapper mapper)
+        public AppointmenService(MedicReachDbContext data)
         {
             this.data = data;
-            this.mapper = mapper;
         }
 
-        public void Create(int patientId, int physicianId, string date, string hour)
+        public void Create(string patientId, string physicianId, string date, string hour)
         {
             var completeDate = date + ":" + hour;
             var appointmantDate = DateTime.ParseExact(completeDate, "dd-MM-yyyy:H:mm", CultureInfo.InvariantCulture);
@@ -41,7 +39,7 @@ namespace MedicReach.Services.Appointments
             this.data.SaveChanges();
         }
 
-        public IEnumerable<AppointmentServiceModel> GetPatientAppointments(int patientId)
+        public IEnumerable<AppointmentServiceModel> GetPatientAppointments(string patientId)
             => this.data
                 .Patients
                 .Where(p => p.Id == patientId)
@@ -50,9 +48,9 @@ namespace MedicReach.Services.Appointments
                     .Select(a => new AppointmentServiceModel
                     {
                         PhysicianId = a.PhysicianId,
-                        PhysicianName = a.Physician.User.FullName,
+                        PhysicianName = a.Physician.FullName,
                         PatientId = a.PatientId,
-                        PatientName = a.Patient.User.FullName,
+                        PatientName = a.Patient.FullName,
                         Date = a.Date
                     }))
                 .ToList();

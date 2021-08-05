@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using MedicReach.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,10 +11,10 @@ namespace MedicReach.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<User> signInManager;
-        private readonly UserManager<User> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public RegisterModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        public RegisterModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -31,15 +30,6 @@ namespace MedicReach.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
-
-            [Required]
-            [Display(Name = "Full Name")]
-            [StringLength(FullNameMaxLength, MinimumLength = FullNameMinLength)]
-            public string FullName { get; set; }
-
-            [Required]
-            [Display(Name = "User Type")]
-            public string UserType { get; set; }
 
             [Required]
             [StringLength(PasswordMaxLength, MinimumLength = PasswordMinLength)]
@@ -63,12 +53,10 @@ namespace MedicReach.Areas.Identity.Pages.Account
             
             if (ModelState.IsValid)
             {
-                var user = new User 
+                var user = new IdentityUser 
                 { 
                     UserName = Input.Email, 
                     Email = Input.Email,
-                    FullName = Input.FullName,
-                    Type = Input.UserType
                 };
 
                 var result = await this.userManager.CreateAsync(user, Input.Password);
@@ -76,11 +64,6 @@ namespace MedicReach.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await this.signInManager.SignInAsync(user, isPersistent: false);
-
-                    if (user.Type == "Physician")
-                    {
-
-                    }
 
                     return LocalRedirect(returnUrl);
                 }

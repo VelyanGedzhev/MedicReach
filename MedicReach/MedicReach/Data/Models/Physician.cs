@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static MedicReach.Data.DataConstants.Physician;
 
@@ -6,12 +7,17 @@ namespace MedicReach.Data.Models
 {
     public class Physician
     {
-        public int Id { get; init; }
+        public string Id { get; init; } = Guid.NewGuid().ToString();
+
+        [Required]
+        [MaxLength(NameMaxLength)]
+        public string FullName { get; set; }
 
         [Required]
         public string Gender { get; init; }
 
-        public int MedicalCenterId { get; set; }
+        [Required]
+        public string MedicalCenterId { get; set; }
 
         public MedicalCenter MedicalCenter { get; set; }
 
@@ -34,8 +40,6 @@ namespace MedicReach.Data.Models
 
         [Required]
         public string UserId { get; set; }
-
-        public User User { get; set; }
 
         public IEnumerable<Appointment> Appointments { get; init; } = new List<Appointment>();
 

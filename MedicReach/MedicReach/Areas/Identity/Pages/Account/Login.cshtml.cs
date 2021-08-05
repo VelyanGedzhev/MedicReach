@@ -12,9 +12,9 @@ namespace MedicReach.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<User> signInManager;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public LoginModel(SignInManager<User> signInManager) 
+        public LoginModel(SignInManager<IdentityUser> signInManager) 
             => this.signInManager = signInManager;
 
         [BindProperty]
