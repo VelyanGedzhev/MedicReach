@@ -1,35 +1,22 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MedicReach.Data;
-using MedicReach.Models;
-using MedicReach.Services.MedicalCenters.Models;
+﻿using MedicReach.Models;
+using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
 
 namespace MedicReach.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly MedicReachDbContext data;
-        private readonly IMapper mapper;
+        private readonly IMedicalCenterService medicalCenters;
 
-        public HomeController(
-            MedicReachDbContext data, 
-            IMapper mapper)
+        public HomeController(IMedicalCenterService medicalCenters)
         {
-            this.data = data;
-            this.mapper = mapper;
+            this.medicalCenters = medicalCenters;
         }
 
         public IActionResult Index()
         {
-            var medicalCenters = this.data
-                .MedicalCenters
-                .Where(x => x.Physicians.Any(p => p.IsApproved))
-                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
-                .Take(3)
-                .ToList();
+            var medicalCenters = this.medicalCenters.GetMedicalCenters();
 
             return View(medicalCenters);
         }

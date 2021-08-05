@@ -57,6 +57,15 @@ namespace MedicReach.Controllers
             return Redirect("/");            
         }
 
+        public IActionResult Mine()
+        {
+            var id = GetId();
+
+            var appointments = this.appointments.GetPatientAppointments(id);
+
+            return View(appointments);
+        }
+
         private int GetId()
         {
             var userId = this.User.GetId();

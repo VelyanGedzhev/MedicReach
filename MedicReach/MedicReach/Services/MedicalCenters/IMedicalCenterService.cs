@@ -34,6 +34,8 @@ namespace MedicReach.Services.MedicalCenters
 
         MedicalCenterServiceModel Details(int medicalCenterId);
 
+        IEnumerable<MedicalCenterServiceModel> GetMedicalCenters();
+
         IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes();
 
         IEnumerable<MedicalCenterAddressServiceModel> GetAddresses();

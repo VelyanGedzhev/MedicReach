@@ -140,6 +140,14 @@ namespace MedicReach.Services.MedicalCenters
                 .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
 
+        public IEnumerable<MedicalCenterServiceModel> GetMedicalCenters()
+            => this.data
+                .MedicalCenters
+                .Where(x => x.Physicians.Any(p => p.IsApproved))
+                .ProjectTo<MedicalCenterServiceModel>(this.mapper.ConfigurationProvider)
+                .Take(3)
+                .ToList();
+
         public IEnumerable<MedicalCenterAddressServiceModel> GetAddresses()
             => this.data
                 .Addresses

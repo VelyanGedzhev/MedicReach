@@ -1,0 +1,9 @@
+﻿@model List<AppointmentServiceModel>
+
+<div class="list-group">
+    <h2 class="list-group-item">Physician, Date, Patient</h2>
+    @foreach (var appointment in Model)
+    {
+        <a href="#" class="list-group-item list-group-item-action">@appointment.PhysicianName @appointment.Date @appointment.PatientName</a>
+    }
+</div>
