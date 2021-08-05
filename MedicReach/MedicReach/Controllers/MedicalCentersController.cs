@@ -4,6 +4,7 @@ using MedicReach.Models.MedicalCenters;
 using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Controllers
 {
@@ -87,6 +88,8 @@ namespace MedicReach.Controllers
                 this.User.GetId(),
                 medicalCenterModel.ImageUrl);
 
+            this.TempData[GlobalMessageKey] = string.Format(CreateMedicalCenterSuccessMessage, medicalCenterModel.Name);
+
             //TODO: better way to create medical center while created physician
             return Redirect("/Physicians/Become");
         }
@@ -146,7 +149,9 @@ namespace MedicReach.Controllers
                 medicalCenterModel.JoiningCode,
                 medicalCenterModel.ImageUrl);
 
-            return RedirectToAction(nameof(All));
+            this.TempData[GlobalMessageKey] = string.Format(EditMedicalCenterSuccessMessage, medicalCenterModel.Name);
+
+            return RedirectToAction(nameof(Details), new { medicalCenterId });
         }
 
         public IActionResult Details(string medicalCenterId)

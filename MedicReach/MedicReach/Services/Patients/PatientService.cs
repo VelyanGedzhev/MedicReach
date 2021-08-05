@@ -31,7 +31,7 @@ namespace MedicReach.Services.Patients
 
             Task.Run(async () =>
             {
-                await userManager.AddToRoleAsync(user, GlobalConstants.PatientRoleName);
+                await userManager.AddToRoleAsync(user, WebConstants.PatientRoleName);
             })
                 .GetAwaiter()
                 .GetResult();

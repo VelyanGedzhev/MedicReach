@@ -4,7 +4,10 @@ using MedicReach.Models.Physicians;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Controllers
 {
@@ -13,15 +16,18 @@ namespace MedicReach.Controllers
         private readonly IPhysicianService physicians;
         private readonly IMedicalCenterService medicalCenters;
         private readonly IMapper mapper;
+        private readonly SignInManager<IdentityUser> signInManager;
 
         public PhysiciansController(
             IPhysicianService physicians,
             IMedicalCenterService medicalCenters,
-            IMapper mapper)
+            IMapper mapper,
+            SignInManager<IdentityUser> signInManager)
         {
             this.physicians = physicians;
             this.medicalCenters = medicalCenters;
             this.mapper = mapper;
+            this.signInManager = signInManager;
         }
 
         public IActionResult All([FromQuery] AllPhysiciansQueryModel query)
@@ -107,7 +113,16 @@ namespace MedicReach.Controllers
                 physicianModel.IsApproved,
                 this.User.GetId());
 
-            return RedirectToAction(nameof(All));
+            Task.Run(async () =>
+                {
+                    await this.signInManager.SignOutAsync();
+                })
+                .GetAwaiter()
+                .GetResult();
+
+            this.TempData[GlobalMessageKey] = BecomePhysicianSuccessMessage;
+
+            return RedirectToAction("Index", "Home");
         }
 
         [Authorize]
@@ -163,7 +178,9 @@ namespace MedicReach.Controllers
                 physicianModel.IsApproved,
                 this.User.GetId());
 
-            return RedirectToAction(nameof(All));
+            this.TempData[GlobalMessageKey] = BecomePhysicianSuccessMessage;
+
+            return RedirectToAction(nameof(Details), new { physicianId });
         }
 
         public IActionResult Details(string physicianId)

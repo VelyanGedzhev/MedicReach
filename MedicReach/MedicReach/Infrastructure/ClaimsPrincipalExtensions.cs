@@ -12,9 +12,9 @@ namespace MedicReach.Infrastructure
             => user.IsInRole(AdministratorRoleName);
 
         public static bool IsPhysician(this ClaimsPrincipal user)
-            => user.IsInRole(GlobalConstants.PhysicianRoleName);
+            => user.IsInRole(WebConstants.PhysicianRoleName);
 
         public static bool IsPatient(this ClaimsPrincipal user)
-            => user.IsInRole(GlobalConstants.PatientRoleName);
+            => user.IsInRole(WebConstants.PatientRoleName);
     }
 }

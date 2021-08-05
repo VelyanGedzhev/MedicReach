@@ -4,6 +4,7 @@ using MedicReach.Services.Appointments;
 using MedicReach.Services.Patients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Controllers
 {
@@ -48,7 +49,9 @@ namespace MedicReach.Controllers
                 appointment.Date,
                 appointment.Hour);
 
-            return Redirect("/");            
+            this.TempData[GlobalMessageKey] = BookAppointmentSuccessMessage; 
+
+            return RedirectToAction(nameof(Mine));            
         }
 
         public IActionResult Mine()

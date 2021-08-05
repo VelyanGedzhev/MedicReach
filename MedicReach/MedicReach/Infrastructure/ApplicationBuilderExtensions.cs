@@ -8,7 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using static MedicReach.Areas.Admin.AdminConstants;
-using static MedicReach.GlobalConstants;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Infrastructure
 {

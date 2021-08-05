@@ -60,7 +60,7 @@ namespace MedicReach.Services.Physicians
 
             Task.Run(async () =>
             {
-                await userManager.AddToRoleAsync(user, GlobalConstants.PhysicianRoleName);
+                await userManager.AddToRoleAsync(user, WebConstants.PhysicianRoleName);
             })
                 .GetAwaiter()
                 .GetResult();            
