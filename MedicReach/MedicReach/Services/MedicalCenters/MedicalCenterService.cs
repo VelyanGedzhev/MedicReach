@@ -76,12 +76,12 @@ namespace MedicReach.Services.MedicalCenters
         }
 
         public MedicalCenterQueryServiceModel All(
-            string type,
-            string country,
-            string searchTerm,
-            MedicalCentersSorting sorting,
-            int currentPage,
-            int medicalCentersPerPage)
+            string type = null,
+            string country = null,
+            string searchTerm = null,
+            MedicalCentersSorting sorting = MedicalCentersSorting.DateCreated,
+            int currentPage = 1,
+            int medicalCentersPerPage = int.MaxValue)
         {
             var medicalCentersQuery = this.data
                 .MedicalCenters

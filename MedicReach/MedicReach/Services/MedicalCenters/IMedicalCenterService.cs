@@ -25,12 +25,12 @@ namespace MedicReach.Services.MedicalCenters
             string imageUrl);
 
         MedicalCenterQueryServiceModel All(
-            string Type,
-            string Country,
-            string searchTerm,
-            MedicalCentersSorting sorting,
-            int currentPage,
-            int physiciansPerPage);
+            string type = null,
+            string country = null,
+            string searchTerm = null,
+            MedicalCentersSorting sorting = MedicalCentersSorting.DateCreated,
+            int currentPage = 1,
+            int medicalCentersPerPage = int.MaxValue);
 
         MedicalCenterServiceModel Details(string medicalCenterId);
 
