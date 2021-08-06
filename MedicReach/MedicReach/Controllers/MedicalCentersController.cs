@@ -90,8 +90,7 @@ namespace MedicReach.Controllers
 
             this.TempData[GlobalMessageKey] = string.Format(CreateMedicalCenterSuccessMessage, medicalCenterModel.Name);
 
-            //TODO: better way to create medical center while created physician
-            return Redirect("/Physicians/Become");
+            return RedirectToAction("Become", "Physicians");
         }
 
         [Authorize]

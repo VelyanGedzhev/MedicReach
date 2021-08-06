@@ -1,14 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MedicReach.Services.Physicians;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace MedicReach.Areas.Admin.Controllers
 {
-
     public class PhysiciansController : AdminController
     {
-        public IActionResult Index()
+        private readonly IPhysicianService physicians;
+
+        public PhysiciansController(IPhysicianService physicians) 
+            => this.physicians = physicians;
+
+        public IActionResult All()
         {
-            return View();
+            var physicians = this.physicians
+                .All(approved: false)
+                .Physicians;
+
+            return View(physicians);
+        }
+
+        public IActionResult Approve(string physicianId)
+        {
+            this.physicians.ChangeApprovalStatus(physicianId);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

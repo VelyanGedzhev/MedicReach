@@ -52,7 +52,8 @@ namespace MedicReach.Services.Appointments
                         PatientId = a.PatientId,
                         PatientName = a.Patient.FullName,
                         Date = a.Date
-                    }))
+                    })
+                     .OrderBy(a => a.Date))
                 .ToList();
     }
 }

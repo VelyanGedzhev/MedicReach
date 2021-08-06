@@ -32,15 +32,17 @@ namespace MedicReach.Services.Physicians
             string UserId);
 
         PhysicanQueryServiceModel All(
-            string Speciality,
-            string MedicalCenter,
-            string searchTerm,
-            PhysicianSorting sorting,
-            int currentPage,
-            int physiciansPerPage,
-            bool approved);
+            string speciality = null,
+            string medicalCenter = null,
+            string searchTerm = null,
+            PhysicianSorting sorting = PhysicianSorting.DateCreated,
+            int currentPage = 1,
+            int physiciansPerPage = int.MaxValue,
+            bool approved = true);
 
         PhysicianServiceModel Details(string physicianId);
+
+        void ChangeApprovalStatus(string physicianId);
 
         IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities();
 

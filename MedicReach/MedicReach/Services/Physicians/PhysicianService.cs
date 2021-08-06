@@ -99,20 +99,17 @@ namespace MedicReach.Services.Physicians
         }
 
         public PhysicanQueryServiceModel All(
-            string speciality,
-            string medicalCenter,
-            string searchTerm,
-            PhysicianSorting sorting,
-            int currentPage,
-            int physiciansPerPage,
+            string speciality = null,
+            string medicalCenter = null,
+            string searchTerm = null,
+            PhysicianSorting sorting = PhysicianSorting.DateCreated,
+            int currentPage = 1,
+            int physiciansPerPage = int.MaxValue,
             bool approved = true)
         {
             var physiciansQuery = this.data
                 .Physicians
-                .AsQueryable();
-
-            physiciansQuery = physiciansQuery
-                    .Where(p => p.IsApproved == approved);
+                .Where(p => !approved || p.IsApproved);                  
 
             if (!string.IsNullOrEmpty(searchTerm))
             {
@@ -165,6 +162,15 @@ namespace MedicReach.Services.Physicians
                 .Where(p => p.Id == physicianId)
                 .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
                 .FirstOrDefault();
+
+        public void ChangeApprovalStatus(string physicianId)
+        {
+            var physician = this.data.Physicians.Find(physicianId);
+
+            physician.IsApproved = !physician.IsApproved;
+
+            this.data.SaveChanges();
+        }
 
         public IEnumerable<PhysicianSpecialityServiceModel> GetSpecialities()
             => this.data
@@ -237,7 +243,9 @@ namespace MedicReach.Services.Physicians
                     Speciality = p.Speciality.Name,
                     ImageUrl = p.ImageUrl,
                     ExaminationPrice = p.ExaminationPrice,
-                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No"
+                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No",
+                    PracticePermissionNumber = p.PracticePermissionNumber,
+                    IsApproved = p.IsApproved
                 })
                 .ToList();
     }
