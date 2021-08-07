@@ -2,26 +2,30 @@
 using MedicReach.Models.Appointments;
 using MedicReach.Services.Appointments;
 using MedicReach.Services.Patients;
+using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static MedicReach.WebConstants;
 
 namespace MedicReach.Controllers
 {
-    [Authorize]
     public class AppointmentsController : Controller
     {
-        private readonly IPatientService patients;
         private readonly IAppointmentService appointments;
+        private readonly IPatientService patients;
+        private readonly IPhysicianService physicians;
 
         public AppointmentsController(
-            IPatientService patients, 
-            IAppointmentService appointments)
+            IAppointmentService appointments,
+            IPatientService patients,
+            IPhysicianService physicians)
         {
-            this.patients = patients;
             this.appointments = appointments;
+            this.patients = patients;
+            this.physicians = physicians;
         }
 
+        [Authorize(Roles = PatientRoleName)]
         public IActionResult Book(string physicianId)
         {
             var userId = this.User.GetId();
@@ -41,6 +45,7 @@ namespace MedicReach.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = PatientRoleName)]
         public IActionResult Book(AppointmentFormModel appointment)
         {
             this.appointments.Create(
@@ -54,17 +59,26 @@ namespace MedicReach.Controllers
             return RedirectToAction(nameof(Mine));            
         }
 
+        [Authorize(Roles = PatientRoleName + "," + PhysicianRoleName)]
         public IActionResult Mine()
         {
-            var userId = this.User.GetId();
+            var id = GetId();
 
-            var patientId = this.patients.GetPatientId(userId);
-
-            var appointments = this.appointments.GetPatientAppointments(patientId);
+            var appointments = this.appointments.GetAppointments(id);
 
             return View(appointments);
         }
 
+        private string GetId()
+        {
+            var userId = this.User.GetId();
 
+            if (this.User.IsPhysician())
+            {
+                return this.physicians.GetPhysicianId(userId);
+            }
+
+            return this.patients.GetPatientId(userId);
+        }
     }
 }

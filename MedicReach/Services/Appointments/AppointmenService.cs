@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Services.Appointments.Models;
@@ -12,10 +13,12 @@ namespace MedicReach.Services.Appointments
     public class AppointmenService : IAppointmentService
     {
         private readonly MedicReachDbContext data;
+        private readonly IMapper mapper;
 
-        public AppointmenService(MedicReachDbContext data)
+        public AppointmenService(MedicReachDbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper;
         }
 
         public void Create(string patientId, string physicianId, string date, string hour)
@@ -39,21 +42,12 @@ namespace MedicReach.Services.Appointments
             this.data.SaveChanges();
         }
 
-        public IEnumerable<AppointmentServiceModel> GetPatientAppointments(string patientId)
+        public IEnumerable<AppointmentServiceModel> GetAppointments(string id)
             => this.data
-                .Patients
-                .Where(p => p.Id == patientId)
-                .SelectMany(a => 
-                    a.Appointments
-                    .Select(a => new AppointmentServiceModel
-                    {
-                        PhysicianId = a.PhysicianId,
-                        PhysicianName = a.Physician.FullName,
-                        PatientId = a.PatientId,
-                        PatientName = a.Patient.FullName,
-                        Date = a.Date
-                    })
-                     .OrderBy(a => a.Date))
+                .Appointments
+                .Where(p => p.PatientId == id || p.PhysicianId == id)
+                .ProjectTo<AppointmentServiceModel>(this.mapper.ConfigurationProvider)
+                .OrderBy(a => a.Date)
                 .ToList();
     }
 }

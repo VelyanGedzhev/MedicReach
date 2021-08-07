@@ -2,6 +2,7 @@
 using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters;
 using MedicReach.Models.Physicians;
+using MedicReach.Services.Appointments.Models;
 using MedicReach.Services.MedicalCenters.Models;
 using MedicReach.Services.Physicians.Models;
 
@@ -59,6 +60,14 @@ namespace MedicReach.Infrastructure
                     cfg => cfg.MapFrom(p => p.IsWorkingWithChildren == true ? "Yes" : "No"));
 
             this.CreateMap<PhysicianSpeciality, PhysicianSpecialityServiceModel>();
+
+            this.CreateMap<Appointment, AppointmentServiceModel>()
+                .ForMember(
+                    a => a.PhysicianName,
+                    cfg => cfg.MapFrom(mc => mc.Physician.FullName))
+                .ForMember(
+                    a => a.PatientName,
+                    cfg => cfg.MapFrom(mc => mc.Patient.FullName));
         }
     }
 }

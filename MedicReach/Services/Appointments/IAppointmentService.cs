@@ -7,6 +7,6 @@ namespace MedicReach.Services.Appointments
     {
         void Create(string patientId, string physicianId, string date, string hour);
 
-        IEnumerable<AppointmentServiceModel> GetPatientAppointments(string patientId);
+        IEnumerable<AppointmentServiceModel> GetAppointments(string id);
     }
 }
