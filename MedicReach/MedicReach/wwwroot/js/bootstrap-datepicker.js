@@ -1684,7 +1684,7 @@
 		calendarWeeks: false,
 		clearBtn: false,
 		toggleActive: false,
-		daysOfWeekDisabled: [],
+		daysOfWeekDisabled: [0, 6],
 		daysOfWeekHighlighted: [],
 		datesDisabled: [],
 		endDate: Infinity,

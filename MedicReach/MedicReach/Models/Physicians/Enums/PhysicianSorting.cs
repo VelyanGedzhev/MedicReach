@@ -6,6 +6,8 @@
         ExaminationPriceAsc = 1,
         ExaminationPriceDesc = 2,
         NameAsc = 3,
-        NameDesc = 4
+        NameDesc = 4,
+        Unapproved  = 5,
+        Approved = 6
     }
 }

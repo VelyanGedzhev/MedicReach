@@ -1,4 +1,6 @@
-﻿using MedicReach.Services.Physicians;
+﻿using MedicReach.Areas.Admin.Models.Physicians;
+using MedicReach.Models.Physicians.Enums;
+using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -11,13 +13,23 @@ namespace MedicReach.Areas.Admin.Controllers
         public PhysiciansController(IPhysicianService physicians) 
             => this.physicians = physicians;
 
-        public IActionResult All()
+        public IActionResult All(AllPhysiciansAdminQueryModel query)
         {
-            var physicians = this.physicians
-                .All(approved: false)
-                .Physicians;
+            var queryResult = this.physicians
+                .All(
+                    null,
+                    null,
+                    null,
+                    query.Sorting,
+                    query.CurrentPage,
+                    AllPhysiciansAdminQueryModel.PhysiciansPerPage,
+                    approved: false
+                    );
 
-            return View(physicians);
+            query.Physicians = queryResult.Physicians;
+            query.TotalPhysicians = queryResult.TotalPhysicians;
+
+            return View(query);
         }
 
         public IActionResult Approve(string physicianId)

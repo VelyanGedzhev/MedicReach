@@ -1,4 +1,6 @@
-﻿using MedicReach.Services.MedicalCenters;
+﻿using MedicReach.Areas.Admin.Models.MedicalCenters;
+using MedicReach.Models.MedicalCenters.Enums;
+using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedicReach.Areas.Admin.Controllers
@@ -10,13 +12,22 @@ namespace MedicReach.Areas.Admin.Controllers
         public MedicalCentersController(IMedicalCenterService medicalCenters) 
             => this.medicalCenters = medicalCenters;
 
-        public IActionResult All()
+        public IActionResult All(AllMedicalCentersAdminQueryModel query)
         {
-            var medicalCenters = this.medicalCenters
-                    .All()
-                    .MedicalCenters;
+            var queryResult = this.medicalCenters
+                    .All(
+                        null,
+                        null,
+                        query.SearchTerm,
+                        MedicalCentersSorting.DateCreated,
+                        query.CurrentPage,
+                        AllMedicalCentersAdminQueryModel.MedicalCentersPerPage
+                        );
 
-            return View(medicalCenters);
+            query.MedicalCenters = queryResult.MedicalCenters;
+            query.TotalMedicalCenters = queryResult.TotalMedicalCenters;
+
+            return View(query);
         }
     }
 }

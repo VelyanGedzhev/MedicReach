@@ -136,6 +136,8 @@ namespace MedicReach.Services.Physicians
                 PhysicianSorting.ExaminationPriceAsc => physiciansQuery.OrderBy(p => p.ExaminationPrice),
                 PhysicianSorting.NameAsc => physiciansQuery.OrderBy(p => p.FullName),
                 PhysicianSorting.NameDesc => physiciansQuery.OrderByDescending(p => p.FullName),
+                PhysicianSorting.Unapproved => physiciansQuery.OrderBy(p => p.IsApproved),
+                PhysicianSorting.Approved => physiciansQuery.OrderByDescending(p => p.IsApproved),
                 PhysicianSorting.DateCreated or _ => physiciansQuery.OrderByDescending(p => p.Id)
             };
 
