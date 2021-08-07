@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MedicReach.Migrations
+namespace MedicReach.Data.Migrations
 {
     public partial class UpdateDataModelsAndRemoveCustomUserModel : Migration
     {

@@ -84,7 +84,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
     <Folder Include="Data\Models\Enums\" />
   </ItemGroup>
 

@@ -4,16 +4,14 @@ using MedicReach.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace MedicReach.Migrations
+namespace MedicReach.Data.Migrations
 {
     [DbContext(typeof(MedicReachDbContext))]
-    [Migration("20210805130239_UpdateDataModelsAndRemoveCustomUserModel")]
-    partial class UpdateDataModelsAndRemoveCustomUserModel
+    partial class MedicReachDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
