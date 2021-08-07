@@ -16,9 +16,9 @@ namespace MedicReach.Data
 
         public DbSet<MedicalCenterType> MedicalCenterTypes { get; init; }
 
-        public DbSet<Address> Addresses { get; init; }
-
         public DbSet<Country> Countries { get; init; }
+
+        public DbSet<City> Cities { get; init; }
 
         public DbSet<Physician> Physicians { get; init; }
 
@@ -31,10 +31,24 @@ namespace MedicReach.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
+                .Entity<City>()
+                .HasOne(c => c.Country)
+                .WithMany(c => c.Cities)
+                .HasForeignKey(c => c.CountryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .Entity<MedicalCenter>()
-                .HasOne(mc => mc.Address)
+                .HasOne(mc => mc.City)
                 .WithMany(a => a.MedicalCenters)
-                .HasForeignKey(mc => mc.AddressId)
+                .HasForeignKey(mc => mc.CityId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<MedicalCenter>()
+                .HasOne(mc => mc.Country)
+                .WithMany(a => a.MedicalCenters)
+                .HasForeignKey(mc => mc.CountryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
@@ -70,13 +84,6 @@ namespace MedicReach.Data
                 .HasMany(a => a.Appointments)
                 .WithOne(p => p.Physician)
                 .HasForeignKey(a => a.PhysicianId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .Entity<Address>()
-                .HasOne(a => a.Country)
-                .WithMany(c => c.Addresses)
-                .HasForeignKey(a => a.CountryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder

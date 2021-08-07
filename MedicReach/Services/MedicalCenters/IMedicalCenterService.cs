@@ -8,8 +8,10 @@ namespace MedicReach.Services.MedicalCenters
     {
         void Create(
              string name,
-             int addressId,
+             string address,
              int medicalCenterTypeId,
+             int cityId,
+             int countryId,
              string description,
              string joiningCode,
              string CreatorId,
@@ -18,8 +20,10 @@ namespace MedicReach.Services.MedicalCenters
         void Edit(
             string id,
             string name,
-            int addressId,
-            int medicalCenterTypeId,
+            string address,
+            int typeId,
+            int cityId,
+            int countryId,
             string description,
             string joiningCode,
             string imageUrl);
@@ -38,13 +42,7 @@ namespace MedicReach.Services.MedicalCenters
 
         IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes();
 
-        IEnumerable<MedicalCenterAddressServiceModel> GetAddresses();
-
-        IEnumerable<string> AllCountries();
-
         IEnumerable<string> AllTypes();
-
-        bool MedicalCenterAddressExists(int addressId);
 
         bool MedicalCenterTypeExists(int typeId);
 

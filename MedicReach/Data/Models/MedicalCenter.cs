@@ -13,9 +13,17 @@ namespace MedicReach.Data.Models
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        public int AddressId { get; set; }
+        [Required]
+        [MaxLength(AddressNameMaxLength)]
+        public string Address { get; set; }
 
-        public Address Address { get; init; }
+        public int CityId { get; set; }
+
+        public City City { get; set; }
+
+        public int CountryId { get; set; }
+
+        public Country Country { get; set; }
 
         [Required]
         [MaxLength(DescriptionMaxLength)]

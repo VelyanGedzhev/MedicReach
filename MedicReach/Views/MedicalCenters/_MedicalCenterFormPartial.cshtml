@@ -11,6 +11,29 @@
                     <span asp-validation-for="Name" class="small text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" class="form-control" placeholder="2 Fleet Street, ...">
+                    <span asp-validation-for="Address" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CityId"></label>
+                    <select asp-for="CityId" class="form-control">
+                        @foreach (var city in Model.Cities)
+                        {
+                            <option value="@city.Id"> @city.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CountryId"></label>
+                    <select asp-for="CountryId" class="form-control">
+                        @foreach (var country in Model.Coutries)
+                        {
+                            <option value="@country.Id"> @country.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
                     <label asp-for="Description"></label>
                     <textarea asp-for="Description" rows="3" class="form-control" placeholder="The hospital with the best specialists..."></textarea>
                     <span asp-validation-for="Description" class="small text-danger"></span>
@@ -30,15 +53,8 @@
                     <select asp-for="TypeId" class="form-control">
                         @foreach (var type in Model.MedicalCenterTypes)
                         {
-            <option value="@type.Id"> @type.Name</option>}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label asp-for="AddressId"></label>
-                    <select asp-for="AddressId" class="form-control">
-                        @foreach (var address in Model.Addresses)
-                        {
-            <option value="@address.Id">@address.Number @address.Name, @address.City, @address.CountryCode</option>}
+                            <option value="@type.Id"> @type.Name</option>
+                        }
                     </select>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Save" />

@@ -8,10 +8,8 @@
 
         public string  Address { get; init; }
 
-        public int Number { get; init; }
-
         public string  City { get; init; }
 
-        public string  CountryCode { get; init; }
+        public string Country { get; init; }
     }
 }

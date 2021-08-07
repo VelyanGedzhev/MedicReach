@@ -14,6 +14,14 @@
 
         public string Type { get; init; }
 
+        public int CityId { get; init; }
+
+        public string City { get; init; }
+
+        public int CountryId { get; init; }
+
+        public string Country { get; init; }
+
         public string Description { get; init; }
 
         public string JoiningCode { get; init; }

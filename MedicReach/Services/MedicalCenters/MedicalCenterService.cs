@@ -25,8 +25,10 @@ namespace MedicReach.Services.MedicalCenters
 
         public void Create(
             string name,
-            int addressId,
+            string address,
             int typeId,
+            int cityId,
+            int countryId,
             string description,
             string joiningCode,
             string creatorId,
@@ -40,8 +42,10 @@ namespace MedicReach.Services.MedicalCenters
             var medicalCenterToAdd = new MedicalCenter
             {
                 Name = name,
-                AddressId = addressId,
+                Address = address,
                 TypeId = typeId,
+                CityId = cityId,
+                CountryId = countryId,
                 Description = description,
                 JoiningCode = joiningCode,
                 CreatorId = creatorId,
@@ -55,8 +59,10 @@ namespace MedicReach.Services.MedicalCenters
         public void Edit(
            string id,
            string name,
-           int addressId,
+           string address,
            int typeId,
+           int cityId,
+           int countryId,
            string description,
            string joiningCode,
            string imageUrl)
@@ -66,8 +72,10 @@ namespace MedicReach.Services.MedicalCenters
                 .Find(id);
 
             medicalCenterToEdit.Name = name;
-            medicalCenterToEdit.AddressId = addressId;
+            medicalCenterToEdit.Address = address;
             medicalCenterToEdit.TypeId = typeId;
+            medicalCenterToEdit.CityId = cityId;
+            medicalCenterToEdit.CountryId = countryId;
             medicalCenterToEdit.Description = description;
             medicalCenterToEdit.JoiningCode = joiningCode;
             medicalCenterToEdit.ImageUrl = imageUrl ?? DefaultImageUrl;
@@ -104,7 +112,7 @@ namespace MedicReach.Services.MedicalCenters
             if (!string.IsNullOrEmpty(country))
             {
                 medicalCentersQuery = medicalCentersQuery
-                    .Where(mc => mc.Address.Country.Name == country);
+                    .Where(mc => mc.Country.Name == country);
             }
 
             medicalCentersQuery = sorting switch
@@ -148,25 +156,13 @@ namespace MedicReach.Services.MedicalCenters
                 .Take(3)
                 .ToList();
 
-        public IEnumerable<MedicalCenterAddressServiceModel> GetAddresses()
-            => this.data
-                .Addresses
-                .ProjectTo<MedicalCenterAddressServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
-
         public IEnumerable<MedicalCenterTypeServiceModel> GetMedicalCenterTypes()
             => this.data
                 .MedicalCenterTypes
                 .ProjectTo<MedicalCenterTypeServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
 
-        public IEnumerable<string> AllCountries()
-            => this.data
-                .Countries
-                .Select(ps => ps.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
+        
 
         public IEnumerable<string> AllTypes()
             => this.data
@@ -175,9 +171,6 @@ namespace MedicReach.Services.MedicalCenters
                 .Distinct()
                 .OrderBy(name => name)
                 .ToList();
-
-        public bool MedicalCenterAddressExists(int addressId)
-            => this.data.Addresses.Any(a => a.Id == addressId);
 
         public bool MedicalCenterTypeExists(int typeId)
             => this.data.MedicalCenterTypes.Any(a => a.Id == typeId);

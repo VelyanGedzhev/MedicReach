@@ -24,7 +24,7 @@ namespace MedicReach.Infrastructure
             SeedApplicationRoles(services);
             SeedAdministrator(services);
             SeedCountries(services);
-            SeedAddresses(services);
+            SeedCities(services);
             SeedMedicalCenterTypes(services);
             SeedSpecialities(services);
 
@@ -125,21 +125,25 @@ namespace MedicReach.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeedAddresses(IServiceProvider services)
+        private static void SeedCities(IServiceProvider services)
         {
             var data = services.GetRequiredService<MedicReachDbContext>();
 
-            if (data.Addresses.Any())
+            if (data.Cities.Any())
             {
                 return;
             }
 
-            data.Addresses.AddRange(new[]
+            data.Cities.AddRange(new[]
             {
-                new Address { Name = "Abbey Road", Number = 3, City = "London", CountryId = 5},
-                new Address { Name = "Royal Mile", Number = 5, City = "Edinburgh", CountryId = 5},
-                new Address { Name = "Oranienburger Strasse", Number = 2, City = "Berlin", CountryId = 7},
-                new Address { Name = "Broadway", Number = 13, City = "New York City", CountryId = 6}
+                new City { Name = "New York", CountryId = 6},
+                new City { Name = "Sofia", CountryId = 1},
+                new City { Name = "Berlin", CountryId = 7},
+                new City { Name = "Paris", CountryId = 2},
+                new City { Name = "Buenos Aires", CountryId = 3},
+                new City { Name = "London", CountryId = 5},
+                new City { Name = "Edinburgh", CountryId = 5},
+                new City { Name = "Amsterdam", CountryId = 4}
             });
 
             data.SaveChanges();

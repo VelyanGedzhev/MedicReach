@@ -19,13 +19,9 @@
             public const int DescriptionMaxLength = 400;
             public const int JoiningCodeMinLength = 4;
             public const int JoiningCodeMaxLength = 12;
+            public const int AdressNameMinLength = 7;
+            public const int AddressNameMaxLength = 50;
             public const string DefaultImageUrl = "https://ehrintelligence.com/images/site/article_headers/_normal/rural_hospital_access.jpg";
-        }
-
-        public class Address
-        {
-            public const int NameMaxLength = 30;
-            public const int CityMaxLength = 40;
         }
 
         public class Physician
@@ -60,6 +56,12 @@
             public const int NameMaxLength = 70;
             public const int Alpha3CodeMinLength = 3;
             public const int Alpha3CodeMaxLength = 3;
+        }
+
+        public class City
+        {
+            public const int NameMinLength = 5;
+            public const int NameMaxLength = 50;
         }
 
         public class MedicalCenterType

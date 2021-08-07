@@ -11,11 +11,19 @@ namespace MedicReach.Models.MedicalCenters
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
-        [Display(Name = "Address")]
-        public int AddressId { get; init; }
+        [Required]
+        [Display(Name = "Address Number and Name")]
+        [StringLength(AddressNameMaxLength, MinimumLength = AdressNameMinLength)]
+        public string Address { get; set; }
 
         [Display(Name = "Type")]
         public int TypeId { get; init; }
+
+        [Display(Name = "City")]
+        public int CityId { get; init; }
+
+        [Display(Name = "Country")]
+        public int CountryId { get; init; }
 
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength)]
@@ -30,7 +38,9 @@ namespace MedicReach.Models.MedicalCenters
         [Display(Name = "Image")]
         public string ImageUrl { get; init; }
 
-        public IEnumerable<MedicalCenterAddressServiceModel> Addresses { get; set; }
+        public IEnumerable<CityServiceModel> Cities { get; set; }
+
+        public IEnumerable<CountryServiceModel> Coutries { get; set; }
 
         public IEnumerable<MedicalCenterTypeServiceModel> MedicalCenterTypes { get; set; }
     }

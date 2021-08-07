@@ -12,34 +12,27 @@ namespace MedicReach.Infrastructure
     {
         public MappingProfile()
         {
-            this.CreateMap<Address, MedicalCenterAddressServiceModel>()
-                .ForMember(
-                    mc => mc.CountryCode,
-                    cfg => cfg.MapFrom(mc => mc.Country.Alpha3Code));
 
             this.CreateMap<MedicalCenterServiceModel, MedicalCenterFormModel>();
 
             this.CreateMap<MedicalCenter, MedicalCenterServiceModel>()
                 .ForMember(
-                    mc => mc.Type, 
+                    mc => mc.Type,
                     cfg => cfg.MapFrom(mc => mc.Type.Name))
                 .ForMember(
-                    mc => mc.Address,
-                    cfg => cfg.MapFrom(mc => $"{mc.Address.Number} {mc.Address.Name}, {mc.Address.City}, {mc.Address.Country.Alpha3Code}"));
+                    mc => mc.City,
+                    cfg => cfg.MapFrom(c => c.City.Name))
+                .ForMember(
+                    mc => mc.Country,
+                    cfg => cfg.MapFrom(c => c.Country.Name));
 
             this.CreateMap<MedicalCenter, PhysicianMedicalCentersServiceModel>()
                 .ForMember(
-                    a => a.Address,
-                    cfg => cfg.MapFrom(mc => mc.Address.Name))
-                .ForMember(
-                    n => n.Number,
-                    cfg => cfg.MapFrom(mc => mc.Address.Number))
-                .ForMember(
                     c => c.City,
-                    cfg => cfg.MapFrom(mc => mc.Address.City))
+                    cfg => cfg.MapFrom(mc => mc.City.Name))
                 .ForMember(
-                    mc => mc.CountryCode,
-                    cfg => cfg.MapFrom(mc => mc.Address.Country.Alpha3Code));
+                    mc => mc.Country,
+                    cfg => cfg.MapFrom(mc => mc.Country.Name));
 
             this.CreateMap<MedicalCenterType, MedicalCenterTypeServiceModel>();
 
@@ -54,7 +47,7 @@ namespace MedicReach.Infrastructure
                     cfg => cfg.MapFrom(p => p.Speciality.Name))
                 .ForMember(
                     p => p.Address,
-                    cfg => cfg.MapFrom(p => $"{p.MedicalCenter.Address.Number} {p.MedicalCenter.Address.Name}, {p.MedicalCenter.Address.City}, {p.MedicalCenter.Address.Country.Alpha3Code}"))
+                    cfg => cfg.MapFrom(p => $" {p.MedicalCenter.Address}, {p.MedicalCenter.City.Name}, {p.MedicalCenter.Country.Name}"))
                 .ForMember(
                     p => p.IsWorkingWithChildren,
                     cfg => cfg.MapFrom(p => p.IsWorkingWithChildren == true ? "Yes" : "No"));

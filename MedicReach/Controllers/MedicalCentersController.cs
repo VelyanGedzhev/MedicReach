@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MedicReach.Infrastructure;
 using MedicReach.Models.MedicalCenters;
+using MedicReach.Services.Cities;
+using MedicReach.Services.Coutries;
 using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +13,20 @@ namespace MedicReach.Controllers
     public class MedicalCentersController : Controller
     {
         private readonly IMedicalCenterService medicalCenters;
+        private readonly ICityService cities;
+        private readonly ICountryService countries;
         private readonly IMapper mapper;
 
         public MedicalCentersController(
             IMedicalCenterService medicalCenters,
-            IMapper mapper)
+            IMapper mapper,
+            ICityService cities, 
+            ICountryService countries)
         {
             this.medicalCenters = medicalCenters;
             this.mapper = mapper;
+            this.cities = cities;
+            this.countries = countries;
         }
 
         public IActionResult All([FromQuery] AllMedicalCentersQueryModel query)
@@ -32,7 +40,8 @@ namespace MedicReach.Controllers
                 AllMedicalCentersQueryModel.MedicalCentersPerPage);
 
             var medicalCentersTypes = this.medicalCenters.AllTypes();
-            var countries = this.medicalCenters.AllCountries();
+            var countries = this.countries.AllCountries();
+            //var cities = this.cities.AllCities();
 
             query.Countries = countries;
             query.Types = medicalCentersTypes;
@@ -48,7 +57,8 @@ namespace MedicReach.Controllers
             return View(new MedicalCenterFormModel
             {
                 MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
-                Addresses = this.medicalCenters.GetAddresses()
+                Cities = this.cities.GetCities(),
+                Coutries = this.countries.GetCountries()
             });
         }
 
@@ -56,11 +66,6 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Add(MedicalCenterFormModel medicalCenterModel)
         {
-            if (!this.medicalCenters.MedicalCenterAddressExists(medicalCenterModel.AddressId))
-            {
-                this.ModelState.AddModelError(nameof(medicalCenterModel.AddressId), "Address does not exist.");
-            }
-
             if (!this.medicalCenters.MedicalCenterTypeExists(medicalCenterModel.TypeId))
             {
                 this.ModelState.AddModelError(nameof(medicalCenterModel.TypeId), "Medical Center Type does not exist.");
@@ -71,9 +76,15 @@ namespace MedicReach.Controllers
                 this.ModelState.AddModelError(nameof(medicalCenterModel.JoiningCode), "Joining Code already exists.");
             }
 
+            if (!this.cities.IsCityInCountry(medicalCenterModel.CountryId, medicalCenterModel.CityId))
+            {
+                this.ModelState.AddModelError(nameof(medicalCenterModel.CityId), "City does not match the Country.");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                medicalCenterModel.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenterModel.Cities = this.cities.GetCities();
+                medicalCenterModel.Coutries = this.countries.GetCountries();
                 medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
                 return View(medicalCenterModel);
@@ -81,8 +92,10 @@ namespace MedicReach.Controllers
 
             this.medicalCenters.Create(
                 medicalCenterModel.Name,
-                medicalCenterModel.AddressId,
+                medicalCenterModel.Address,
                 medicalCenterModel.TypeId,
+                medicalCenterModel.CityId,
+                medicalCenterModel.CountryId,
                 medicalCenterModel.Description,
                 medicalCenterModel.JoiningCode,
                 this.User.GetId(),
@@ -107,7 +120,8 @@ namespace MedicReach.Controllers
 
             var medicalCenterForm = this.mapper.Map<MedicalCenterFormModel>(medicalCenter);
             medicalCenterForm.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
-            medicalCenterForm.Addresses = this.medicalCenters.GetAddresses();
+            medicalCenterForm.Cities = this.cities.GetCities();
+            medicalCenterForm.Coutries = this.countries.GetCountries();
 
             return View(medicalCenterForm);
         }
@@ -131,9 +145,15 @@ namespace MedicReach.Controllers
                 }
             }
 
+            if (!this.cities.IsCityInCountry(medicalCenterModel.CountryId, medicalCenterModel.CityId))
+            {
+                this.ModelState.AddModelError(nameof(medicalCenterModel.CityId), "City does not match the Country.");
+            }
+
             if (!this.ModelState.IsValid)
             {
-                medicalCenterModel.Addresses = this.medicalCenters.GetAddresses();
+                medicalCenterModel.Cities = this.cities.GetCities();
+                medicalCenterModel.Coutries = this.countries.GetCountries();
                 medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
                 return View(medicalCenterModel);
@@ -142,8 +162,10 @@ namespace MedicReach.Controllers
             this.medicalCenters.Edit(
                 medicalCenterId,
                 medicalCenterModel.Name,
-                medicalCenterModel.AddressId,
+                medicalCenterModel.Address,
                 medicalCenterModel.TypeId,
+                medicalCenterModel.CityId,
+                medicalCenterModel.CountryId,
                 medicalCenterModel.Description,
                 medicalCenterModel.JoiningCode,
                 medicalCenterModel.ImageUrl);
