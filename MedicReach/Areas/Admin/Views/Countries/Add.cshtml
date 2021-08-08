@@ -1,0 +1,23 @@
+﻿@model MedicReach.Areas.Admin.Models.Countries.CountryFormModel
+
+@{
+    ViewData["Title"] = "Add Country";
+}
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" placeholder="">
+        <span asp-validation-for="Name" class="small text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Alpha3Code"></label>
+        <input asp-for="Alpha3Code" class="form-control" placeholder="">
+        <span asp-validation-for="Alpha3Code" class="small text-danger"></span>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

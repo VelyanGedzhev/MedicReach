@@ -1,3 +1,5 @@
+using MedicReach.Areas.Admin.Services.MedicalCenterTypes;
+using MedicReach.Areas.Admin.Services.Specialities;
 using MedicReach.Data;
 using MedicReach.Infrastructure;
 using MedicReach.Services.Appointments;
@@ -57,6 +59,8 @@ namespace MedicReach
             services.AddTransient<IMedicalCenterService, MedicalCenterService>();
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<ITypeService, TypeService>();
+            services.AddTransient<ISpecialityService, SpecialityService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

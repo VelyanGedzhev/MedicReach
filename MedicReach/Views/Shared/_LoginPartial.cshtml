@@ -51,7 +51,21 @@
                 </div>
             </li>
         }
-        @if(userIsAdmin) 
+        @if (userIsAdmin)
+        {
+            <li class="nav-item">
+                <div class="dropdown show">
+                    <a class="btn btn-outline-light dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Add New</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Specialities" asp-action="Add">Speciality</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="MedicalCenterTypes" asp-action="Add">Medical Center Type</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cities" asp-action="Add">City</a>
+                        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Countries" asp-action="Add">Country</a>
+                    </div>
+                </div>
+            </li>
+        }
+        @if (userIsAdmin)
         {
             <li class="nav-item">
                 <div class="dropdown show">

@@ -10,5 +10,9 @@ namespace MedicReach.Services.Cities
         bool IsCityInCountry(int countryId, int cityId);
 
         IEnumerable<string> AllCities();
+
+        void Add(string name, int countryId);
+
+        bool IsExisting(string name);
     }
 }

@@ -8,5 +8,9 @@ namespace MedicReach.Services.Coutries
         IEnumerable<CountryServiceModel> GetCountries();
 
         IEnumerable<string> AllCountries();
+
+        void Add(string name, string alpha3Code);
+
+        bool IsExisting(string name);
     }
 }

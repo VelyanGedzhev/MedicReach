@@ -19,5 +19,10 @@
         public const string EditMedicalCenterSuccessMessage = "Medical Center '{0}' was edited successfully.";
 
         public const string BookAppointmentSuccessMessage = "Appointment booked succesfully.";
+
+        public const string AddSpecialitySuccessMessage = "Speciality '{0}' was added successfully.";
+        public const string AddMedicalCenterTypeSuccessMessage = "Medical Center Type '{0}' was added successfully.";
+        public const string AddCountrySuccessMessage = "Country '{0}, {1}' was added successfully.";
+        public const string AddCitySuccessMessage = "City '{0}' was added successfully.";
     }
 }

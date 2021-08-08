@@ -1,4 +1,5 @@
 ﻿using MedicReach.Data;
+using MedicReach.Data.Models;
 using MedicReach.Services.MedicalCenters.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,22 @@ namespace MedicReach.Services.Coutries
                 .Distinct()
                 .OrderBy(name => name)
                 .ToList();
+
+        public void Add(string name, string alpha3Code)
+        {
+            var country = new Country
+            {
+                Name = name,
+                Alpha3Code = alpha3Code
+            };
+
+            this.data.Countries.Add(country);
+            this.data.SaveChanges();
+        }
+
+        public bool IsExisting(string name)
+            => this.data
+                .Countries
+                .Any(c => c.Name == name);
     }
 }
