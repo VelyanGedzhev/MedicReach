@@ -21,25 +21,33 @@ namespace MedicReach.Services.Appointments
             this.mapper = mapper;
         }
 
-        public void Create(string patientId, string physicianId, string date, string hour)
+        public bool Create(
+            string patientId, 
+            string physicianId, 
+            string date, 
+            string hour)
         {
             var completeDate = date + ":" + hour;
-            var appointmantDate = DateTime.ParseExact(completeDate, "dd-MM-yyyy:H:mm", CultureInfo.InvariantCulture);
+            var appointmantDate = DateTime.ParseExact(completeDate, "dd-MM-yyyy:HH:mm", CultureInfo.InvariantCulture);
 
-            var isAvailable = this.data
-                .Appointments
-                .Any(a => a.Date == appointmantDate);
+            bool isbBooked = IsBooked(appointmantDate, physicianId);
+
+            if (isbBooked)
+            {
+                return false;
+            }
 
             var appointment = new Appointment
             {
                 PatientId = patientId,
                 PhysicianId = physicianId,
-                Date = appointmantDate,
-                IsAvailable = isAvailable
+                Date = appointmantDate
             };
 
             this.data.Appointments.Add(appointment);
             this.data.SaveChanges();
+
+            return true;
         }
 
         public IEnumerable<AppointmentServiceModel> GetAppointments(string id)
@@ -49,5 +57,19 @@ namespace MedicReach.Services.Appointments
                 .ProjectTo<AppointmentServiceModel>(this.mapper.ConfigurationProvider)
                 .OrderBy(a => a.Date)
                 .ToList();
+
+        public void ChangeApprovalStatus(string appointmentId)
+        {
+            var appointment = this.data.Appointments.Find(appointmentId);
+
+            appointment.IsApproved = !appointment.IsApproved;
+
+            this.data.SaveChanges();
+        }
+
+        private bool IsBooked(DateTime appointmantDate, string physicianId) 
+            => this.data
+                .Appointments
+                .Any(a => a.Date == appointmantDate && a.PhysicianId == physicianId);
     }
 }

@@ -4,16 +4,16 @@ namespace MedicReach.Models.Appointments
 {
     public class AppointmentFormModel
     {
-        public string physicianId { get; set; }
+        public string PhysicianId { get; init; }
 
-        public string patientId { get; set; }
-
-        [Required]
-        //[ValidateDateString(ErrorMessage = GlobalConstants.ErrorMessages.DateTime)]
-        public string Date { get; set; }
+        public string PatientId { get; init; }
 
         [Required]
-        //[ValidateTimeString(ErrorMessage = GlobalConstants.ErrorMessages.DateTime)]
-        public string Hour { get; set; }
+        public string Date { get; init; }
+
+        [Required]
+        public string Hour { get; init; }
+
+        public bool IsApproved { get; init; }
     }
 }

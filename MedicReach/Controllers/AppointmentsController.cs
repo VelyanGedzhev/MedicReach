@@ -39,8 +39,8 @@ namespace MedicReach.Controllers
 
             return View(new AppointmentFormModel
             {
-                physicianId = physicianId,
-                patientId = patientId
+                PhysicianId = physicianId,
+                PatientId = patientId
             });
         }
 
@@ -48,11 +48,16 @@ namespace MedicReach.Controllers
         [Authorize(Roles = PatientRoleName)]
         public IActionResult Book(AppointmentFormModel appointment)
         {
-            this.appointments.Create(
-                appointment.patientId,
-                appointment.physicianId,
+            var isCreated = this.appointments.Create(
+                appointment.PatientId,
+                appointment.PhysicianId,
                 appointment.Date,
                 appointment.Hour);
+
+            if (!isCreated)
+            {
+                return View(appointment);
+            }
 
             this.TempData[GlobalMessageKey] = BookAppointmentSuccessMessage; 
 
@@ -67,6 +72,14 @@ namespace MedicReach.Controllers
             var appointments = this.appointments.GetAppointments(id);
 
             return View(appointments);
+        }
+
+        [Authorize(Roles = PhysicianRoleName)]
+        public IActionResult ChangeStatus(string appointmentId)
+        {
+            this.appointments.ChangeApprovalStatus(appointmentId);
+
+            return RedirectToAction(nameof(Mine));
         }
 
         private string GetId()
