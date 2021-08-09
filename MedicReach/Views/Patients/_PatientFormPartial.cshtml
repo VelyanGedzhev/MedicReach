@@ -1,0 +1,24 @@
+﻿@model PatientFormModel
+
+<div class="container">
+    <div class="row">
+        <div class="offset-lg-2 col-lg-8 col-sm-12 ">
+            <h2 class="heading-margin text-center">@ViewData["Title"]</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="FullName"></label>
+                    <input asp-for="FullName" class="form-control" placeholder="John Johnson, Daniel Smith...">
+                    <span asp-validation-for="FullName" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Gender"></label>
+                    <select asp-for="Gender" class="form-control">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>

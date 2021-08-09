@@ -14,7 +14,7 @@ namespace MedicReach.Data.Models
         public string FullName { get; set; }
 
         [Required]
-        public string Gender { get; init; }
+        public string Gender { get; set; }
 
         [Required]
         public string UserId { get; set; }

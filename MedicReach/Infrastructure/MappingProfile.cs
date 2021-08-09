@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MedicReach.Data.Models;
 using MedicReach.Models.MedicalCenters;
+using MedicReach.Models.Patients;
 using MedicReach.Models.Physicians;
 using MedicReach.Services.Appointments.Models;
 using MedicReach.Services.MedicalCenters.Models;
+using MedicReach.Services.Patients.Models;
 using MedicReach.Services.Physicians.Models;
 
 namespace MedicReach.Infrastructure
@@ -61,6 +63,10 @@ namespace MedicReach.Infrastructure
                 .ForMember(
                     a => a.PatientName,
                     cfg => cfg.MapFrom(mc => mc.Patient.FullName));
+
+            this.CreateMap<Patient, PatientServiceModel>();
+
+            this.CreateMap<PatientServiceModel, PatientFormModel>();
         }
     }
 }
