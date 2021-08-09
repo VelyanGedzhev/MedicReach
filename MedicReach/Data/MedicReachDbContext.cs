@@ -28,6 +28,8 @@ namespace MedicReach.Data
 
         public DbSet<Appointment> Appointments { get; init; }
 
+        public DbSet<Review> Reviews { get; init; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder

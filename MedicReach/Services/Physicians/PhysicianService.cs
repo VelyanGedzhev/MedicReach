@@ -4,6 +4,7 @@ using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians.Models;
+using MedicReach.Services.Reviews;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,18 @@ namespace MedicReach.Services.Physicians
     {
         private readonly MedicReachDbContext data;
         private readonly IMapper mapper;
+        private readonly IReviewService reviews;
         private readonly UserManager<IdentityUser> userManager;
 
         public PhysicianService(
             MedicReachDbContext data,
-            IMapper mapper, 
-            UserManager<IdentityUser> userManager)
+            IMapper mapper,
+            UserManager<IdentityUser> userManager, IReviewService reviews)
         {
             this.data = data;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.reviews = reviews;
         }
 
         public void Create(
@@ -159,11 +162,18 @@ namespace MedicReach.Services.Physicians
         }
 
         public PhysicianServiceModel Details(string physicianId)
-            => this.data
-                .Physicians
-                .Where(p => p.Id == physicianId)
-                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
-                .FirstOrDefault();
+        {
+            var physician =  this.data
+                           .Physicians
+                           .Where(p => p.Id == physicianId)
+                           .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
+                           .FirstOrDefault();
+            
+            physician.LastReview = this.reviews.GetLastReview(physicianId);
+            physician.AverageRating = this.reviews.GetAverageReviewRating(physicianId);
+
+            return physician;
+        }
 
         public void ChangeApprovalStatus(string physicianId)
         {

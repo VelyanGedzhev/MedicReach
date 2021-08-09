@@ -4,14 +4,16 @@ using MedicReach.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicReach.Data.Migrations
 {
     [DbContext(typeof(MedicReachDbContext))]
-    partial class MedicReachDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210809085744_AddReviewsTable")]
+    partial class AddReviewsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

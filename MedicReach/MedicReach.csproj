@@ -36,6 +36,7 @@
     <None Include="Views\Physicians\Edit.cshtml" />
     <None Include="Views\Physicians\_PhysicianFormPartial.cshtml" />
     <None Include="Views\Physicians\_PhysiciansPartial.cshtml" />
+    <None Include="Views\Reviews\Write.cshtml" />
     <None Include="Views\Shared\Error.cshtml" />
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_LoginPartial.cshtml" />

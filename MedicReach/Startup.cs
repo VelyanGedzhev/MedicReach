@@ -8,6 +8,7 @@ using MedicReach.Services.Coutries;
 using MedicReach.Services.MedicalCenters;
 using MedicReach.Services.Patients;
 using MedicReach.Services.Physicians;
+using MedicReach.Services.Reviews;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -61,6 +62,7 @@ namespace MedicReach
             services.AddTransient<ICountryService, CountryService>();
             services.AddTransient<ITypeService, TypeService>();
             services.AddTransient<ISpecialityService, SpecialityService>();
+            services.AddTransient<IReviewService, ReviewService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

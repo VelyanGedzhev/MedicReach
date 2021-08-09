@@ -1,4 +1,5 @@
 ﻿using MedicReach.Data.Models;
+using MedicReach.Services.Reviews.Models;
 
 namespace MedicReach.Services.Physicians.Models
 {
@@ -31,5 +32,9 @@ namespace MedicReach.Services.Physicians.Models
         public string PracticePermissionNumber { get; init; }
 
         public bool IsApproved { get; init; }
+
+        public double AverageRating { get; set; }
+
+        public ReviewServiceModel LastReview { get; set; }
     }
 }

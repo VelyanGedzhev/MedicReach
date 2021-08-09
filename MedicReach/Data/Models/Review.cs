@@ -8,7 +8,7 @@ namespace MedicReach.Data.Models
         public string Id { get; init; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string PatientId { get; set; }
+        public string PatientId { get; init; }
 
         public Patient Patient { get; set; }
 
