@@ -4,23 +4,30 @@
     ViewData["Title"] = "Add Country";
 }
 
-<form method="post">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" placeholder="">
-        <span asp-validation-for="Name" class="small text-danger"></span>
+<div class="container">
+    <div class="row">
+        <div class="offset-lg-2 col-lg-8 col-sm-12">
+            <h2 class="heading-margin text-center">@ViewData["Title"]</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" placeholder="">
+                    <span asp-validation-for="Name" class="small text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CountryId"></label>
+                    <select asp-for="CountryId" class="form-control">
+                        @foreach (var country in Model.Countries)
+                        {
+                            <option value="@country.Id">@country.Name</option>
+                        }
+                    </select>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Add" />
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-        <label asp-for="CountryId"></label>
-        <select asp-for="CountryId" class="form-control">
-            @foreach (var country in Model.Countries)
-            {
-                <option value="@country.Id">@country.Name</option>
-            }
-        </select>
-    </div>
-    <input class="btn btn-primary" type="submit" value="Add" />
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
