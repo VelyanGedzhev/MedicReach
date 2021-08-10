@@ -58,6 +58,13 @@ namespace MedicReach.Services.Appointments
                 .OrderBy(a => a.Date)
                 .ToList();
 
+        public AppointmentServiceModel GetAppointment(string id)
+            => this.data
+                .Appointments
+                .Where(p => p.Id == id)
+                .ProjectTo<AppointmentServiceModel>(this.mapper.ConfigurationProvider)
+                .FirstOrDefault();
+
         public void ChangeApprovalStatus(string appointmentId)
         {
             var appointment = this.data.Appointments.Find(appointmentId);
@@ -70,6 +77,6 @@ namespace MedicReach.Services.Appointments
         private bool IsBooked(DateTime appointmantDate, string physicianId) 
             => this.data
                 .Appointments
-                .Any(a => a.Date == appointmantDate && a.PhysicianId == physicianId);
+                .Any(a => a.Date == appointmantDate && a.PhysicianId == physicianId);  
     }
 }

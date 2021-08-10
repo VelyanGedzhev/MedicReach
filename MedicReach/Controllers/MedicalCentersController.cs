@@ -78,7 +78,10 @@ namespace MedicReach.Controllers
 
             if (!this.cities.IsCityInCountry(medicalCenterModel.CountryId, medicalCenterModel.CityId))
             {
+                this.TempData[GlobalErrorMessageKey] = CreateMedicalCenterCityAndCountryDontMatchMessage;
+
                 this.ModelState.AddModelError(nameof(medicalCenterModel.CityId), "City does not match the Country.");
+                this.ModelState.AddModelError(nameof(medicalCenterModel.CountryId), "City does not match the Country.");
             }
 
             if (!this.ModelState.IsValid)
@@ -101,7 +104,7 @@ namespace MedicReach.Controllers
                 this.User.GetId(),
                 medicalCenterModel.ImageUrl);
 
-            this.TempData[GlobalMessageKey] = string.Format(CreateMedicalCenterSuccessMessage, medicalCenterModel.Name);
+            this.TempData[GlobalSuccessMessageKey] = string.Format(CreateMedicalCenterSuccessMessage, medicalCenterModel.Name);
 
             return RedirectToAction("Become", "Physicians");
         }
@@ -170,7 +173,7 @@ namespace MedicReach.Controllers
                 medicalCenterModel.JoiningCode,
                 medicalCenterModel.ImageUrl);
 
-            this.TempData[GlobalMessageKey] = string.Format(EditMedicalCenterSuccessMessage, medicalCenterModel.Name);
+            this.TempData[GlobalSuccessMessageKey] = string.Format(EditMedicalCenterSuccessMessage, medicalCenterModel.Name);
 
             return RedirectToAction(nameof(Details), new { medicalCenterId });
         }

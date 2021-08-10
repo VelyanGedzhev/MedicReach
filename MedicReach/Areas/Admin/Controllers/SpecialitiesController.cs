@@ -31,7 +31,7 @@ namespace MedicReach.Areas.Admin.Controllers
 
             this.specialities.Add(speciality.Name);
 
-            this.TempData[WebConstants.GlobalMessageKey] = string.Format(WebConstants.AddSpecialitySuccessMessage, speciality.Name);
+            this.TempData[WebConstants.GlobalSuccessMessageKey] = string.Format(WebConstants.AddSpecialitySuccessMessage, speciality.Name);
 
             return RedirectToAction(nameof(Add));
         }

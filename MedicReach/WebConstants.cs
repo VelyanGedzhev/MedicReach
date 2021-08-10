@@ -5,7 +5,8 @@
         public const string PatientRoleName = "Patient";
         public const string PhysicianRoleName = "Physician";
 
-        public const string GlobalMessageKey = "GlobalMessage";
+        public const string GlobalSuccessMessageKey = "GlobalSuccessMessage";
+        public const string GlobalErrorMessageKey = "GlobalErrorMessage";
 
         public const string UserRegistrationSuccessMessage = "Successful registration. Use the 'Become' button to complete your profile.";
 
@@ -17,6 +18,7 @@
 
         public const string CreateMedicalCenterSuccessMessage = "Medical Center '{0}' was created successfully.";
         public const string EditMedicalCenterSuccessMessage = "Medical Center '{0}' was edited successfully.";
+        public const string CreateMedicalCenterCityAndCountryDontMatchMessage = "City does not match the Country.";
 
         public const string BookAppointmentSuccessMessage = "Appointment booked succesfully.";
 
@@ -24,5 +26,7 @@
         public const string AddMedicalCenterTypeSuccessMessage = "Medical Center Type '{0}' was added successfully.";
         public const string AddCountrySuccessMessage = "Country '{0}, {1}' was added successfully.";
         public const string AddCitySuccessMessage = "City '{0}' was added successfully.";
+
+        public const string AppointmentNotAvailableMessage = "This appointment is not available. Please, choose another date or hour.";
     }
 }

@@ -31,8 +31,8 @@
             public const string DefaultMaleImageUrl = "https://i.pinimg.com/736x/cc/9b/3b/cc9b3b4f000047d3830eb98c9c630ccc.jpg";
             public const string DefaultFemaleImageUrl = "https://png.pngtree.com/png-vector/20190811/ourlarge/pngtree-doctor-superwoman-png-image_1690213.jpg";
             public const string GenderMale = "Male";
-            public const int ExaminationPriceMinValie = 0;
-            public const int ExaminationPriceMaxValie = 600;
+            public const int ExaminationPriceMinValue = 0;
+            public const int ExaminationPriceMaxValue = 600;
             public const int PermissionPracticeMinLength = 8;
             public const int PermissionPracticeMaxLength = 20;
         }
@@ -68,6 +68,13 @@
         {
             public const int NameMinLength = 5;
             public const int NameMaxLength = 20;
+        }
+
+        public class Review
+        {
+            public const int RatingMinValue = 1;
+            public const int RatingMaxValue = 5;
+            public const int CommentMaxLength = 100;
         }
     }
 }

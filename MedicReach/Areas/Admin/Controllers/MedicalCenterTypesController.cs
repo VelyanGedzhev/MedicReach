@@ -31,7 +31,7 @@ namespace MedicReach.Areas.Admin.Controllers
 
             this.types.Add(type.Name);
 
-            this.TempData[WebConstants.GlobalMessageKey] = string.Format(WebConstants.AddMedicalCenterTypeSuccessMessage, type.Name);
+            this.TempData[WebConstants.GlobalSuccessMessageKey] = string.Format(WebConstants.AddMedicalCenterTypeSuccessMessage, type.Name);
 
             return RedirectToAction(nameof(Add));
         }

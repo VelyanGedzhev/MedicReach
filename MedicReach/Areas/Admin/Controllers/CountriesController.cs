@@ -31,7 +31,7 @@ namespace MedicReach.Areas.Admin.Controllers
 
             this.countries.Add(country.Name, country.Alpha3Code);
 
-            this.TempData[WebConstants.GlobalMessageKey] = string.Format(WebConstants.AddCountrySuccessMessage, country.Name, country.Alpha3Code);
+            this.TempData[WebConstants.GlobalSuccessMessageKey] = string.Format(WebConstants.AddCountrySuccessMessage, country.Name, country.Alpha3Code);
 
             return RedirectToAction(nameof(Add));
         }

@@ -12,6 +12,6 @@ namespace MedicReach.Services.Reviews.Models
 
         public string Comment { get; init; }
 
-        public DateTime CreatodOn { get; init; }
+        public DateTime CreatedOn { get; init; }
     }
 }

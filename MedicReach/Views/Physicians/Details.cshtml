@@ -30,9 +30,16 @@
                     @if (Model.LastReview != null)
                     {
                         <div class="card-body">
+                            <h6>Last review:</h6>
                             <p>Rating: @Model.LastReview.Rating</p>
                             <p>Comment: @Model.LastReview.Comment</p>
-                            <p>Written On: @Model.LastReview.CreatodOn</p>
+                            <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="card-body">
+                            <p>@Model.FullName isn't reviewed yet.</p>
                         </div>
                     }
                 </div>

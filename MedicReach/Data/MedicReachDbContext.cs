@@ -89,10 +89,31 @@ namespace MedicReach.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Entity<Physician>()
+                .HasMany(p => p.Reviews)
+                .WithOne(a => a.Physician)
+                .HasForeignKey(a => a.PhysicianId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
                 .Entity<Patient>()
                 .HasOne<IdentityUser>()
                 .WithOne()
                 .HasForeignKey<Patient>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Patient>()
+                .HasMany(p => p.Appointments)
+                .WithOne(a => a.Patient)
+                .HasForeignKey(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<Patient>()
+                .HasMany(p => p.Reviews)
+                .WithOne(a => a.Patient)
+                .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

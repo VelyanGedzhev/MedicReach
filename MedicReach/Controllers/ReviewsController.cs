@@ -1,5 +1,6 @@
 ﻿using MedicReach.Infrastructure;
 using MedicReach.Models.Reviews;
+using MedicReach.Services.Appointments;
 using MedicReach.Services.Patients;
 using MedicReach.Services.Reviews;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +10,25 @@ namespace MedicReach.Controllers
     public class ReviewsController : Controller
     {
         private readonly IReviewService reviews;
+        private readonly IAppointmentService appointments;
         private readonly IPatientService patients;
 
-        public ReviewsController(IReviewService reviews, IPatientService patients)
+        public ReviewsController(IReviewService reviews, IPatientService patients, IAppointmentService appointments)
         {
             this.reviews = reviews;
             this.patients = patients;
+            this.appointments = appointments;
         }
 
-        public IActionResult Write(string physicianId)
+        public IActionResult Write(string appointmentId)
         {
-            var patientId = this.patients.GetPatientId(this.User.GetId());
+            var appointment = this.appointments.GetAppointment(appointmentId);
 
             return View(new ReviewFormModel
             {
-                PatientId = patientId,
-                PhysicianId = physicianId
+                PatientId = appointment.PatientId,
+                PhysicianId = appointment.PhysicianId,
+                AppointmentId = appointment.Id
             });
         }
 
@@ -34,6 +38,7 @@ namespace MedicReach.Controllers
             this.reviews.Create(
                 review.PatientId,
                 review.PhysicianId,
+                review.AppointmentId,
                 review.Rating,
                 review.Comment);
 

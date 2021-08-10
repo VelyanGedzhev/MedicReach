@@ -44,7 +44,7 @@ namespace MedicReach.Controllers
                 .GetAwaiter()
                 .GetResult();
 
-            this.TempData[GlobalMessageKey] = BecomePatientSuccessMessage;
+            this.TempData[GlobalSuccessMessageKey] = BecomePatientSuccessMessage;
 
             return RedirectToAction("Index", "Home");
         }
@@ -70,7 +70,7 @@ namespace MedicReach.Controllers
                 patient.FullName,
                 patient.Gender);
 
-            this.TempData[GlobalMessageKey] = EditPatientSuccessMessage;
+            this.TempData[GlobalSuccessMessageKey] = EditPatientSuccessMessage;
 
             return RedirectToAction("Index", "Home");
         }

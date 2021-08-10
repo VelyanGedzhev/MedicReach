@@ -32,10 +32,16 @@
         </nav>
     </header>
     <div class="container">
-        @if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+        @if (TempData.ContainsKey(WebConstants.GlobalSuccessMessageKey))
         {
             <div class="alert alert-success" role="alert">
-                @TempData[WebConstants.GlobalMessageKey]
+                @TempData[WebConstants.GlobalSuccessMessageKey]
+            </div>
+        }
+        @if (TempData.ContainsKey(WebConstants.GlobalErrorMessageKey))
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData[WebConstants.GlobalErrorMessageKey]
             </div>
         }
         <main role="main" class="pb-3">

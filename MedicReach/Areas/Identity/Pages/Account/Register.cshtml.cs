@@ -65,7 +65,7 @@ namespace MedicReach.Areas.Identity.Pages.Account
                 {
                     await this.signInManager.SignInAsync(user, isPersistent: false);
 
-                    this.TempData[WebConstants.GlobalMessageKey] = WebConstants.UserRegistrationSuccessMessage;
+                    this.TempData[WebConstants.GlobalSuccessMessageKey] = WebConstants.UserRegistrationSuccessMessage;
 
                     return LocalRedirect(returnUrl);
                 }

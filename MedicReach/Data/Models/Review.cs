@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using static MedicReach.Data.DataConstants.Review;
 
 namespace MedicReach.Data.Models
 {
@@ -21,6 +22,7 @@ namespace MedicReach.Data.Models
 
         public int Rating { get; set; }
 
+        [MaxLength(CommentMaxLength)]
         public string Comment { get; set; }
     }
 }

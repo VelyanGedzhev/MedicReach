@@ -20,5 +20,7 @@ namespace MedicReach.Data.Models
         public DateTime Date { get; set; }
 
         public bool IsApproved { get; set; }
+
+        public bool IsReviewed { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace MedicReach.Services.Reviews
         void Create(
             string patientId,
             string physicianId,
+            string appointmentId,
             int rating,
             string comment);
 

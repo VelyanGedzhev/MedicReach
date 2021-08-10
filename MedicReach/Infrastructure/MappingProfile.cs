@@ -7,6 +7,7 @@ using MedicReach.Services.Appointments.Models;
 using MedicReach.Services.MedicalCenters.Models;
 using MedicReach.Services.Patients.Models;
 using MedicReach.Services.Physicians.Models;
+using MedicReach.Services.Reviews.Models;
 
 namespace MedicReach.Infrastructure
 {
@@ -67,6 +68,8 @@ namespace MedicReach.Infrastructure
             this.CreateMap<Patient, PatientServiceModel>();
 
             this.CreateMap<PatientServiceModel, PatientFormModel>();
+
+            this.CreateMap<Review, ReviewServiceModel>();
         }
     }
 }

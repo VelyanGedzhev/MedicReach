@@ -56,10 +56,11 @@ namespace MedicReach.Controllers
 
             if (!isCreated)
             {
+                this.TempData[GlobalErrorMessageKey] = AppointmentNotAvailableMessage; 
                 return View(appointment);
             }
 
-            this.TempData[GlobalMessageKey] = BookAppointmentSuccessMessage; 
+            this.TempData[GlobalSuccessMessageKey] = BookAppointmentSuccessMessage; 
 
             return RedirectToAction(nameof(Mine));            
         }

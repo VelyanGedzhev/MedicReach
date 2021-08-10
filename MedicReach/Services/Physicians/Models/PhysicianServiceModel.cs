@@ -1,5 +1,7 @@
 ﻿using MedicReach.Data.Models;
+using MedicReach.Services.Appointments.Models;
 using MedicReach.Services.Reviews.Models;
+using System.Collections.Generic;
 
 namespace MedicReach.Services.Physicians.Models
 {
@@ -36,5 +38,9 @@ namespace MedicReach.Services.Physicians.Models
         public double AverageRating { get; set; }
 
         public ReviewServiceModel LastReview { get; set; }
+
+        public IEnumerable<ReviewServiceModel> Reviews { get; set; }
+
+        public IEnumerable<AppointmentServiceModel> Appointments { get; set; }
     }
 }

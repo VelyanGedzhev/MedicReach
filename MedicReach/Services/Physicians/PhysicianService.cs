@@ -17,18 +17,16 @@ namespace MedicReach.Services.Physicians
     {
         private readonly MedicReachDbContext data;
         private readonly IMapper mapper;
-        private readonly IReviewService reviews;
         private readonly UserManager<IdentityUser> userManager;
 
         public PhysicianService(
             MedicReachDbContext data,
             IMapper mapper,
-            UserManager<IdentityUser> userManager, IReviewService reviews)
+            UserManager<IdentityUser> userManager)
         {
             this.data = data;
             this.mapper = mapper;
             this.userManager = userManager;
-            this.reviews = reviews;
         }
 
         public void Create(
@@ -168,9 +166,12 @@ namespace MedicReach.Services.Physicians
                            .Where(p => p.Id == physicianId)
                            .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
                            .FirstOrDefault();
-            
-            physician.LastReview = this.reviews.GetLastReview(physicianId);
-            physician.AverageRating = this.reviews.GetAverageReviewRating(physicianId);
+
+            if (physician.Reviews.Any())
+            {
+                physician.LastReview = physician.Reviews.OrderByDescending(r => r.CreatedOn).FirstOrDefault();
+                physician.AverageRating = physician.Reviews.Average(r => r.Rating);
+            }
 
             return physician;
         }

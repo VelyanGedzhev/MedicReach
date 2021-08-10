@@ -13,6 +13,8 @@ namespace MedicReach.Services.Appointments
 
         IEnumerable<AppointmentServiceModel> GetAppointments(string id);
 
+        AppointmentServiceModel GetAppointment(string id);
+
         void ChangeApprovalStatus(string appointmentId);
     }
 }

@@ -41,7 +41,7 @@ namespace MedicReach.Areas.Admin.Controllers
 
             this.cities.Add(city.Name, city.CountryId);
 
-            this.TempData[WebConstants.GlobalMessageKey] = string.Format(WebConstants.AddCitySuccessMessage, city.Name);
+            this.TempData[WebConstants.GlobalSuccessMessageKey] = string.Format(WebConstants.AddCitySuccessMessage, city.Name);
 
             return RedirectToAction(nameof(Add));
         }

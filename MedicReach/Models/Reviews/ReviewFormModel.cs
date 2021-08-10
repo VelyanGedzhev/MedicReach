@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static MedicReach.Data.DataConstants.Review;
 
 namespace MedicReach.Models.Reviews
 {
@@ -8,10 +9,15 @@ namespace MedicReach.Models.Reviews
         public string PatientId { get; init; }
 
         [Required]
-        public string PhysicianId { get; set; }
+        public string PhysicianId { get; init; }
 
-        public int Rating { get; set; }
+        [Required]
+        public string AppointmentId { get; init; }
 
-        public string Comment { get; set; }
+        [Range(RatingMinValue, RatingMaxValue)]
+        public int Rating { get; init; }
+
+        [StringLength(CommentMaxLength)]
+        public string Comment { get; init; }
     }
 }

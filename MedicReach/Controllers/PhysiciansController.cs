@@ -120,7 +120,7 @@ namespace MedicReach.Controllers
                 .GetAwaiter()
                 .GetResult();
 
-            this.TempData[GlobalMessageKey] = BecomePhysicianSuccessMessage;
+            this.TempData[GlobalSuccessMessageKey] = BecomePhysicianSuccessMessage;
 
             return RedirectToAction("Index", "Home");
         }
@@ -178,7 +178,7 @@ namespace MedicReach.Controllers
                 physicianModel.IsApproved,
                 this.User.GetId());
 
-            this.TempData[GlobalMessageKey] = EditPhysicianSuccessMessage;
+            this.TempData[GlobalSuccessMessageKey] = EditPhysicianSuccessMessage;
 
             return RedirectToAction(nameof(Details), new { physicianId });
         }
