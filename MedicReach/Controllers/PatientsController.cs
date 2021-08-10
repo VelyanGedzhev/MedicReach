@@ -49,7 +49,7 @@ namespace MedicReach.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
+        [Authorize(Roles = PatientRoleName)]
         public IActionResult Edit()
         {
             var patient = this.patients.GetPatient(this.User.GetId());
@@ -59,7 +59,7 @@ namespace MedicReach.Controllers
             return View(physicianForm);
         }
 
-        [Authorize]
+        [Authorize(Roles = PatientRoleName)]
         [HttpPost]
         public IActionResult Edit(PatientFormModel patient)
         {

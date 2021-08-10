@@ -1,6 +1,7 @@
 ﻿using MedicReach.Infrastructure;
 using MedicReach.Models.Appointments;
 using MedicReach.Services.Appointments;
+using MedicReach.Services.Appointments.Models;
 using MedicReach.Services.Patients;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Authorization;
@@ -66,13 +67,21 @@ namespace MedicReach.Controllers
         }
 
         [Authorize(Roles = PatientRoleName + "," + PhysicianRoleName)]
-        public IActionResult Mine()
+        public IActionResult Mine([FromQuery] AllMyAppointmentsQueryServiceModel query)
         {
             var id = GetId();
 
-            var appointments = this.appointments.GetAppointments(id);
+            var queryResult = this.appointments.All(
+                id,
+                query.Sorting,
+                query.CurrentPage,
+                AllMyAppointmentsQueryServiceModel.AppointmentsPerPage);
 
-            return View(appointments);
+
+            query.TotalAppointments = queryResult.TotalAppointments;
+            query.Appointments = queryResult.Appointments;
+
+            return View(query);
         }
 
         [Authorize(Roles = PhysicianRoleName)]

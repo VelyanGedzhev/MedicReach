@@ -162,10 +162,10 @@ namespace MedicReach.Services.Physicians
         public PhysicianServiceModel Details(string physicianId)
         {
             var physician =  this.data
-                           .Physicians
-                           .Where(p => p.Id == physicianId)
-                           .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
-                           .FirstOrDefault();
+                   .Physicians
+                   .Where(p => p.Id == physicianId)
+                   .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
+                   .FirstOrDefault();
 
             if (physician.Reviews.Any())
             {
@@ -245,21 +245,9 @@ namespace MedicReach.Services.Physicians
         public string PrepareDefaultImage(string gender)
             => gender == GenderMale ? DefaultMaleImageUrl : DefaultFemaleImageUrl;
 
-        private static IEnumerable<PhysicianServiceModel> GetPhysicians(IQueryable<Physician> physicianQuery)
+        private IEnumerable<PhysicianServiceModel> GetPhysicians(IQueryable<Physician> physicianQuery)
             => physicianQuery
-                .Select(p => new PhysicianServiceModel
-                {
-                    Id = p.Id,
-                    FullName = p.FullName,
-                    Gender = p.Gender,
-                    MedicalCenter = p.MedicalCenter,
-                    Speciality = p.Speciality.Name,
-                    ImageUrl = p.ImageUrl,
-                    ExaminationPrice = p.ExaminationPrice,
-                    IsWorkingWithChildren = p.IsWorkingWithChildren ? "Yes" : "No",
-                    PracticePermissionNumber = p.PracticePermissionNumber,
-                    IsApproved = p.IsApproved
-                })
+                .ProjectTo<PhysicianServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
     }
 }

@@ -7,6 +7,7 @@ using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static MedicReach.WebConstants;
+using static MedicReach.Areas.Admin.AdminConstants;
 
 namespace MedicReach.Controllers
 {
@@ -41,7 +42,6 @@ namespace MedicReach.Controllers
 
             var medicalCentersTypes = this.medicalCenters.AllTypes();
             var countries = this.countries.AllCountries();
-            //var cities = this.cities.AllCities();
 
             query.Countries = countries;
             query.Types = medicalCentersTypes;
@@ -109,7 +109,7 @@ namespace MedicReach.Controllers
             return RedirectToAction("Become", "Physicians");
         }
 
-        [Authorize]
+        [Authorize(Roles = PhysicianRoleName + "," + AdministratorRoleName)]
         public IActionResult Edit(string medicalCenterId)
         {
             var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
@@ -129,7 +129,7 @@ namespace MedicReach.Controllers
             return View(medicalCenterForm);
         }
 
-        [Authorize]
+        [Authorize(Roles = PhysicianRoleName + "," + AdministratorRoleName)]
         [HttpPost]
         public IActionResult Edit(string medicalCenterId, MedicalCenterFormModel medicalCenterModel)
         {
@@ -185,6 +185,7 @@ namespace MedicReach.Controllers
             return View(medicalCenter);
         }
 
+        [Authorize(Roles = PhysicianRoleName)]
         public IActionResult Mine()
         {
             var medicalCenterId = this.medicalCenters.GetMedicalCenterIdByUser(this.User.GetId());

@@ -56,7 +56,7 @@ namespace MedicReach
             services.AddControllersWithViews();
             services.AddTransient<IPhysicianService, PhysicianService>();
             services.AddTransient<IPatientService, PatientService>();
-            services.AddTransient<IAppointmentService, AppointmenService>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
             services.AddTransient<IMedicalCenterService, MedicalCenterService>();
             services.AddTransient<ICityService, CityService>();
             services.AddTransient<ICountryService, CountryService>();

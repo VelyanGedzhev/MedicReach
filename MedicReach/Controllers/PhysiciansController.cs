@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using static MedicReach.WebConstants;
+using static MedicReach.Areas.Admin.AdminConstants;
 
 namespace MedicReach.Controllers
 {
@@ -125,7 +126,7 @@ namespace MedicReach.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Authorize]
+        [Authorize(Roles = PhysicianRoleName + "," + AdministratorRoleName)]
         public IActionResult Edit(string physicianId)
         {
             var physician = this.physicians.Details(physicianId);
@@ -139,7 +140,7 @@ namespace MedicReach.Controllers
             return View(physicianForm);
         }
 
-        [Authorize]
+        [Authorize(Roles = PhysicianRoleName + "," + AdministratorRoleName)]
         [HttpPost]
         public IActionResult Edit(string physicianId, PhysicianFormModel physicianModel)
         {
@@ -190,6 +191,7 @@ namespace MedicReach.Controllers
             return View(physician);
         }
 
+        [Authorize(Roles = PhysicianRoleName)]
         public IActionResult Mine()
         {
             var physicianId = this.physicians.GetPhysicianId(this.User.GetId());

@@ -1,7 +1,5 @@
-﻿using MedicReach.Infrastructure;
-using MedicReach.Models.Reviews;
+﻿using MedicReach.Models.Reviews;
 using MedicReach.Services.Appointments;
-using MedicReach.Services.Patients;
 using MedicReach.Services.Reviews;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +9,10 @@ namespace MedicReach.Controllers
     {
         private readonly IReviewService reviews;
         private readonly IAppointmentService appointments;
-        private readonly IPatientService patients;
 
-        public ReviewsController(IReviewService reviews, IPatientService patients, IAppointmentService appointments)
+        public ReviewsController(IReviewService reviews, IAppointmentService appointments)
         {
             this.reviews = reviews;
-            this.patients = patients;
             this.appointments = appointments;
         }
 

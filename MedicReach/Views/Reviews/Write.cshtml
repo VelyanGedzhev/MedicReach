@@ -1,6 +1,6 @@
 ﻿@model MedicReach.Models.Reviews.ReviewFormModel
 
-@{ ViewData["Title"] = "Write Review"; }
+@{ ViewData["Title"] = "Write a Review"; }
 
 <div class="container">
     <div class="row">
@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Comment"></label>
-                    <textarea asp-for="Comment" rows="3" class="form-control" placeholder="The hospital with the best specialists..."></textarea>
+                    <textarea asp-for="Comment" rows="3" class="form-control" placeholder="Doctor Johnson is great! I can't thank him enough..."></textarea>
                     <span asp-validation-for="Comment" class="small text-danger"></span>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Save" />

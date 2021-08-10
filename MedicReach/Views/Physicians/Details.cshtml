@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="card float-right" style="width: 18rem; height: 24rem;">
+            <div class="card float-right" style="width: 18rem; height: 20rem;">
                 @if (Model.AverageRating != 0)
                 {
                     <h5 class="card-title align-self-center">Average Rating: @Model.AverageRating</h5>
@@ -32,7 +32,7 @@
                         <div class="card-body">
                             <h6>Last review:</h6>
                             <p>Rating: @Model.LastReview.Rating</p>
-                            <p>Comment: @Model.LastReview.Comment</p>
+                            <p>@Model.LastReview.Comment</p>
                             <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
                         </div>
                     }

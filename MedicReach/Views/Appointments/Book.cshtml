@@ -17,7 +17,7 @@
                             <input type="text" id="dp1" class="datepicker" placeholder="&#xf073; Pick Date" style="font-family:Arial, FontAwesome, white" name="date" readonly />
                         </div>
                     </div>
-                    <div class="card-body p-3 p-sm-5">
+                    <div class="card-body p-3 p-sm-4">
                         <div class="row text-center mx-0">
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">09:00</div>
@@ -28,27 +28,36 @@
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">10:00</div>
                             </div>
-                        </div>
-                        <div class="row text-center mx-0">
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">10:30</div>
                             </div>
+                        </div>
+                        <div class="row text-center mx-0">
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">11:00</div>
                             </div>
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">11:30</div>
                             </div>
-                        </div>
-                        <div class="row text-center mx-0">
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">14:00</div>
                             </div>
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">14:30</div>
                             </div>
+                        </div>
+                        <div class="row text-center mx-0">
                             <div class="col-md-3 col-4 my-1 px-2">
                                 <div class="cell py-1">15:00</div>
+                            </div>
+                            <div class="col-md-3 col-4 my-1 px-2">
+                                <div class="cell py-1">15:30</div>
+                            </div>
+                            <div class="col-md-3 col-4 my-1 px-2">
+                                <div class="cell py-1">16:00</div>
+                            </div>
+                            <div class="col-md-3 col-4 my-1 px-2">
+                                <div class="cell py-1">16:30</div>
                             </div>
                         </div>
                     </div>
@@ -57,9 +66,6 @@
         </div>
 
         <div class="col-lg-6">
-            @*<div>
-                    @await Component.InvokeAsync("SalonServiceDetails", new { Model.SalonId, Model.ServiceId })
-                </div>*@
             <form method="post" enctype="multipart/form-data">
                 <input asp-for="@Model.PhysicianId" value="@Model.PhysicianId" class="form-control" hidden>
                 <input asp-for="@Model.PatientId" value="@Model.PatientId" class="form-control" hidden>
@@ -81,7 +87,7 @@
                 </div>
                 <div class="form-group row mt-4">
                     <div class="col-sm-10">
-                        <input class="btn btn-primary" type="submit" value="Book" />
+                        <button class="btn btn-lg btn-primary" type="submit">Book</button>
                     </div>
                 </div>
             </form>
@@ -90,11 +96,6 @@
 
     </div>
 </div>
-
-<!--
-<div id="selectedDate"></div>
-<div id="selectedTime"></div>
--->
 
 @section Scripts {
     <script src="~/js/bootstrap-datepicker.js" asp-append-version="true"></script>

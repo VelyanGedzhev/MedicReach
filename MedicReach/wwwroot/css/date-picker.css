@@ -18,10 +18,10 @@
 
 input {
     padding: 10px 20px !important;
-    border: 1px solid #0412f9 !important;
+    border: 1px solid #000 !important;
     border-radius: 10px;
     box-sizing: border-box;
-    background-color: #90CAF9 !important; /*form background*/
+    background-color: #fff !important; /*form background*/
     color: #000 !important; /*form text*/
     font-size: 16px;
     letter-spacing: 1px;
