@@ -160,9 +160,7 @@ namespace MedicReach.Services.MedicalCenters
             => this.data
                 .MedicalCenterTypes
                 .ProjectTo<MedicalCenterTypeServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
-
-        
+                .ToList(); 
 
         public IEnumerable<string> AllTypes()
             => this.data

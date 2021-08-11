@@ -5,6 +5,7 @@
 <form method="get">
     @if (!User.IsAdmin())
     {
+    <div class="row">
         <div class="form-group col-md-3">
             <label asp-for="Sorting"></label>
             <select asp-for="Sorting" class="form-control">
@@ -14,6 +15,13 @@
                 <option value="3">Oldest rating</option>
             </select>
         </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-3">
+            <input asp-for="@Model.PhysicianId" class="form-control" hidden>
+            <input type="submit" class="btn btn-primary" value="Sort">
+        </div>
+    </div>
     }
 </form>
 
