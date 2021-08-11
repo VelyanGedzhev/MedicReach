@@ -1,5 +1,4 @@
 ﻿using MedicReach.Areas.Admin.Models.Physicians;
-using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians;
 using Microsoft.AspNetCore.Mvc;
 

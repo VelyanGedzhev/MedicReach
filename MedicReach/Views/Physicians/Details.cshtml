@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="card float-right" style="width: 18rem; height: 20rem;">
+            <div class="card float-right" style="width: 18rem; height: 24rem;">
                 @if (Model.AverageRating != 0)
                 {
                     <h5 class="card-title align-self-center">Average Rating: @Model.AverageRating</h5>
@@ -29,12 +29,15 @@
                 <div class="card-body">
                     @if (Model.LastReview != null)
                     {
-                        <div class="card-body">
-                            <h6>Last review:</h6>
-                            <p>Rating: @Model.LastReview.Rating</p>
-                            <p>@Model.LastReview.Comment</p>
-                            <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
-                        </div>
+                    <div class="card-body">
+                        <h6>Last review:</h6>
+                        <p>Rating: @Model.LastReview.Rating</p>
+                        <p>@Model.LastReview.Comment</p>
+                        <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
+                        <p class="lead">
+                            <a class="btn btn-primary btn-lg" role="button" asp-controller="Reviews" asp-action="All" asp-route-physicianId="@Model.Id">Check all reviews</a>
+                        </p>
+                    </div>
                     }
                     else
                     {

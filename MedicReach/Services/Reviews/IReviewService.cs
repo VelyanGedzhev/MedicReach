@@ -1,4 +1,5 @@
 ﻿using MedicReach.Services.Reviews.Models;
+using MedicReach.Services.Reviews.Models.NewFolder;
 
 namespace MedicReach.Services.Reviews
 {
@@ -14,5 +15,11 @@ namespace MedicReach.Services.Reviews
         ReviewServiceModel GetLastReview(string physicianId);
 
         double GetAverageReviewRating(string physicianId);
+
+        AllReviewsQueryModel AllReviews(
+            string physicianId,
+            ReviewsSorting sorting,
+            int currentPage,
+            int reviewsPerPage);
     }
 }

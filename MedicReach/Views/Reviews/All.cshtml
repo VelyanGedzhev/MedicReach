@@ -1,0 +1,52 @@
+﻿@model MedicReach.Services.Reviews.Models.AllReviewsQueryModel
+
+@{ ViewData["Title"] = "Physician's Reviews"; }
+
+<form method="get">
+    @if (!User.IsAdmin())
+    {
+        <div class="form-group col-md-3">
+            <label asp-for="Sorting"></label>
+            <select asp-for="Sorting" class="form-control">
+                <option value="0" selected>Newest</option>
+                <option value="1">Oldest</option>
+                <option value="2">Highest rating</option>
+                <option value="3">Oldest rating</option>
+            </select>
+        </div>
+    }
+</form>
+
+<partial name="_ReviewsPartial" model="@Model.Reviews" />
+
+@{ var previousPage = Model.CurrentPage - 1;
+
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalReviews / MedicReach.Services.Reviews.Models.AllReviewsQueryModel.ReviewsPerPage); }
+
+@if (!Model.Reviews.Any())
+{
+<h2 class="text-center">No Reviews</h2>}
+
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-controller="Reviews"
+           asp-action="All"
+           asp-route-currentPage="@previousPage"
+           asp-route-physicianId="@Model.PhysicianId"
+           asp-route-sorting="@Model.Sorting"><<</a>
+    </div>
+    <div class="col-md-6">
+        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+           asp-controller="Reviews"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-physicianId="@Model.PhysicianId"
+           asp-route-sorting="@Model.Sorting">>></a>
+    </div>
+</div>

@@ -15,7 +15,6 @@ namespace MedicReach.Infrastructure
     {
         public MappingProfile()
         {
-
             this.CreateMap<MedicalCenterServiceModel, MedicalCenterFormModel>();
 
             this.CreateMap<MedicalCenter, MedicalCenterServiceModel>()
