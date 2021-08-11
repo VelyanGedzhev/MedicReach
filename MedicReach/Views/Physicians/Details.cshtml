@@ -30,8 +30,15 @@
                     @if (Model.LastReview != null)
                     {
                     <div class="card-body">
-                        <h6>Last review:</h6>
-                        <p>Rating: @Model.LastReview.Rating</p>
+                        <h5>Last review:</h5>
+                        <div class="pb-2 text-center">
+                            <h4>
+                                @for (int i = 0; i < Model.LastReview.Rating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                            </h4>
+                        </div>
                         <p>@Model.LastReview.Comment</p>
                         <p>Written On: @Model.LastReview.CreatedOn.ToString("d")</p>
                         <p class="lead">
