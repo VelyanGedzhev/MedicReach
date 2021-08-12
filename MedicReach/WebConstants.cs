@@ -21,12 +21,13 @@
         public const string CreateMedicalCenterCityAndCountryDontMatchMessage = "City does not match the Country.";
 
         public const string BookAppointmentSuccessMessage = "Appointment booked succesfully.";
+        public const string AppointmentNotAvailableMessage = "Appointment at {0} : {1} is not available. Please, choose another date or hour.";
 
         public const string AddSpecialitySuccessMessage = "Speciality '{0}' was added successfully.";
         public const string AddMedicalCenterTypeSuccessMessage = "Medical Center Type '{0}' was added successfully.";
         public const string AddCountrySuccessMessage = "Country '{0}, {1}' was added successfully.";
         public const string AddCitySuccessMessage = "City '{0}' was added successfully.";
 
-        public const string AppointmentNotAvailableMessage = "This appointment is not available. Please, choose another date or hour.";
+        public const string WriteReviewSuccessMessage = "A Review was writtern succesfully.";
     }
 }

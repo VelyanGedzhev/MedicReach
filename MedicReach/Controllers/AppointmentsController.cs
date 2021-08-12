@@ -57,7 +57,7 @@ namespace MedicReach.Controllers
 
             if (!isCreated)
             {
-                this.TempData[GlobalErrorMessageKey] = AppointmentNotAvailableMessage; 
+                this.TempData[GlobalErrorMessageKey] = string.Format(AppointmentNotAvailableMessage, appointment.Date, appointment.Hour); 
                 return View(appointment);
             }
 

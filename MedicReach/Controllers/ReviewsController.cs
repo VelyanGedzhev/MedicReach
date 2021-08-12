@@ -4,6 +4,7 @@ using MedicReach.Services.Physicians;
 using MedicReach.Services.Reviews;
 using MedicReach.Services.Reviews.Models;
 using Microsoft.AspNetCore.Mvc;
+using static MedicReach.WebConstants;
 
 namespace MedicReach.Controllers
 {
@@ -44,6 +45,8 @@ namespace MedicReach.Controllers
                 review.AppointmentId,
                 review.Rating,
                 review.Comment);
+
+            this.TempData[GlobalSuccessMessageKey] = WriteReviewSuccessMessage;
 
             return RedirectToAction("Mine", "Appointments");
         }
