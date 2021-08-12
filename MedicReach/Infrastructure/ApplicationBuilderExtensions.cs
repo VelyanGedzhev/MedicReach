@@ -87,8 +87,6 @@ namespace MedicReach.Infrastructure
 
             Task.Run(async () =>
             {
-                
-
                 var user = new IdentityUser
                 {
                     Email = adminEmail,

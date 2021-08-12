@@ -149,7 +149,6 @@ namespace MedicReach.Services.Physicians
                         .Skip((currentPage - 1) * physiciansPerPage)
                         .Take(physiciansPerPage));
 
-
             return new PhysicanQueryServiceModel
             {
                 TotalPhysicians = totalPhysicians,

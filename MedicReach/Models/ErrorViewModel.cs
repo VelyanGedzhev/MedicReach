@@ -1,5 +1,3 @@
-using System;
-
 namespace MedicReach.Models
 {
     public class ErrorViewModel

@@ -77,7 +77,6 @@ namespace MedicReach.Controllers
                 query.CurrentPage,
                 AllMyAppointmentsQueryServiceModel.AppointmentsPerPage);
 
-
             query.TotalAppointments = queryResult.TotalAppointments;
             query.Appointments = queryResult.Appointments;
 
@@ -91,7 +90,6 @@ namespace MedicReach.Controllers
 
             return RedirectToAction(nameof(Mine));
         }
-
         private string GetId()
         {
             var userId = this.User.GetId();

@@ -8,7 +8,6 @@ using MedicReach.Services.MedicalCenters.Models;
 using MedicReach.Services.Patients.Models;
 using MedicReach.Services.Physicians.Models;
 using MedicReach.Services.Reviews.Models;
-using System.Linq;
 
 namespace MedicReach.Infrastructure
 {

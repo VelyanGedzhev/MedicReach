@@ -144,7 +144,6 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Edit(string physicianId, PhysicianFormModel physicianModel)
         {
-
             if (!this.medicalCenters.IsJoiningCodeCorrect(physicianModel.JoiningCode, physicianModel.MedicalCenterId))
             {
                 this.ModelState.AddModelError(nameof(physicianModel.JoiningCode), "Joining code is incorrect.");

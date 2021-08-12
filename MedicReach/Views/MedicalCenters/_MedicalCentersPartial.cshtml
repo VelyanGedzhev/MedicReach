@@ -4,12 +4,12 @@
     @foreach (var medicalCenter in Model)
     {
         <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
+            <div class="card" style="width: 18rem; height: 22rem;">
                 <img class="card-img-top" src="@medicalCenter.ImageUrl" alt="Medical Center image">
                 <div class="card-body">
                     <h5 class="card-title">@medicalCenter.Name</h5>
-                    <p class="card-text">@medicalCenter.Description.</p>
-                    <a class="btn btn-primary" asp-controller="MedicalCenters" asp-action="Details" asp-route-medicalCenterId="@medicalCenter.Id">Details</a>
+                    <p class="card-text">@medicalCenter.Address, @medicalCenter.City</p>
+                    <a class="btn btn-primary " asp-controller="MedicalCenters" asp-action="Details" asp-route-medicalCenterId="@medicalCenter.Id">Details</a>
                     @if (User.IsAdmin())
                     {
                         <a class="btn btn-warning" asp-controller="MedicalCenters" asp-action="Edit" asp-route-medicalCenterId="@medicalCenter.Id">Edit</a>
