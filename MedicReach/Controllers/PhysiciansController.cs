@@ -200,7 +200,7 @@ namespace MedicReach.Controllers
                 return RedirectToAction(nameof(Become));
             }
 
-            return RedirectToAction("Edit", "Physicians", new { physicianId });
+            return RedirectToAction(nameof(Edit), new { physicianId });
         }
     }
 }

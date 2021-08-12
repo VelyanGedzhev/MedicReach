@@ -150,7 +150,10 @@ namespace MedicReach.Controllers
 
             if (!this.cities.IsCityInCountry(medicalCenterModel.CountryId, medicalCenterModel.CityId))
             {
+                this.TempData[GlobalErrorMessageKey] = CreateMedicalCenterCityAndCountryDontMatchMessage;
+
                 this.ModelState.AddModelError(nameof(medicalCenterModel.CityId), "City does not match the Country.");
+                this.ModelState.AddModelError(nameof(medicalCenterModel.CountryId), "City does not match the Country.");
             }
 
             if (!this.ModelState.IsValid)

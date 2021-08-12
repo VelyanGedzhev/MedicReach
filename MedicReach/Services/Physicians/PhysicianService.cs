@@ -4,7 +4,6 @@ using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Models.Physicians.Enums;
 using MedicReach.Services.Physicians.Models;
-using MedicReach.Services.Reviews;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;

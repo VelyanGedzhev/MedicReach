@@ -49,6 +49,21 @@ namespace MedicReach.Controllers
         [Authorize(Roles = PatientRoleName)]
         public IActionResult Book(AppointmentFormModel appointment)
         {
+            if (string.IsNullOrEmpty(appointment.Date))
+            {
+                this.ModelState.AddModelError(nameof(appointment.Date), string.Empty);
+            }
+
+            if (string.IsNullOrEmpty(appointment.Hour))
+            {
+                this.ModelState.AddModelError(nameof(appointment.Hour), string.Empty);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return View(appointment);
+            }
+
             var isCreated = this.appointments.Create(
                 appointment.PatientId,
                 appointment.PhysicianId,
