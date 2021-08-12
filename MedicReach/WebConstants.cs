@@ -18,6 +18,7 @@
 
         public const string CreateMedicalCenterSuccessMessage = "Medical Center '{0}' was created successfully.";
         public const string EditMedicalCenterSuccessMessage = "Medical Center '{0}' was edited successfully.";
+        public const string EditMedicalCenterErrorMessage = "Medical Center can be edited only by it's creator.";
         public const string CreateMedicalCenterCityAndCountryDontMatchMessage = "City does not match the Country.";
 
         public const string BookAppointmentSuccessMessage = "Appointment booked succesfully.";

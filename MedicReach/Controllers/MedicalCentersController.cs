@@ -192,7 +192,8 @@ namespace MedicReach.Controllers
 
             if (string.IsNullOrEmpty(medicalCenterId))
             {
-                return BadRequest();
+                this.TempData[GlobalErrorMessageKey] = EditMedicalCenterErrorMessage;
+                return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("Edit", "MedicalCenters", new { medicalCenterId });

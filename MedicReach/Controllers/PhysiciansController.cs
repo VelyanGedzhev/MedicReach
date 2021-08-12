@@ -60,7 +60,7 @@ namespace MedicReach.Controllers
 
             if (userIsPhysicians)
             {
-                return RedirectToAction(nameof(Edit));
+                return RedirectToAction(nameof(Mine));
             }
 
             return View(new PhysicianFormModel

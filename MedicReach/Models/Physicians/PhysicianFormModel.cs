@@ -22,7 +22,7 @@ namespace MedicReach.Models.Physicians
         public string JoiningCode { get; set; }
 
         [Range(ExaminationPriceMinValue, ExaminationPriceMaxValue)]
-        [Display(Name = "Examination Price")]
+        [Display(Name = "Examination Price €")]
         public int ExaminationPrice { get; set; }
 
         [Url]
