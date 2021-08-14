@@ -3,6 +3,7 @@ using MedicReach.Services.Appointments;
 using MedicReach.Services.Physicians;
 using MedicReach.Services.Reviews;
 using MedicReach.Services.Reviews.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static MedicReach.WebConstants;
 
@@ -24,6 +25,7 @@ namespace MedicReach.Controllers
             this.physicians = physicians;
         }
 
+        [Authorize(Roles = WebConstants.PatientRoleName)]
         public IActionResult Write(string appointmentId)
         {
             var appointment = this.appointments.GetAppointment(appointmentId);
@@ -36,6 +38,7 @@ namespace MedicReach.Controllers
             });
         }
 
+        [Authorize(Roles = WebConstants.PatientRoleName)]
         [HttpPost]
         public IActionResult Write(ReviewFormModel review)
         {

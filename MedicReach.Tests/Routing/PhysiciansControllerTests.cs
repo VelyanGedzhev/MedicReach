@@ -41,6 +41,13 @@ namespace MedicReach.Tests.Routing
                 .To<PhysiciansController>(c => c.Edit(With.Any<string>(), With.Any<PhysicianFormModel>()));
 
         [Fact]
+        public void AllActionShouldBeMapped()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("Physicians/All")
+                .To<PhysiciansController>(c => c.All(With.Any<AllPhysiciansQueryModel>()));
+
+        [Fact]
         public void DetailsActionShouldBeMapped()
             => MyRouting
                 .Configuration()

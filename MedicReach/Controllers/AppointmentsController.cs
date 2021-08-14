@@ -105,6 +105,7 @@ namespace MedicReach.Controllers
 
             return RedirectToAction(nameof(Mine));
         }
+
         private string GetId()
         {
             var userId = this.User.GetId();
