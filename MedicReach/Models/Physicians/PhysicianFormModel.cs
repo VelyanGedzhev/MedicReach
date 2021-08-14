@@ -14,6 +14,7 @@ namespace MedicReach.Models.Physicians
         [Required]
         public string Gender { get; init; }
 
+        [Required]
         [Display(Name = "Medical Center")]
         public string MedicalCenterId { get; init; }
 
