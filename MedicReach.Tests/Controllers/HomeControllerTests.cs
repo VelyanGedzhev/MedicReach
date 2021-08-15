@@ -14,8 +14,8 @@ namespace MedicReach.Tests.Controllers
         [Fact]
         public void IndexActionShouldReturnViewWithCorrectModel()
             => MyController<HomeController>
-                .Instance(instance => instance
-                    .WithData(GetMedicalCenters))
+                .Instance()
+                .WithData(GetMedicalCenters)
                 .Calling(c => c.Index())
                 .ShouldReturn()
                 .View(view => view

@@ -4,13 +4,15 @@ using MedicReach.Controllers;
 using MedicReach.Models.Physicians;
 using MedicReach.Data.Models;
 using System.Linq;
+using MedicReach.Services.Physicians.Models;
+using MedicReach.Tests.Data;
 
 namespace MedicReach.Tests.Controllers
 {
     public class PhysiciansControllerTests
     {
         [Fact]
-        public void BecomeShouldBeForAuthorizedUsersAndReturnView()
+        public void BecomeActionShouldBeForAuthorizedUsersAndReturnView()
             => MyMvc
                 .Pipeline()
                 .ShouldMap(request => request
@@ -26,7 +28,7 @@ namespace MedicReach.Tests.Controllers
                 .View();
 
         [Fact]
-        public void BecomeShouldBeForAuthorizedUsers()
+        public void BecomeActionShouldBeForAuthorizedUsers()
             => MyController<PhysiciansController>
                 .Instance(instance => instance
                     .WithUser())
@@ -45,8 +47,9 @@ namespace MedicReach.Tests.Controllers
                 .View();
 
         [Theory]
-        [InlineData("Ivan Petrov", "Male", "b4d9d520-b735-42e5-9b9a-3d1fdc7e55bf", "MedicalCenter", 50, 1, "PP1234599", false)]
-        public void BecomePostShouldBeForAuthorizedUsersAndRedirectCorrectly(
+        [InlineData("Ivan Petrov", "Male", "MedicalCenterId", "MedicalCenter", 50, 1, "PP1234599", false)]
+        [InlineData("Emily Blunt", "Female", "MedicalCenterId", "MedicalCenter", 70, 1, "PP1234588", false)]
+        public void BecomePostActionShouldBeForAuthorizedUsersAndRedirectCorrectly(
             string fullName,
             string gender,
             string medicalCenterId,
@@ -57,7 +60,12 @@ namespace MedicReach.Tests.Controllers
             bool IsApproved)
             => MyController<PhysiciansController>
                 .Instance(instance => instance
-                    .WithUser())
+                    .WithUser()
+                    .WithData(
+                    MedicalCenters.GetMedicalCenter(medicalCenterId, joiningCode),
+                    Specialities.GetSpeciality(specialityId),
+                    Users.GetUser(TestUser.Identifier),
+                    UserRoles.GetRole("Physician")))
                 .Calling(c => c.Become(new PhysicianFormModel
                 {
                     FullName = fullName,
@@ -78,6 +86,100 @@ namespace MedicReach.Tests.Controllers
                     .WithSet<Physician>(physicians => physicians
                         .Any(p =>
                             p.FullName == fullName &&
-                            p.Gender == gender)));
+                            p.Gender == gender)))
+                .TempData(tempData => tempData
+                    .ContainingEntryWithKey(WebConstants.GlobalSuccessMessageKey))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<HomeController>(c => c.Index()));
+
+        [Theory]
+        [InlineData("PhyscianId", "UserId")]
+        public void DetailsActionShouldReturnViewWithCorrectModel(string physicianId, string userId)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithData(Physicians.GetPhysicians(physicianId, userId)))
+                .Calling(c => c.Details(physicianId))
+                .ShouldReturn()
+                .View(view => view  
+                    .WithModelOfType<PhysicianServiceModel>()
+                    .Passing(model => model.Id == physicianId));
+
+        [Theory]
+        [InlineData("PhysicianId")]
+        public void EditActionShouldReturnView(string physicianId)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(Physicians.GetPhysicians(physicianId)))
+                .Calling(c => c.Edit(physicianId))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<PhysicianFormModel>());
+
+        [Theory]
+        [InlineData("PhysicianId", "Ivan Petrov", "Male", "MedicalCenterId", "MedicalCenter", 50, 1, "PP1234599", false)]
+        public void EditPostActionShouldRedirectToActionWithCorrectModel(
+            string physicianId, 
+            string fullName,
+            string gender,
+            string medicalCenterId,
+            string joiningCode,
+            int examinationPrice,
+            int specialityId,
+            string practicePermissionNumber,
+            bool IsApproved)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(
+                        Physicians.GetPhysicians(physicianId)))
+                .Calling(c => c.Edit(physicianId, new PhysicianFormModel
+                {
+                    FullName = fullName,
+                    Gender = gender,
+                    MedicalCenterId = medicalCenterId,
+                    JoiningCode = joiningCode,
+                    ExaminationPrice = examinationPrice,
+                    SpecialityId = specialityId,
+                    PracticePermissionNumber = practicePermissionNumber,
+                    IsApproved = IsApproved
+                }))
+                .ShouldHave()
+                .ValidModelState()
+                .ActionAttributes(a => a
+                    .RestrictingForAuthorizedRequests()
+                    .RestrictingForHttpMethod(HttpMethod.Post))
+                .Data(data => data
+                    .WithSet<Physician>(physicians => physicians
+                        .Any(p =>
+                            p.FullName == fullName)))
+                .TempData(tempData => tempData
+                    .ContainingEntryWithKey(WebConstants.GlobalSuccessMessageKey))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<PhysiciansController>(c => c.Details(physicianId)));
+
+        [Theory]
+        [InlineData("PhysicianId")]
+        public void MineActionShouldRedirectToActionWithCorrectModel(string physicianId)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(
+                        Users.GetUser(TestUser.Identifier),
+                        Physicians.GetPhysician(physicianId, TestUser.Identifier)))
+                .Calling(c => c.Mine())
+                .ShouldHave()
+                .ActionAttributes(a => a
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<PhysiciansController>(c => c.Edit(physicianId)));
+
     }
 }
+

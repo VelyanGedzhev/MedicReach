@@ -9,7 +9,23 @@ namespace MedicReach.Tests.Data
         public static IEnumerable<MedicalCenter> GetMedicalCenters
             => Enumerable.Range(0, 10).Select(mc => new MedicalCenter 
             {
-                Physicians = new List<Physician> { new Physician { IsApproved = true} }
+                Physicians = new List<Physician> { new Physician { IsApproved = true} },
+                Country = new Country { Name = "Bulgaria"},
+                City = new City { Name = "Sofia", CountryId = 1},
+                Type = new MedicalCenterType { Name = "Hospital"}
             });
+
+        public static MedicalCenter GetMedicalCenter(string medicalCenterId, string joiningCode)
+        {
+            return new MedicalCenter
+            {
+                Id = medicalCenterId,
+                Physicians = new List<Physician> { new Physician { IsApproved = true } },
+                Country = new Country { Name = "Bulgaria" },
+                City = new City { Name = "Sofia", CountryId = 1 },
+                Type = new MedicalCenterType { Name = "Hospital" },
+                JoiningCode = joiningCode
+            };
+        }
     }
 }

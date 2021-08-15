@@ -2,6 +2,7 @@
 using MedicReach.Services.MedicalCenters;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 
 namespace MedicReach.Controllers
 {
