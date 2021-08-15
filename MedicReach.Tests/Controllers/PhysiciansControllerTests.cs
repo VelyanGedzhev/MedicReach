@@ -13,36 +13,14 @@ namespace MedicReach.Tests.Controllers
     {
         [Fact]
         public void BecomeActionShouldBeForAuthorizedUsersAndReturnView()
-            => MyMvc
-                .Pipeline()
-                .ShouldMap(request => request
-                    .WithPath("/Physicians/Become")
-                    .WithUser())
-                .To<PhysiciansController>(c => c.Become())
-                .Which()
-                .ShouldHave()
-                .ActionAttributes(attirbutes => attirbutes
-                    .RestrictingForAuthorizedRequests())
-                .AndAlso()
-                .ShouldReturn()
-                .View();
-
-        [Fact]
-        public void BecomeActionShouldBeForAuthorizedUsers()
             => MyController<PhysiciansController>
                 .Instance(instance => instance
                     .WithUser())
                 .Calling(c => c.Become())
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests());
-
-        [Fact]
-        public void BecomeShouldReturnView()
-            => MyController<PhysiciansController>
-                .Instance(instance => instance
-                    .WithUser())
-                .Calling(c => c.Become())
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
                 .ShouldReturn()
                 .View();
 

@@ -22,7 +22,7 @@ namespace MedicReach.Tests.Routing
                 .ShouldMap(request => request
                     .WithPath("/Patients/Become")
                     .WithMethod(HttpMethod.Post))
-                .To<PatientsController>(c => c.Become());
+                .To<PatientsController>(c => c.Become(With.Any<PatientFormModel>()));
 
         [Fact]
         public void EditActionShouldBeMapped()

@@ -27,15 +27,20 @@ namespace MedicReach.Controllers
             this.signInManager = signInManager;
         }
 
+        [Authorize]
         public IActionResult Become()
         {
             return View(new PatientFormModel());
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Become(PatientFormModel patient)
         {
-            this.patients.Create(patient.FullName, patient.Gender, this.User.GetId());
+            this.patients.Create(
+                patient.FullName, 
+                patient.Gender, 
+                this.User.GetId());
 
             Task.Run(async () =>
             {
