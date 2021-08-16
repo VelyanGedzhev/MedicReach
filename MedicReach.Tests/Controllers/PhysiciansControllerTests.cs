@@ -92,6 +92,10 @@ namespace MedicReach.Tests.Controllers
                     .WithUser()
                     .WithData(Physicians.GetPhysicians(physicianId)))
                 .Calling(c => c.Edit(physicianId))
+                .ShouldHave()
+                .ActionAttributes(a => a
+                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{Areas.Admin.AdminConstants.AdministratorRoleName}"))
+                .AndAlso()
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<PhysicianFormModel>());
@@ -127,7 +131,7 @@ namespace MedicReach.Tests.Controllers
                 .ShouldHave()
                 .ValidModelState()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests()
+                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{Areas.Admin.AdminConstants.AdministratorRoleName}")
                     .RestrictingForHttpMethod(HttpMethod.Post))
                 .Data(data => data
                     .WithSet<Physician>(physicians => physicians
@@ -152,7 +156,7 @@ namespace MedicReach.Tests.Controllers
                 .Calling(c => c.Mine())
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests())
+                    .RestrictingForAuthorizedRequests(WebConstants.PhysicianRoleName))
                 .AndAlso()
                 .ShouldReturn()
                 .Redirect(redirect => redirect

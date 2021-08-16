@@ -33,7 +33,7 @@ namespace MedicReach.Controllers
 
             var patientId = this.patients.GetPatientId(userId);
 
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(patientId) || string.IsNullOrEmpty(physicianId))
             {
                 return BadRequest();
             }

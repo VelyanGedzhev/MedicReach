@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MedicReach.Tests.Data
 {
@@ -10,6 +12,23 @@ namespace MedicReach.Tests.Data
             {
                 Id = userId
             };
+        }
+
+        public static IEnumerable<IdentityUser> GetUsers(string userId)
+        {
+            var users = Enumerable.Range(0, 2).Select(u => new IdentityUser
+            {
+            })
+            .ToList();
+
+            var user = new IdentityUser
+            {
+                Id = userId
+            };
+
+            users.Add(user);
+
+            return users;
         }
     }
 }

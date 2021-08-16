@@ -25,7 +25,7 @@ namespace MedicReach.Controllers
             this.physicians = physicians;
         }
 
-        [Authorize(Roles = WebConstants.PatientRoleName)]
+        [Authorize(Roles = PatientRoleName)]
         public IActionResult Write(string appointmentId)
         {
             var appointment = this.appointments.GetAppointment(appointmentId);
@@ -38,7 +38,7 @@ namespace MedicReach.Controllers
             });
         }
 
-        [Authorize(Roles = WebConstants.PatientRoleName)]
+        [Authorize(Roles = PatientRoleName)]
         [HttpPost]
         public IActionResult Write(ReviewFormModel review)
         {

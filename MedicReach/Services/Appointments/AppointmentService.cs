@@ -29,7 +29,18 @@ namespace MedicReach.Services.Appointments
             string hour)
         {
             var completeDate = date + ":" + hour;
-            var appointmantDate = DateTime.ParseExact(completeDate, "dd-MM-yyyy:HH:mm", CultureInfo.InvariantCulture);
+
+            var dateParse = DateTime.TryParseExact(
+                completeDate,
+                "dd-MM-yyyy:HH:mm",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTime appointmantDate);
+
+            if (!dateParse)
+            {
+                return false;
+            }
 
             bool isbBooked = IsBooked(appointmantDate, physicianId);
 

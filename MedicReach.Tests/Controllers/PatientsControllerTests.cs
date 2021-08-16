@@ -76,7 +76,7 @@ namespace MedicReach.Tests.Controllers
                 .Calling(c => c.Edit())
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests())
+                    .RestrictingForAuthorizedRequests(WebConstants.PatientRoleName))
                 .Data(data => data
                     .WithSet<Patient>(patient => patient
                         .Any(p =>
@@ -110,8 +110,8 @@ namespace MedicReach.Tests.Controllers
                 }))
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForHttpMethod(HttpMethod.Post)
-                    .RestrictingForAuthorizedRequests())
+                    .RestrictingForAuthorizedRequests(WebConstants.PatientRoleName)
+                    .RestrictingForHttpMethod(HttpMethod.Post))
                 .Data(data => data
                     .WithSet<Patient>(patient => patient
                         .Any(p =>
