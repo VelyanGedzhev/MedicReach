@@ -7,8 +7,7 @@
             public const int FullNameMinLength = 5;
             public const int FullNameMaxLength = 50;
             public const int PasswordMinLength = 6;
-            public const int PasswordMaxLength = 100;
-            public const string TypePhysician = "Physician";
+            public const int PasswordMaxLength = 20;
         }
 
         public class MedicalCenter

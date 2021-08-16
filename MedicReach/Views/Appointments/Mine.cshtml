@@ -45,7 +45,7 @@
                     @if (this.User.IsPatient())
                     {
             <a class="btn btn-primary" asp-area="" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@appointment.PhysicianId">Physician</a>
-                                @if (appointment.Date < DateTime.Now && appointment.IsApproved && this.User.IsPatient() && !appointment.IsReviewed)
+                                @if (appointment.Date < DateTime.UtcNow && appointment.IsApproved && this.User.IsPatient() && !appointment.IsReviewed)
                                 {
             <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="Write" asp-route-appointmentId="@appointment.Id">Write Review</a>}}
                     @if (this.User.IsPhysician())
