@@ -1,4 +1,5 @@
 ﻿using MedicReach.Areas.Admin.Controllers;
+using MedicReach.Areas.Admin.Models.Countries;
 using MyTested.AspNetCore.Mvc;
 using Xunit;
 
@@ -20,6 +21,6 @@ namespace MedicReach.Tests.Routing.Admin
                 .ShouldMap(request => request
                     .WithPath("/Admin/Countries/Add")
                     .WithMethod(HttpMethod.Post))
-                .To<CountriesController>(c => c.Add());
+                .To<CountriesController>(c => c.Add(With.Any<CountryFormModel>()));
     }
 }

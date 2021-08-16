@@ -40,7 +40,6 @@ namespace MedicReach.Tests.Data
             physicians.Add(physician);
 
             return physicians;
-            
         }
 
         public static Physician GetPhysician(string physicianId, string userId = null)

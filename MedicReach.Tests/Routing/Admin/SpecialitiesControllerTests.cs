@@ -1,10 +1,6 @@
 ﻿using MedicReach.Areas.Admin.Controllers;
+using MedicReach.Areas.Admin.Models.Specialities;
 using MyTested.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MedicReach.Tests.Routing.Admin
@@ -25,6 +21,6 @@ namespace MedicReach.Tests.Routing.Admin
                 .ShouldMap(request => request
                     .WithPath("/Admin/Specialities/Add")
                     .WithMethod(HttpMethod.Post))
-                .To<SpecialitiesController>(c => c.Add());
+                .To<SpecialitiesController>(c => c.Add(With.Any<SpecialityFormModel>()));
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MedicReach.Areas.Admin.Controllers;
 using MyTested.AspNetCore.Mvc;
 using Xunit;
+using MedicReach.Areas.Admin.Models.Cities;
 
 namespace MedicReach.Tests.Routing.Admin
 {
@@ -20,6 +21,6 @@ namespace MedicReach.Tests.Routing.Admin
                 .ShouldMap(request => request
                     .WithPath("/Admin/Cities/Add")
                     .WithMethod(HttpMethod.Post))
-                .To<CitiesController>(c => c.Add());
+                .To<CitiesController>(c => c.Add(With.Any<CityFormModel>()));
     }
 }
