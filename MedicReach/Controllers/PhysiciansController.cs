@@ -178,7 +178,7 @@ namespace MedicReach.Controllers
                 physicianModel.IsApproved,
                 this.User.GetId());
 
-            this.TempData[GlobalSuccessMessageKey] = EditPhysicianSuccessMessage;
+            this.TempData[GlobalSuccessMessageKey] = this.User.IsAdmin() ? AdminEditPhysicianSuccessMessage : EditPhysicianSuccessMessage;
 
             return RedirectToAction(nameof(Details), new { physicianId });
         }
