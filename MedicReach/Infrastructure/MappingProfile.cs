@@ -34,7 +34,7 @@ namespace MedicReach.Infrastructure
                     cfg => cfg.MapFrom(mc => mc.City.Name))
                 .ForMember(
                     mc => mc.Country,
-                    cfg => cfg.MapFrom(mc => mc.Country.Name));
+                    cfg => cfg.MapFrom(mc => mc.Country.Alpha3Code));
 
             this.CreateMap<MedicalCenterType, MedicalCenterTypeServiceModel>();
 

@@ -52,5 +52,12 @@ namespace MedicReach.Tests.Routing
                 .Configuration()
                 .ShouldMap("/MedicalCenters/Mine")
                 .To<MedicalCentersController>(c => c.Mine());
+
+        [Fact]
+        public void AllActionShouldBeMapped()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("/MedicalCenters/All")
+                .To<MedicalCentersController>(c => c.All(With.Any<AllMedicalCentersQueryModel>()));
     }
 }

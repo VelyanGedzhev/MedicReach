@@ -12,10 +12,6 @@ namespace MedicReach.Services.Reviews
             int rating,
             string comment);
 
-        ReviewServiceModel GetLastReview(string physicianId);
-
-        double GetAverageReviewRating(string physicianId);
-
         AllReviewsQueryModel AllReviews(
             string physicianId,
             ReviewsSorting sorting,

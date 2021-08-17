@@ -11,6 +11,9 @@ namespace MedicReach.Tests.Controllers
 {
     public class PhysiciansControllerTests
     {
+        private const int AllApprovedPhysiciansCount = 4;
+        private const int PhysiciansWithAName = 1;
+
         [Fact]
         public void BecomeActionShouldBeForAuthorizedUsersAndReturnView()
             => MyController<PhysiciansController>
@@ -162,6 +165,37 @@ namespace MedicReach.Tests.Controllers
                 .Redirect(redirect => redirect
                     .To<PhysiciansController>(c => c.Edit(physicianId)));
 
+        [Fact]
+        public void AllActionShouldReturnViewWithAllCurrentlyApprovedPhysicians()
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithData(Physicians.GetPhysicians(TestUser.Identifier, null, true)))
+                .Calling(c => 
+                    c.All(new AllPhysiciansQueryModel
+                    {
+                    }))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<AllPhysiciansQueryModel>()
+                    .Passing(c => c.TotalPhysicians == AllApprovedPhysiciansCount));
+
+        [Theory]
+        [InlineData("PhysicianId", "John Johnson")]
+        public void AllActionShouldReturnViewWithCorrectModelWhenSearchedByName(string physicianId, string fullName)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithData(Physicians.GetPhysician(physicianId, null, fullName)))
+                .Calling(c =>
+                    c.All(new AllPhysiciansQueryModel
+                    {
+                        SearchTerm = fullName
+                    }))
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<AllPhysiciansQueryModel>()
+                    .Passing(c => 
+                        c.Physicians.Any(p => p.FullName == fullName) && 
+                        c.Physicians.Count() == PhysiciansWithAName));
     }
 }
 

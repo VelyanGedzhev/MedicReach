@@ -10,18 +10,27 @@ namespace MedicReach.Tests.Data
         {
             var types = Enumerable.Range(0, 3).Select(p => new MedicalCenterType
             {
-                
+                MedicalCenters = new List<MedicalCenter>()
             })
             .ToList();
 
             var type = new MedicalCenterType
             {
                 Name = name,
+                MedicalCenters = new List<MedicalCenter>()
             };
 
             types.Add(type);
 
             return types;
+        }
+
+        public static MedicalCenterType GetMedicalCenterType()
+        {
+            return new MedicalCenterType
+            {
+                MedicalCenters = new List<MedicalCenter>()
+            };
         }
     }
 }

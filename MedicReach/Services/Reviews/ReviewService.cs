@@ -4,7 +4,6 @@ using MedicReach.Data;
 using MedicReach.Data.Models;
 using MedicReach.Services.Reviews.Models;
 using MedicReach.Services.Reviews.Models.NewFolder;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace MedicReach.Services.Reviews
@@ -44,20 +43,6 @@ namespace MedicReach.Services.Reviews
             this.data.Reviews.Add(review);
             this.data.SaveChanges();
         }
-
-        public ReviewServiceModel GetLastReview(string physicianId)
-            => this.data
-                .Reviews
-                .Where(r => r.PhysicianId == physicianId)
-                .OrderByDescending(r => r.CreatedOn)
-                .ProjectTo<ReviewServiceModel>(this.mapper.ConfigurationProvider)
-                .FirstOrDefault();
-
-        public double GetAverageReviewRating(string physicianId)
-            => this.data
-                .Reviews
-                .Where(r => r.PhysicianId == physicianId)
-                .Average(r => r.Rating);
 
         public AllReviewsQueryModel AllReviews(
             string physicianId,

@@ -40,7 +40,7 @@ namespace MedicReach.Models.MedicalCenters
 
         public IEnumerable<CityServiceModel> Cities { get; set; }
 
-        public IEnumerable<CountryServiceModel> Coutries { get; set; }
+        public IEnumerable<CountryServiceModel> Countries { get; set; }
 
         public IEnumerable<MedicalCenterTypeServiceModel> MedicalCenterTypes { get; set; }
     }

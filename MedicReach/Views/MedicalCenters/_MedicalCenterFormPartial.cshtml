@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <label asp-for="CountryId"></label>
                     <select asp-for="CountryId" class="form-control">
-                        @foreach (var country in Model.Coutries)
+                        @foreach (var country in Model.Countries)
                         {
                             <option value="@country.Id"> @country.Name</option>
                         }

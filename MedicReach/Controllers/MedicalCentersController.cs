@@ -58,7 +58,7 @@ namespace MedicReach.Controllers
             {
                 MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
                 Cities = this.cities.GetCities(),
-                Coutries = this.countries.GetCountries()
+                Countries = this.countries.GetCountries()
             });
         }
 
@@ -87,7 +87,7 @@ namespace MedicReach.Controllers
             if (!this.ModelState.IsValid)
             {
                 medicalCenterModel.Cities = this.cities.GetCities();
-                medicalCenterModel.Coutries = this.countries.GetCountries();
+                medicalCenterModel.Countries = this.countries.GetCountries();
                 medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
                 return View(medicalCenterModel);
@@ -124,7 +124,7 @@ namespace MedicReach.Controllers
             var medicalCenterForm = this.mapper.Map<MedicalCenterFormModel>(medicalCenter);
             medicalCenterForm.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
             medicalCenterForm.Cities = this.cities.GetCities();
-            medicalCenterForm.Coutries = this.countries.GetCountries();
+            medicalCenterForm.Countries = this.countries.GetCountries();
 
             return View(medicalCenterForm);
         }
@@ -159,7 +159,7 @@ namespace MedicReach.Controllers
             if (!this.ModelState.IsValid)
             {
                 medicalCenterModel.Cities = this.cities.GetCities();
-                medicalCenterModel.Coutries = this.countries.GetCountries();
+                medicalCenterModel.Countries = this.countries.GetCountries();
                 medicalCenterModel.MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes();
 
                 return View(medicalCenterModel);
