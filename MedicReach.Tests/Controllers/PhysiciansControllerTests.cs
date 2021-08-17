@@ -46,7 +46,7 @@ namespace MedicReach.Tests.Controllers
                     MedicalCenters.GetMedicalCenter(medicalCenterId, joiningCode),
                     Specialities.GetSpeciality(specialityId),
                     Users.GetUser(TestUser.Identifier),
-                    UserRoles.GetRole("Physician")))
+                    UserRoles.GetRole(WebConstants.PhysicianRoleName)))
                 .Calling(c => c.Become(new PhysicianFormModel
                 {
                     FullName = fullName,
@@ -99,7 +99,7 @@ namespace MedicReach.Tests.Controllers
                     MedicalCenters.GetMedicalCenter(medicalCenterId, joiningCode),
                     Specialities.GetSpeciality(specialityId),
                     Users.GetUser(TestUser.Identifier),
-                    UserRoles.GetRole("Physician")))
+                    UserRoles.GetRole(WebConstants.PhysicianRoleName)))
                 .Calling(c => c.Become(new PhysicianFormModel
                 {
                     FullName = fullName,
@@ -151,7 +151,7 @@ namespace MedicReach.Tests.Controllers
 
         [Theory]
         [InlineData("PhysicianId", "Ivan Petrov", "Male", "MedicalCenterId", "MedicalCenter", 50, 1, "PP1234599", false)]
-        public void EditPostActionShouldRedirectToActionWithCorrectModel(
+        public void EditPostActionShouldRedirectToActionWithCorrectParameter(
             string physicianId, 
             string fullName,
             string gender,
@@ -195,7 +195,7 @@ namespace MedicReach.Tests.Controllers
 
         [Theory]
         [InlineData("PhysicianId")]
-        public void MineActionShouldRedirectToActionWithCorrectModel(string physicianId)
+        public void MineActionShouldRedirectToActionWithCorrectParameter(string physicianId)
             => MyController<PhysiciansController>
                 .Instance(instance => instance
                     .WithUser()

@@ -35,7 +35,7 @@ namespace MedicReach.Tests.Controllers
                     .WithUser()
                     .WithData(
                     Users.GetUser(TestUser.Identifier),
-                    UserRoles.GetRole("Patient")))
+                    UserRoles.GetRole(WebConstants.PatientRoleName)))
                 .Calling(c => c.Become(new PatientFormModel
                 {
                     FullName = fullName,

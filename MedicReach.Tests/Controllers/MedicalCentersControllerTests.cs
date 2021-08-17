@@ -173,7 +173,7 @@ namespace MedicReach.Tests.Controllers
                 .Calling(c => c.Edit(medicalCenterId))
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{Areas.Admin.AdminConstants.AdministratorRoleName}"))
+                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{AdminConstants.AdministratorRoleName}"))
                 .AndAlso()
                 .ShouldReturn()
                 .View(view => view
@@ -193,7 +193,7 @@ namespace MedicReach.Tests.Controllers
                 .Calling(c => c.Edit(medicalCenterId))
                 .ShouldHave()
                 .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{Areas.Admin.AdminConstants.AdministratorRoleName}"))
+                    .RestrictingForAuthorizedRequests($"{WebConstants.PhysicianRoleName},{AdminConstants.AdministratorRoleName}"))
                 .AndAlso()
                 .ShouldReturn()
                 .View(view => view

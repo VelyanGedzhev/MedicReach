@@ -11,6 +11,8 @@ namespace MedicReach.Tests.Controllers
 {
     public class HomeControllerTests
     {
+        private const int HomePageCarouselMedicalCentersCount = 3;
+
         [Fact]
         public void IndexActionShouldReturnViewWithCorrectModel()
             => MyController<HomeController>
@@ -20,7 +22,7 @@ namespace MedicReach.Tests.Controllers
                 .ShouldReturn()
                 .View(view => view
                     .WithModelOfType<List<MedicalCenterServiceModel>>()
-                    .Passing(model => model.Should().HaveCount(3)));
+                    .Passing(model => model.Should().HaveCount(HomePageCarouselMedicalCentersCount)));
 
         [Fact]
         public void ErrorActionShouldReturnViewWithCorrectModel()

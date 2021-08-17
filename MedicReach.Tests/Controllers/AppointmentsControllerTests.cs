@@ -1,7 +1,5 @@
 ﻿using MedicReach.Controllers;
-using MedicReach.Data.Models;
 using MedicReach.Models.Appointments;
-using MedicReach.Services.Appointments.Models;
 using MedicReach.Tests.Data;
 using MyTested.AspNetCore.Mvc;
 using Xunit;
@@ -10,6 +8,8 @@ namespace MedicReach.Tests.Controllers
 {
     public class AppointmentsControllerTests
     {
+        private const string MineAction = "Mine";
+
         [Theory]
         [InlineData("PhysicianId", "PatientId")]
         public void BookActionShouldBeForAuthorizedUsersAndReturnView(string physicianId, string patientId)
@@ -75,7 +75,7 @@ namespace MedicReach.Tests.Controllers
                     .ContainingEntryWithKey(WebConstants.GlobalSuccessMessageKey))
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction("Mine");
+                .RedirectToAction(MineAction);
 
         [Theory]
         [InlineData("PhysicianId", "PatientId", "17-08-2021", "10:00")]
@@ -128,6 +128,6 @@ namespace MedicReach.Tests.Controllers
                     .RestrictingForAuthorizedRequests(WebConstants.PhysicianRoleName))
                 .AndAlso()
                 .ShouldReturn()
-                .RedirectToAction("Mine");
+                .RedirectToAction(MineAction);
     }
 }
