@@ -76,6 +76,52 @@ namespace MedicReach.Tests.Controllers
                     .To<HomeController>(c => c.Index()));
 
         [Theory]
+        [InlineData("", "Male", "MedicalCenterId", "MedicalCenter", 50, 1, "PP1234599", false)]
+        [InlineData("Ivan Petrov", "", "MedicalCenterId", "MedicalCenter", 50, 1, "PP1234599", false)]
+        [InlineData("Ivan Petrov", "Male", "MedicalCenterId", "", 50, 1, "PP1234599", false)]
+        [InlineData("Emily Blunt", "Female", "", "MedicalCenter", 70, 1, "PP1234588", false)]
+        [InlineData("Emily Blunt", "Female", "MedicalCenterId", "MedicalCenter", -1, 1, "PP1234588", false)]
+        [InlineData("Emily Blunt", "Female", "MedicalCenterId", "MedicalCenter", 70, 1, "", false)]
+        [InlineData("Emily Blunt", "Female", "MedicalCenterId", "MedicalCenter", 70, 0, "PP1234588", false)]
+        public void BecomePostActionShouldReturnViewWhenModelStateInvalid(
+            string fullName,
+            string gender,
+            string medicalCenterId,
+            string joiningCode,
+            int examinationPrice,
+            int specialityId,
+            string practicePermissionNumber,
+            bool IsApproved)
+            => MyController<PhysiciansController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(
+                    MedicalCenters.GetMedicalCenter(medicalCenterId, joiningCode),
+                    Specialities.GetSpeciality(specialityId),
+                    Users.GetUser(TestUser.Identifier),
+                    UserRoles.GetRole("Physician")))
+                .Calling(c => c.Become(new PhysicianFormModel
+                {
+                    FullName = fullName,
+                    Gender = gender,
+                    MedicalCenterId = medicalCenterId,
+                    JoiningCode = joiningCode,
+                    ExaminationPrice = examinationPrice,
+                    SpecialityId = specialityId,
+                    PracticePermissionNumber = practicePermissionNumber,
+                    IsApproved = IsApproved
+                }))
+                .ShouldHave()
+                .InvalidModelState()
+                .ActionAttributes(a => a
+                    .RestrictingForHttpMethod(HttpMethod.Post)
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<PhysicianFormModel>());
+
+        [Theory]
         [InlineData("PhyscianId", "UserId")]
         public void DetailsActionShouldReturnViewWithCorrectModel(string physicianId, string userId)
             => MyController<PhysiciansController>
