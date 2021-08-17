@@ -14,6 +14,10 @@ namespace MedicReach.Infrastructure
 {
     public static class ApplicationBuilderExtensions
     {
+        private const string PatientId = "c81e9be3-7234-4370-b96a-f4000b32a3f3";
+        private const string PhysicianId = "6689b628-8568-4c3d-ac31-85c1a23a0b7b";
+        private const string PhysicianUserId = "6689b628-8568-4c3d-ac31-85c1a23a0b7b";
+        private const string MedicalCenterId = "cd835fb8-a8ad-4476-adaa-8d80c3103261";
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
             var serviceScope = app.ApplicationServices.CreateScope();
@@ -27,6 +31,9 @@ namespace MedicReach.Infrastructure
             SeedCities(services);
             SeedMedicalCenterTypes(services);
             SeedSpecialities(services);
+            SeedPatient(services);
+            SeedMedicalCenter(services);
+            SeedPhysician(services);
 
             return app;
         }
@@ -98,6 +105,139 @@ namespace MedicReach.Infrastructure
             })
                 .GetAwaiter()
                 .GetResult();
+        }
+
+        private static void SeedPatient(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
+            const string patientEmail = "patient@medicReach.com";
+            const string patientPassword = "123456";
+            const string patientName = "John Smith";
+            const string patientGender = "Male";
+
+            if (userManager.Users.Any(u => u.UserName == patientEmail))
+            {
+                return;
+            }
+
+            var user = new IdentityUser();
+
+            Task.Run(async () =>
+            {
+                user.Email = patientEmail;
+                user.UserName = patientEmail;
+
+                await userManager.CreateAsync(user, patientPassword);
+                await userManager.AddToRoleAsync(user, PatientRoleName);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            var patient = new Patient
+            {
+                Id = PatientId,
+                FullName = patientName,
+                Gender = patientGender,
+                UserId = user.Id            
+            };
+
+            data.Patients.Add(patient);
+            data.SaveChanges();
+        }
+
+        private static void SeedPhysician(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
+            const string physicianEmail = "physician@medicReach.com";
+            const string physicianPassword = "123456";
+            const string physicianName = "Jessica Morales";
+            const string physicianGender = "Female";
+            const int examinationPrice = 60;
+            const int specialityId = 3;
+            const string practicePermissionNumber = "JS123456";
+            const bool defaultBool = true;
+
+            if (userManager.Users.Any(u => u.UserName == physicianEmail))
+            {
+                return;
+            }
+
+            Task.Run(async () =>
+            {
+                var user = new IdentityUser
+                {
+                    Id = PhysicianUserId,
+                    Email = physicianEmail,
+                    UserName = physicianEmail
+                };
+
+                await userManager.CreateAsync(user, physicianPassword);
+                await userManager.AddToRoleAsync(user, PhysicianRoleName);
+            })
+                .GetAwaiter()
+                .GetResult();
+
+            var physician = new Physician
+            {
+                Id = PhysicianId,
+                FullName = physicianName,
+                Gender = physicianGender,
+                UserId = PhysicianUserId,
+                ExaminationPrice = examinationPrice,
+                MedicalCenterId = MedicalCenterId,
+                PracticePermissionNumber = practicePermissionNumber,
+                IsWorkingWithChildren = defaultBool,
+                IsApproved = defaultBool,
+                SpecialityId = specialityId,
+                ImageUrl = DataConstants.Physician.DefaultFemaleImageUrl
+            };
+
+            data.Physicians.Add(physician);
+            data.SaveChanges();
+        }
+
+        private static void SeedMedicalCenter(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<MedicReachDbContext>();
+
+            if (data.MedicalCenters.Any(mc => mc.Id == MedicalCenterId))
+            {
+                return;
+            }
+
+            const string name = "JesMor";
+            const string joiningCode = "JesMorClinic";
+            const string address = "27 Abbey Road";
+            const string description = "Best clinic in Buenos Aires";
+            const string city = "Buenos Aires";
+            const string country = "Argentina";
+            const int typeId = 2;
+
+            int cityId = data.Cities.Where(c => c.Name == city).Select(c => c.Id).FirstOrDefault();
+            int countryId = data.Countries.Where(c => c.Name == country).Select(c => c.Id).FirstOrDefault();
+
+            var medicalCenter = new MedicalCenter
+            {
+                Id = MedicalCenterId,
+                Name = name,
+                JoiningCode = joiningCode,
+                Address = address,
+                CityId = cityId,
+                CountryId = countryId,
+                Description = description,
+                TypeId = typeId,
+                CreatorId = PhysicianUserId,
+                ImageUrl = DataConstants.MedicalCenter.DefaultImageUrl
+            };
+
+            data.MedicalCenters.Add(medicalCenter);
+            data.SaveChanges();
         }
 
         private static void SeedCountries(IServiceProvider services)
