@@ -37,7 +37,7 @@ namespace MedicReach.Services.Appointments
                 DateTimeStyles.None,
                 out DateTime appointmantDate);
 
-            if (!dateParse)
+            if (!dateParse || appointmantDate < DateTime.UtcNow)
             {
                 return false;
             }
