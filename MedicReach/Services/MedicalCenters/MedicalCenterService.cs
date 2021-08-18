@@ -190,10 +190,15 @@ namespace MedicReach.Services.MedicalCenters
                 .Select(mc => mc.JoiningCode)
                 .FirstOrDefault();
 
-        public bool IsCreator(string userId, string medicalCenterId)
+        public bool IsCreatorOfMedicalCenter(string userId, string medicalCenterId)
             => this.data
                 .MedicalCenters
                 .Any(mc => mc.Id == medicalCenterId && mc.CreatorId == userId);
+
+        public bool IsCreator(string userId)
+            => this.data
+                .MedicalCenters
+                .Any(mc => mc.CreatorId == userId);
 
         public string GetMedicalCenterIdByUser(string userId)
             => this.data

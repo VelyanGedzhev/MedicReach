@@ -52,7 +52,9 @@ namespace MedicReach.Services.MedicalCenters
 
         string GetJoiningCode(string medicalCenterId);
 
-        bool IsCreator(string userId, string medicalCenterId);
+        bool IsCreatorOfMedicalCenter(string userId, string medicalCenterId);
+
+        bool IsCreator(string userId);
 
         string GetMedicalCenterIdByUser(string userId);
     }

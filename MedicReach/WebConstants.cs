@@ -17,6 +17,8 @@
         public const string AdminEditPhysicianSuccessMessage = "Physician profile was edited successfully.";
         public const string EditPatientSuccessMessage = "Patient profile was edited successfully.";
 
+        public const string AlreadyCreatorOfMedicalCenter = "You're already a creator of a Medical Center. Please, edit it's information instead.";
+
         public const string CreateMedicalCenterSuccessMessage = "Medical Center '{0}' was created successfully.";
         public const string EditMedicalCenterSuccessMessage = "Medical Center '{0}' was edited successfully.";
         public const string EditMedicalCenterErrorMessage = "Medical Center can be edited only by it's creator.";

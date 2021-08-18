@@ -44,6 +44,25 @@ namespace MedicReach.Tests.Controllers
                     .Passing(c => 
                         c.MedicalCenterTypes.Count() == MedicalCenterTypesCount));
 
+        [Theory]
+        [InlineData("MedicalCenterId")]
+        public void AddActionsShouldBeForAuthorizedUsersAndRedirectCorrectlyIdUserIsAlreadyCreator(string medicalCenterId)
+            => MyController<MedicalCentersController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(
+                        MedicalCenters.GetMedicalCenter(medicalCenterId, null, TestUser.Identifier)))
+                .Calling(c => c.Add())
+                .ShouldHave()
+                .ActionAttributes(a => a
+                    .RestrictingForAuthorizedRequests())
+                .TempData(temp => temp
+                    .ContainingEntryWithKey(WebConstants.GlobalErrorMessageKey))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<HomeController>(c => c.Index()));
+
         [Fact]
         public void AddPostActionShouldBeForAuthorizedUsersRedirectCorrectly()
             => MyController<MedicalCentersController>

@@ -54,6 +54,13 @@ namespace MedicReach.Controllers
         [Authorize]
         public IActionResult Add()
         {
+            if (this.medicalCenters.IsCreator(this.User.GetId()))
+            {
+                this.TempData[GlobalErrorMessageKey] = AlreadyCreatorOfMedicalCenter;
+
+                return RedirectToAction("Index", "Home");
+            }
+
             return View(new MedicalCenterFormModel
             {
                 MedicalCenterTypes = this.medicalCenters.GetMedicalCenterTypes(),
@@ -112,7 +119,7 @@ namespace MedicReach.Controllers
         [Authorize(Roles = PhysicianRoleName + "," + AdministratorRoleName)]
         public IActionResult Edit(string medicalCenterId)
         {
-            var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
+            var isUserCreator = this.medicalCenters.IsCreatorOfMedicalCenter(User.GetId(), medicalCenterId);
 
             if (!isUserCreator && !User.IsAdmin())
             {
@@ -133,7 +140,7 @@ namespace MedicReach.Controllers
         [HttpPost]
         public IActionResult Edit(string medicalCenterId, MedicalCenterFormModel medicalCenterModel)
         {
-            var isUserCreator = this.medicalCenters.IsCreator(User.GetId(), medicalCenterId);
+            var isUserCreator = this.medicalCenters.IsCreatorOfMedicalCenter(User.GetId(), medicalCenterId);
 
             if (!isUserCreator && !User.IsAdmin())
             {
