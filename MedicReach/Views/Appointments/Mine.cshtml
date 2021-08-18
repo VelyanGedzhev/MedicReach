@@ -36,29 +36,33 @@
                     <tbody>
                         @foreach (var appointment in Model.Appointments)
                         {
-            <tr>
-                <th scope="row">@appointment.Date</th>
-                <td>@appointment.PhysicianName</td>
-                <td>@appointment.PatientName</td>
-                <td>@appointment.IsApproved</td>
-                <td>
-                    @if (this.User.IsPatient())
-                    {
-            <a class="btn btn-primary" asp-area="" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@appointment.PhysicianId">Physician</a>
-                                @if (appointment.Date < DateTime.UtcNow && appointment.IsApproved && this.User.IsPatient() && !appointment.IsReviewed)
-                                {
-            <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="Write" asp-route-appointmentId="@appointment.Id">Write Review</a>}}
-                    @if (this.User.IsPhysician())
-                    {
-            <a class="btn btn-@(appointment.IsApproved ? "danger" : "success")"
-               asp-area=""
-               asp-controller="Appointments"
-               asp-action="ChangeStatus"
-               asp-route-appointmentId="@appointment.Id">
-                @(appointment.IsApproved ? "Decline" : "Accept")
-            </a>}
-                </td>
-            </tr>}
+                           <tr>
+                                <th scope="row">@appointment.Date (UTC)</th>
+                                <td>@appointment.PhysicianName</td>
+                                <td>@appointment.PatientName</td>
+                                <td>@appointment.IsApproved</td>
+                                <td>
+                                    @if (this.User.IsPatient())
+                                    {
+                                         <a class="btn btn-primary" asp-area="" asp-controller="Physicians" asp-action="Details" asp-route-physicianId="@appointment.PhysicianId">Physician</a>
+                                         @if (appointment.Date < DateTime.UtcNow && appointment.IsApproved && this.User.IsPatient() && !appointment.IsReviewed)
+                                         {
+                                             <a class="btn btn-primary" asp-area="" asp-controller="Reviews" asp-action="Write" asp-route-appointmentId="@appointment.Id">Write Review</a>
+                                         }
+                                    }
+                                    @if (this.User.IsPhysician() && appointment.Date > DateTime.UtcNow)
+                                    {
+                                       <a class="btn btn-@(appointment.IsApproved ? "danger" : "success")"
+                                          asp-area=""
+                                          asp-controller="Appointments"
+                                          asp-action="ChangeStatus"
+                                          asp-route-appointmentId="@appointment.Id">
+                                           @(appointment.IsApproved ? "Decline" : "Accept")
+                                       </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

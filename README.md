@@ -1,16 +1,20 @@
 # MedicReach
-A Web application for booking a medical examination appointment.
+A web application which enables patients to book medical appointments with ease. 
+Two types of profiles can be created depending on the role - either as a regular user or as a healthcare professional. During sign up all relevant details about the person are collected.
 
 ## Table of Contents
 * [General Info](#general-information)
-* [Technologies Used](#technologies-used)
 * [Setup](#setup)
+* [Technologies Used](#technologies-used)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
-<!-- * [License](#license) -->
+
+ ## License
+
+This project is licensed under the [MIT License](LICENSE).
 
 
-## General Information
+## :information_source: General Information
 
 **Guests**
 - Can check all currently available Medical Centers and Physicians
@@ -32,16 +36,30 @@ A Web application for booking a medical examination appointment.
 - Can edit their current Medical center if they are it's creator
 - Can approve or disapprove booked appointments
 
+**Administrator**
+- Can approve or disapprove Physicians
+- Can edit Physicians and Medical Centers
+- Can add new Physician Specialities, Medical Center Types, Cities and Countries
 
-## Setup
+## :bulb: Setup
 When starting for a first time a sample account for each role will be seeded:
 - Patient -> Email: patient@medicReach.com / Password: 123456 
 - Physician -> Email: physician@medicReach.com / Password: 123456 
 - Administrator -> Email: admin@medicReach.com / Password: admin123456 
 
+**:heavy_exclamation_mark: Important - appointments are in Universal Time Coordinated(UTC)!**
+
+## Technologies Used
+
+- ASP.NET Core 5
+- Entity Framework Core 5.0.9
+- Microsoft SQL Server
+- AutoMapper
+- MyTested.AspNetCore.Mvc
+- Fluent Assertions
 
 ## Room for Improvement
 
-Room for improvement:
-
-To do:
+**TO DO:**
+- More User-Friendly way of creating new Medical Center while Physician profile is created
+- Option to choose between the default and custom working schedule (both for working days and hours)
