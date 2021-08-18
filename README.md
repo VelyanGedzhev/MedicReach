@@ -1,10 +1,10 @@
-# MedicReach
+# :hospital: MedicReach
 A web application which enables patients to book medical appointments with ease. 
 Two types of profiles can be created depending on the role - either as a regular user or as a healthcare professional. During sign up all relevant details about the person are collected.
 
 ## Table of Contents
-* [General Info](#general-information)
-* [Setup](#setup)
+* [General Info](#information_source-general-information)
+* [Setup](#bulb-setup)
 * [Technologies Used](#technologies-used)
 * [Room for Improvement](#room-for-improvement)
 * [Contact](#contact)
@@ -14,7 +14,7 @@ Two types of profiles can be created depending on the role - either as a regular
 This project is licensed under the [MIT License](LICENSE).
 
 
-## :information_source: General Information
+## General Information
 
 **Guests**
 - Can check all currently available Medical Centers and Physicians
