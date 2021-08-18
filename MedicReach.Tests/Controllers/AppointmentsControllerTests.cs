@@ -2,6 +2,7 @@
 using MedicReach.Models.Appointments;
 using MedicReach.Tests.Data;
 using MyTested.AspNetCore.Mvc;
+using System;
 using Xunit;
 
 namespace MedicReach.Tests.Controllers
@@ -50,32 +51,35 @@ namespace MedicReach.Tests.Controllers
                 .BadRequest();
 
         [Theory]
-        [InlineData("PhysicianId", "PatientId", "17-08-2021", "10:00")]
+        [InlineData("PhysicianId", "PatientId", "10:00")]
         public void BookPostActionShouldBeForAuthorizedUsersAndRedirectCorrectly(
             string physicianId,
             string patientId,
-            string date,
             string hour)
-            => MyController<AppointmentsController>
-                .Instance(instance => instance
-                    .WithUser())
-                .Calling(c => c.Book(new AppointmentFormModel
-                {
-                    PhysicianId = physicianId,
-                    PatientId = patientId,
-                    Date = date,
-                    Hour = hour
-                }))
-                .ShouldHave()
-                .ActionAttributes(a => a
-                    .RestrictingForAuthorizedRequests(WebConstants.PatientRoleName)
-                    .RestrictingForHttpMethod(HttpMethod.Post))
-                .ValidModelState()
-                .TempData(tempData => tempData
-                    .ContainingEntryWithKey(WebConstants.GlobalSuccessMessageKey))
-                .AndAlso()
-                .ShouldReturn()
-                .RedirectToAction(MineAction);
+        {
+            string currentDate = DateTime.UtcNow.AddDays(1).ToString("dd-MM-yyyy");
+
+            MyController<AppointmentsController>
+                           .Instance(instance => instance
+                               .WithUser())
+                           .Calling(c => c.Book(new AppointmentFormModel
+                           {
+                               PhysicianId = physicianId,
+                               PatientId = patientId,
+                               Date = currentDate,
+                               Hour = hour
+                           }))
+                           .ShouldHave()
+                           .ActionAttributes(a => a
+                               .RestrictingForAuthorizedRequests(WebConstants.PatientRoleName)
+                               .RestrictingForHttpMethod(HttpMethod.Post))
+                           .ValidModelState()
+                           .TempData(tempData => tempData
+                               .ContainingEntryWithKey(WebConstants.GlobalSuccessMessageKey))
+                           .AndAlso()
+                           .ShouldReturn()
+                           .RedirectToAction(MineAction);
+        }
 
         [Theory]
         [InlineData("PhysicianId", "PatientId", "17-08-2021", "10:00")]

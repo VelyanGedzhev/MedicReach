@@ -7,7 +7,6 @@ Two types of profiles can be created depending on the role - either as a regular
 * [Setup](#bulb-setup)
 * [Technologies Used](#technologies-used)
 * [Room for Improvement](#room-for-improvement)
-* [Contact](#contact)
 
  ## License
 
@@ -26,7 +25,7 @@ This project is licensed under the [MIT License](LICENSE).
 **Patients**
 - Can Edit their profiles
 - Can book an appointment, which has to be approved by the chosen Physician
-- Can write a review after their examination
+- Can write a review after their examination *(appointment must be accepted and the appointment mustn't be reviewed yet)* .
 
 **Physicians**
 - After registration as a Physician it must be approved by Administrator to become available for other Users
