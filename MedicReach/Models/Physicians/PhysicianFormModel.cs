@@ -9,6 +9,7 @@ namespace MedicReach.Models.Physicians
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
+        [Display(Name = "Full Name")]
         public string FullName { get; init; }
 
         [Required]

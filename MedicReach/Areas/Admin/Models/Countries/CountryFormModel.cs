@@ -11,6 +11,7 @@ namespace MedicReach.Areas.Admin.Models.Countries
 
         [Required]
         [StringLength(Alpha3CodeMaxLength, MinimumLength = Alpha3CodeMinLength)]
+        [Display(Name = "Alpha-3 Code")]
         public string Alpha3Code { get; init; }
     }
 }

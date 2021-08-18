@@ -12,7 +12,7 @@ namespace MedicReach.Models.MedicalCenters
         public string Name { get; init; }
 
         [Required]
-        [Display(Name = "Address Number and Name")]
+        [Display(Name = "Address")]
         [StringLength(AddressNameMaxLength, MinimumLength = AdressNameMinLength)]
         public string Address { get; set; }
 

@@ -26,7 +26,7 @@ namespace MedicReach.Models.Physicians
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }
 
-        [Display(Name = "Sort by:")]
+        [Display(Name = "Sort by")]
         public PhysicianSorting Sorting { get; init; }
 
         public IEnumerable<PhysicianServiceModel> Physicians { get; set; }

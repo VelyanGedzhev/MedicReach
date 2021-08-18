@@ -24,7 +24,7 @@ namespace MedicReach.Models.MedicalCenters
         [Display(Name = "Find by Name")]
         public string SearchTerm { get; init; }
 
-        [Display(Name = "Sort by:")]
+        [Display(Name = "Sort by")]
         public MedicalCentersSorting Sorting { get; init; }
 
         public IEnumerable<MedicalCenterServiceModel> MedicalCenters { get; set; }

@@ -11,6 +11,7 @@ namespace MedicReach.Areas.Admin.Models.Cities
         [StringLength(NameMaxLength, MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
+        [Display(Name = "Country")]
         public int CountryId { get; init; }
 
         public IEnumerable<CountryServiceModel> Countries;
