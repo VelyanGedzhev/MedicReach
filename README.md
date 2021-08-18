@@ -14,7 +14,7 @@ Two types of profiles can be created depending on the role - either as a regular
 This project is licensed under the [MIT License](LICENSE).
 
 
-## General Information
+## :information_source: General Information
 
 **Guests**
 - Can check all currently available Medical Centers and Physicians
